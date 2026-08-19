@@ -4,7 +4,8 @@
   "type": "module",
   "workspaces": [
     "packages/*",
-    "api"
+    "api",
+    "app"
   ],
   "engines": {
     "node": ">=20"
@@ -12,7 +13,11 @@
   "scripts": {
     "api:dev": "npm run dev --workspace @timbre/api",
     "api:start": "npm run start --workspace @timbre/api",
-    "test": "npm run test --workspace @timbre/api",
+    "app:dev": "npm run dev --workspace @timbre/app",
+    "app:build": "npm run build --workspace @timbre/app",
+    "app:preview": "npm run preview --workspace @timbre/app",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present"
   },
   "devDependencies": {

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800" role="img" aria-labelledby="t-p-0405">
+  <title id="t-p-0405">Behringer UMC22</title>
+  <rect width="800" height="800" fill="#E6E4DF"/>
+  <g fill="none" stroke="#C3C0B9" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="358" y="150" width="84" height="168" rx="42"/>
+    <path d="M310 288a90 90 0 0 0 180 0"/>
+    <path d="M400 378v72M336 450h128"/>
+  </g>
+  <text x="400" y="596" text-anchor="middle" fill="#63706E" font-family="Archivo Variable, Archivo, Helvetica Neue, Arial, sans-serif" font-size="46" font-weight="600">Behringer</text>
+  <text x="400" y="648" text-anchor="middle" fill="#8D9895" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="24" letter-spacing="2">P-0405</text>
+</svg>

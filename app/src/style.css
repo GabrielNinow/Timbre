@@ -1,0 +1,153 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-band: #0e3b3e;
+  --color-band-hover: #14504f;
+  --color-band-sub: #16585a;
+  --color-on-band: #f4f2ed;
+
+  --color-action: #d68a0c;
+  --color-action-hover: #be7a08;
+  --color-action-quiet: #fbf0da;
+  --color-on-action: #1b1e1d;
+
+  --color-gain: #0e7a4a;
+  --color-gain-quiet: #e4f2ea;
+  --color-fault: #b3261e;
+  --color-fault-quiet: #fbe9e8;
+  --color-field: #f0efec;
+  --color-surface: #ffffff;
+  --color-sunken: #e6e4df;
+  --color-ink: #1b1e1d;
+  --color-muted: #63706e;
+  --color-faint: #8d9895;
+  --color-line: #dcdad5;
+  --color-line-heavy: #c3c0b9;
+  --color-star: #e0a100;
+
+  --font-*: initial;
+  --font-ui: 'Archivo Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --text-*: initial;
+  --text-display-lg: 32px;
+  --text-display-lg--line-height: 36px;
+  --text-display-lg--font-weight: 700;
+  --text-display-lg--letter-spacing: -0.02em;
+  --text-display: 24px;
+  --text-display--line-height: 28px;
+  --text-display--font-weight: 700;
+  --text-display--letter-spacing: -0.015em;
+  --text-heading: 18px;
+  --text-heading--line-height: 24px;
+  --text-heading--font-weight: 600;
+  --text-body: 15px;
+  --text-body--line-height: 22px;
+  --text-body-sm: 13px;
+  --text-body-sm--line-height: 18px;
+
+  --text-label: 12px;
+  --text-label--line-height: 16px;
+  --text-label--font-weight: 600;
+  --text-label--letter-spacing: 0.04em;
+
+  --text-mono: 12px;
+  --text-mono--line-height: 16px;
+  --text-mono--font-weight: 500;
+  --text-mono--letter-spacing: 0.02em;
+  --text-price: 26px;
+  --text-price--line-height: 30px;
+  --text-price--font-weight: 700;
+  --text-price-cents: 15px;
+  --text-price-cents--line-height: 20px;
+  --text-price-cents--font-weight: 700;
+  --radius-*: initial;
+  --radius-control: 4px;
+  --radius-card: 6px;
+  --radius-full: 9999px;
+
+  --shadow-*: initial;
+  --shadow-lift: 0 2px 8px rgb(14 59 62 / 0.1);
+}
+
+@utility font-wide {
+  font-stretch: 112%;
+}
+
+@custom-variant hover {
+  @media (hover: hover) {
+    &:hover {
+      @slot;
+    }
+  }
+  &[data-force-state~='hover'] {
+    @slot;
+  }
+}
+@custom-variant focus-visible {
+  &:focus-visible {
+    @slot;
+  }
+  &[data-force-state~='focus'] {
+    @slot;
+  }
+}
+@layer base {
+  html {
+    font-family: var(--font-ui);
+    font-stretch: 100%;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+    color-scheme: light;
+  }
+  body {
+    background-color: var(--color-field);
+    color: var(--color-ink);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-band);
+    outline-offset: 2px;
+  }
+  [hidden] {
+    display: none !important;
+  }
+}
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-control border border-transparent;
+    @apply font-ui font-semibold whitespace-nowrap select-none no-underline;
+    @apply transition-colors duration-150 ease-out;
+    @apply focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-band;
+    @apply disabled:cursor-not-allowed disabled:opacity-60;
+    @apply aria-disabled:cursor-not-allowed aria-disabled:opacity-60;
+  }
+
+  .field {
+    @apply w-full rounded-control border border-line-heavy bg-surface;
+    @apply font-ui text-body text-ink placeholder:text-faint;
+    @apply transition-colors duration-150 ease-out;
+    @apply focus-visible:border-band focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-band;
+    @apply disabled:cursor-not-allowed disabled:bg-sunken disabled:text-muted;
+    @apply aria-[invalid=true]:border-fault aria-[invalid=true]:focus-visible:outline-fault;
+  }
+  .card {
+    @apply rounded-card border border-line bg-surface;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}

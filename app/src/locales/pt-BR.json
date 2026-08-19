@@ -1,0 +1,243 @@
+{
+  "app": {
+    "name": "Timbre",
+    "description": "Instrumentos musicais e áudio, novos e usados."
+  },
+  "a11y": {
+    "skipToContent": "Pular para o conteúdo",
+    "mainContent": "Conteúdo principal"
+  },
+  "common": {
+    "loading": "Carregando",
+    "retry": "Tentar novamente",
+    "close": "Fechar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "apply": "Aplicar",
+    "remove": "Remover",
+    "clear": "Limpar",
+    "back": "Voltar",
+    "previous": "Anterior",
+    "next": "Próximo",
+    "required": "obrigatório",
+    "optional": "opcional",
+    "backToHome": "Voltar para a home"
+  },
+  "price": {
+    "current": "{value}",
+    "listLabel": "Preço anterior {value}",
+    "discountBadge": "-{percent}%",
+    "srSimple": "{value}",
+    "srDiscounted": "De {list} por {value}, {percent}% de desconto"
+  },
+  "condition": {
+    "novo": "Novo",
+    "seminovo": "Seminovo",
+    "usado": "Usado"
+  },
+  "tier": {
+    "PRATA": "Prata",
+    "OURO": "Ouro",
+    "PLATINA": "Platina"
+  },
+  "tierMark": {
+    "label": "Vendedor nível {tier}",
+    "none": "Vendedor sem nível"
+  },
+  "specStrip": {
+    "year": "Ano {value}",
+    "condition": "Condição {value}",
+    "state": "Vendedor em {value}",
+    "tier": "Nível {value}"
+  },
+  "badge": {
+    "freeShipping": "Frete grátis",
+    "discount": "-{percent}%",
+    "lastUnit": "Última unidade",
+    "soldOut": "Esgotado",
+    "sponsored": "Patrocinado"
+  },
+  "rating": {
+    "value": "{value} de 5 estrelas",
+    "reviews": "nenhuma avaliação | {count} avaliação | {count} avaliações",
+    "none": "Sem avaliações"
+  },
+  "quantity": {
+    "label": "Quantidade",
+    "increase": "Aumentar quantidade",
+    "decrease": "Diminuir quantidade",
+    "atMax": "Máximo de {max} disponível | Máximo de {max} unidades disponíveis",
+    "atMin": "Quantidade mínima de {min}"
+  },
+  "pagination": {
+    "label": "Paginação",
+    "previous": "Página anterior",
+    "next": "Próxima página",
+    "goToPage": "Página {page}",
+    "currentPage": "Página {page}, página atual",
+    "summary": "Página {page} de {pages}",
+    "ellipsis": "Mais páginas"
+  },
+  "dialog": {
+    "close": "Fechar janela"
+  },
+  "popover": {
+    "close": "Fechar"
+  },
+  "toast": {
+    "region": "Notificações",
+    "close": "Fechar notificação",
+    "variant": {
+      "info": "Informação",
+      "success": "Sucesso",
+      "error": "Erro"
+    }
+  },
+  "skeleton": {
+    "label": "Carregando conteúdo"
+  },
+  "select": {
+    "placeholder": "Selecione"
+  },
+  "errorState": {
+    "title": "Não foi possível carregar",
+    "description": "A requisição falhou. Tente novamente.",
+    "codeLabel": "Código do erro"
+  },
+  "emptyState": {
+    "title": "Nada por aqui",
+    "description": "Nenhum resultado para os filtros atuais."
+  },
+  "notFound": {
+    "title": "Página não encontrada",
+    "description": "O endereço acessado não existe.",
+    "code": "404"
+  },
+  "kitchenSink": {
+    "title": "Kitchen sink",
+    "subtitle": "Todos os primitivos, em todos os estados. Rota disponível apenas em desenvolvimento.",
+    "tocLabel": "Índice de seções",
+    "states": {
+      "default": "Padrão",
+      "hover": "Hover",
+      "focus": "Foco visível",
+      "loading": "Carregando",
+      "disabled": "Desabilitado",
+      "error": "Erro",
+      "selected": "Selecionado",
+      "empty": "Vazio"
+    },
+    "hint": {
+      "hover": "Passe o mouse para ver o estado de hover.",
+      "focus": "Use Tab para ver o anel de foco."
+    },
+    "sections": {
+      "tokens": "Tokens",
+      "type": "Tipografia",
+      "button": "BaseButton",
+      "input": "BaseInput",
+      "select": "BaseSelect",
+      "checkbox": "BaseCheckbox",
+      "radio": "BaseRadioGroup",
+      "quantity": "QuantityStepper",
+      "dialog": "BaseDialog",
+      "popover": "BasePopover",
+      "toast": "BaseToast",
+      "skeleton": "SkeletonBlock",
+      "pagination": "Pagination",
+      "stars": "StarRating",
+      "price": "PriceDisplay",
+      "spec": "SpecStrip",
+      "badge": "BadgeChip",
+      "tier": "SellerTierMark",
+      "empty": "EmptyState",
+      "error": "ErrorState"
+    },
+    "button": {
+      "action": "Adicionar ao carrinho",
+      "outline": "Comprar agora",
+      "quiet": "Ver detalhes",
+      "danger": "Remover item",
+      "sizes": "Tamanhos"
+    },
+    "input": {
+      "label": "CEP",
+      "placeholder": "00000-000",
+      "hint": "Somente números.",
+      "error": "CEP não encontrado."
+    },
+    "select": {
+      "label": "Ordenar por",
+      "options": {
+        "relevancia": "Mais relevantes",
+        "menor-preco": "Menor preço",
+        "maior-preco": "Maior preço",
+        "mais-recentes": "Mais recentes"
+      }
+    },
+    "checkbox": {
+      "label": "Somente com frete grátis",
+      "error": "Selecione ao menos uma opção."
+    },
+    "radio": {
+      "label": "Condição",
+      "error": "Escolha uma condição."
+    },
+    "dialog": {
+      "trigger": "Abrir diálogo",
+      "title": "Filtros",
+      "description": "O foco fica preso no diálogo e volta ao gatilho ao fechar.",
+      "confirm": "Aplicar filtros",
+      "triggerFull": "Abrir em tela cheia"
+    },
+    "popover": {
+      "trigger": "Enviar para 89010-000",
+      "title": "Informe seu CEP",
+      "description": "Usamos o CEP para calcular frete e prazo."
+    },
+    "toast": {
+      "trigger": "Disparar notificação",
+      "triggerError": "Disparar erro",
+      "title": "Produto adicionado ao carrinho",
+      "description": "Fender Player Stratocaster HSS",
+      "action": "Ver carrinho",
+      "errorTitle": "Não foi possível adicionar",
+      "errorDescription": "Estoque insuficiente para a quantidade pedida."
+    },
+    "empty": {
+      "title": "Nenhum resultado para “stratocaster”",
+      "description": "Nenhum produto combina com os filtros selecionados.",
+      "action": "Limpar filtros"
+    },
+    "error": {
+      "title": "Não foi possível carregar os resultados",
+      "description": "A busca falhou no servidor. Tente novamente."
+    },
+    "price": {
+      "cheapest": "Mais barato",
+      "expensive": "Mais caro",
+      "discounted": "Com desconto",
+      "sizes": "Tamanhos"
+    },
+    "product": {
+      "name": "Fender Player Stratocaster HSS"
+    },
+    "tokens": {
+      "colors": "Cores",
+      "type": "Tipografia",
+      "sample": "Timbre · instrumentos e áudio"
+    },
+    "quantity": {
+      "plenty": "Estoque disponível",
+      "lastUnit": "Última unidade — incremento bloqueado",
+      "soldOut": "Sem estoque"
+    },
+    "spec": {
+      "full": "Completo, sem ano, sem nível"
+    },
+    "pagination": {
+      "middlePage": "Página no meio, com reticências",
+      "fewPages": "Poucas páginas, sem reticências"
+    }
+  }
+}

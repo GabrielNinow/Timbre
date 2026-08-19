@@ -176,3 +176,104 @@ Every list surface implements four distinct renders, each with its own testid:
 
 Empty and error copy explains what happened and what to do next. Errors do not
 apologize and are never vague.
+
+---
+
+## Clarifications resolved while building milestone 2
+
+Recorded here so the answers survive the session. Everything below is
+implemented in `app/src/style.css` and the primitives that read it.
+
+### Mono weight is 500, not 450
+
+The type scale asks for `450` on the mono row. IBM Plex Mono ships no variable
+axis — `@fontsource/ibm-plex-mono` has static 100…700 and nothing between — so
+the nearest available weight is used. Archivo is variable and does carry the
+width axis the display styles need (`font-stretch: 112%`, exposed as the
+`font-wide` utility), so that half of the type system is exact.
+
+### Two type sizes the scale table did not name
+
+The price treatment prose specifies 26px for the integer part and 15px for the
+cents. They are tokens like everything else: `--text-price` and
+`--text-price-cents`. `R$` uses `body-sm`, the strikethrough list price uses
+`body-sm`, and the discount percentage uses `body-sm` at weight 600 — all three
+already in the table.
+
+### The palette is closed
+
+`@theme` opens with `--color-*: initial`, and the same for `--text-*`,
+`--radius-*`, `--shadow-*`. Tailwind's default palette, type scale, radii and
+shadows are deleted, so `bg-red-500`, `text-sm` and `shadow-md` generate no CSS
+at all. "Zero raw hex outside `style.css`" is therefore enforced by the build
+rather than by review: an off-palette colour is not merely discouraged, it does
+not exist. The three exceptions kept are `transparent`, `currentColor`, and the
+single `shadow-lift`.
+
+### Badge copy is stored in natural case and uppercased in CSS
+
+`pt-BR.json` holds `Frete grátis`, not `FRETE GRÁTIS`. Screen readers spell out
+some all-caps strings; `text-transform: uppercase` gets the same visual result
+without that risk. The `data-badge` attribute carries a stable English
+kebab-case value — `free-shipping`, `discount`, `last-unit`, `sold-out`,
+`sponsored` — matching the rest of the selector vocabulary, so tests assert on
+the attribute and the pt-BR copy stays free to change.
+
+### Prices and ratings are announced once, not digit by digit
+
+The three visual pieces of a price are `aria-hidden`, with one `sr-only` string
+carrying the whole thing (`De R$ 1.589,00 por R$ 1.299,90, 18% de desconto`).
+The same pattern covers the spec strip and the star rating. Ratings render with
+a decimal comma (`4,8`) because the locale is pt-BR; the ASCII sketch above
+showing `4.6` is a sketch, not a format.
+
+### Rendering hover and focus states on demand
+
+`hover:` and `focus-visible:` are redefined as custom variants that also answer
+to `data-force-state~="hover"` and `data-force-state~="focus"`. That is how the
+kitchen sink shows a hover skin next to a resting one, and how a screenshot can
+capture a state that cannot otherwise be produced. Tailwind's
+`@media (hover: hover)` guard is preserved, so hover styles still do not stick
+on touch.
+
+### Form primitive selector scheme
+
+Fixed, because the checkout spec depends on it:
+
+| Element | `data-testid` |
+|---|---|
+| control | `field-<name>`, overridable per instance (`search-input`, `sort-select`) |
+| wrapper | `field-wrapper-<name>`, plus `data-state="ready\|error\|disabled"` |
+| error | `field-error-<name>`, plus `data-error-code` |
+| hint | `field-hint-<name>` |
+
+Ids for `label[for]` and `aria-describedby` come from Vue's `useId()`, never
+from a counter or a random value.
+
+### One naming inconsistency in CLAUDE.md, left as written
+
+CLAUDE.md says composables are named `useThing.ts`, and its rule 2 names the
+clock's path as `app/src/composables/clock.ts`. The explicit path wins:
+`clock.ts` exports `useClock()`, while `useToast.ts` follows the general rule.
+
+### Three colour choices the accessibility criterion overrides
+
+The milestone requires axe to pass at `wcag2a` + `wcag2aa`. Three places where
+this file names a colour literally do not clear 4.5:1, so the token changed and
+the intent was kept:
+
+| Element | Specified | Measured | Now |
+|---|---|---|---|
+| struck list price | `faint` on `surface` | 2.97:1 | `muted` on `surface`, 5.0:1 |
+| `ESGOTADO` badge | `muted` on `sunken` | 4.05:1 | `ink` on `sunken` — the grey fill still reads as "off" |
+| `PATROCINADO` badge | `faint`, outline only | 2.97:1 | `muted` text, `line-heavy` outline — the outline carries the quietness |
+
+The rule that follows from this: **`--color-faint` never carries text a reader
+has to read.** It survives as the colour of non-informative marks — the middot
+separators in the spec strip — where axe does not measure and no meaning is
+lost. Anything informative uses `muted` or darker.
+
+Related, for milestone 3: the "out-of-stock cards render at 60% opacity"
+treatment will drag every colour on that card below its measured ratio. Dim the
+image and the title rather than the whole card, or the catalog page cannot pass
+the same bar this one just did.
