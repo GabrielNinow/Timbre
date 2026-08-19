@@ -1,0 +1,45 @@
+meta {
+  name: Pedido com carrinho vazio
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/api/orders
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "shipping": {
+      "recipient": "Ana Souza",
+      "cep": "89010-000",
+      "street": "Rua XV de Novembro",
+      "number": "1400",
+      "complement": "",
+      "district": "Centro",
+      "city": "Blumenau",
+      "state": "SC"
+    },
+    "payment": {
+      "method": "cartao",
+      "card": {
+        "number": "4111 1111 1111 1111",
+        "holder": "ANA SOUZA",
+        "expiry": "12/30",
+        "cvv": "123"
+      }
+    },
+    "selectedShippingId": "padrao"
+  }
+}
+
+assert {
+  res.status: eq 409
+  res.body.error.code: eq CART_EMPTY
+}

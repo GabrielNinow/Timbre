@@ -1,0 +1,29 @@
+meta {
+  name: Armar falha
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/test/failure
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "route": "GET /api/products",
+    "times": 1,
+    "status": 500
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+docs {
+  Arma as proximas N chamadas de uma rota para falhar. E assim que se testa retentativa contra uma falha real de servidor, em vez de stub de rede.
+  
+  Aceita tambem um `code` especifico, por exemplo INTERNAL_ERROR.
+}

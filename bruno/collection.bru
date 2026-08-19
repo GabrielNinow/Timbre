@@ -1,0 +1,16 @@
+docs {
+  # Timbre API
+
+  Suba a API com `npm run api:dev` na raiz do repositório (porta 3333, modo de
+  teste ligado) e selecione o ambiente **Local**.
+
+  As pastas estão numeradas e podem ser executadas de cima para baixo — a
+  primeira reseta a loja e captura os tokens, e a última demonstra a injeção de
+  falha. Um `bru run --env Local` completo deve passar em todas as asserções.
+
+  Variáveis capturadas automaticamente: `token` (Ana), `tokenBruno`, `cartId`,
+  `lineId` e `orderId`.
+
+  A verificação de verdade é a suíte Vitest em `api/test`; esta coleção existe
+  para explorar a API à mão.
+}

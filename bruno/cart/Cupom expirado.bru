@@ -1,0 +1,30 @@
+meta {
+  name: Cupom expirado
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{baseUrl}}/api/cart/coupon
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "code": "VERAO2024"
+  }
+}
+
+assert {
+  res.status: eq 422
+  res.body.error.code: eq COUPON_EXPIRED
+}
+
+docs {
+  A expiracao e comparada com o relogio injetado, nao com o relogio da maquina.
+}

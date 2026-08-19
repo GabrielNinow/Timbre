@@ -1,0 +1,29 @@
+meta {
+  name: Variante esgotada
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/api/cart/items
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "productId": "p-0103",
+    "variantOptionId": "v-0103-black",
+    "quantity": 1
+  }
+}
+
+assert {
+  res.status: eq 409
+  res.body.error.code: eq INSUFFICIENT_STOCK
+  res.body.error.available: eq 0
+}

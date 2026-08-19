@@ -1,0 +1,26 @@
+meta {
+  name: Aplicar segundo cupom
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{baseUrl}}/api/cart/coupon
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "code": "TIMBRE10"
+  }
+}
+
+assert {
+  res.status: eq 409
+  res.body.error.code: eq COUPON_ALREADY_APPLIED
+}

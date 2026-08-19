@@ -1,0 +1,30 @@
+meta {
+  name: Aplicar cupom
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/api/cart/coupon
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "code": "PRIMEIRACOMPRA"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.coupon.discount: eq 5000
+}
+
+docs {
+  Matriz completa: PRIMEIRACOMPRA (R$ 50), TIMBRE10 (10% ate R$ 200), FRETEGRATIS, PALCO500 (minimo R$ 500), VERAO2024 (expirado), SOMENTENOVOS (so produtos novos).
+}

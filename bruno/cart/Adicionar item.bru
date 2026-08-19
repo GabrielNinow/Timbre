@@ -1,0 +1,34 @@
+meta {
+  name: Adicionar item
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/cart/items
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "productId": "p-0104",
+    "quantity": 2
+  }
+}
+
+assert {
+  res.status: eq 201
+}
+
+script:post-response {
+  bru.setEnvVar("lineId", res.body.lines[0].id);
+}
+
+docs {
+  Adicionar de novo o mesmo produto incrementa a linha em vez de duplicar.
+}

@@ -1,0 +1,26 @@
+meta {
+  name: Escolher entrega expressa
+  type: http
+  seq: 13
+}
+
+put {
+  url: {{baseUrl}}/api/cart/shipping
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "shippingId": "expressa"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.selectedShippingId: eq expressa
+}

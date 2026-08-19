@@ -1,0 +1,23 @@
+meta {
+  name: Ver carrinho
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/cart
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+assert {
+  res.status: eq 200
+}
+
+docs {
+  Autenticado, o carrinho e o da conta. Toda resposta traz `totals` ja calculado — o cliente nunca recalcula dinheiro.
+}

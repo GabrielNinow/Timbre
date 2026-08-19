@@ -1,0 +1,20 @@
+meta {
+  name: Pagina do vendedor
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/sellers/vintage-room
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.products.total: eq 2
+}
+
+docs {
+  Vintage Room tem so dois produtos de proposito: e a pagina de vendedor que nao pagina.
+}

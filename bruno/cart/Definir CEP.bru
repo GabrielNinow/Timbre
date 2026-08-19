@@ -1,0 +1,29 @@
+meta {
+  name: Definir CEP
+  type: http
+  seq: 12
+}
+
+put {
+  url: {{baseUrl}}/api/cart/cep
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "cep": "01310-100"
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+docs {
+  O CEP do carrinho define o prazo e quais modalidades existem.
+}

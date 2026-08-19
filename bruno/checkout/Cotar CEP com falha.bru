@@ -1,0 +1,26 @@
+meta {
+  name: Cotar CEP com falha
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/shipping/quote
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "cep": "99999-999"
+  }
+}
+
+assert {
+  res.status: eq 500
+  res.body.error.code: eq INTERNAL_ERROR
+}
+
+docs {
+  Erro de formulario, com retentativa — diferente do erro de campo acima.
+}

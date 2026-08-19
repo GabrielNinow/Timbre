@@ -1,0 +1,51 @@
+meta {
+  name: Pedido com cartao recusado
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/orders
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "shipping": {
+      "recipient": "Ana Souza",
+      "cep": "89010-000",
+      "street": "Rua XV de Novembro",
+      "number": "1400",
+      "complement": "",
+      "district": "Centro",
+      "city": "Blumenau",
+      "state": "SC"
+    },
+    "payment": {
+      "method": "cartao",
+      "card": {
+        "number": "4000 0000 0000 0002",
+        "holder": "ANA SOUZA",
+        "expiry": "12/30",
+        "cvv": "123"
+      }
+    },
+    "selectedShippingId": "padrao"
+  }
+}
+
+assert {
+  res.status: eq 402
+  res.body.error.code: eq CARD_DECLINED
+}
+
+docs {
+  O carrinho NAO e esvaziado. Trocar o cartao e tentar de novo tem que funcionar — e onde implementacoes ingenuas quebram.
+  
+  Outros numeros: 4000 0000 0000 9995 (INSUFFICIENT_FUNDS), 4000 0000 0000 0069 (CARD_EXPIRED), 4000 0000 0000 0119 (PAYMENT_PROCESSOR_ERROR).
+}

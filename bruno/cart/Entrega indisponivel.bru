@@ -1,0 +1,26 @@
+meta {
+  name: Entrega indisponivel
+  type: http
+  seq: 15
+}
+
+put {
+  url: {{baseUrl}}/api/cart/shipping
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "shippingId": "expressa"
+  }
+}
+
+assert {
+  res.status: eq 422
+  res.body.error.code: eq SHIPPING_OPTION_UNAVAILABLE
+}

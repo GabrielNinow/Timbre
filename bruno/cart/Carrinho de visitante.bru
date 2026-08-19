@@ -1,0 +1,27 @@
+meta {
+  name: Carrinho de visitante
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/cart
+  body: none
+  auth: none
+}
+
+headers {
+  x-cart-id: {{cartId}}
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  bru.setEnvVar("cartId", res.body.id);
+}
+
+docs {
+  Sem sessao, o carrinho e identificado pelo cabecalho `x-cart-id`. Um id desconhecido gera um carrinho novo em vez de erro.
+}

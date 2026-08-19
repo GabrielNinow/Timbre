@@ -1,0 +1,29 @@
+meta {
+  name: Sessao do Bruno
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/test/session
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "bruno.lima@timbre.test"
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  bru.setEnvVar("tokenBruno", res.body.token);
+}
+
+docs {
+  Conta com tres pedidos anteriores. Usada para o 403 em `GET /api/orders/TMB-100238`.
+}

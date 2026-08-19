@@ -1,0 +1,25 @@
+meta {
+  name: Voltar o CEP padrao
+  type: http
+  seq: 16
+}
+
+put {
+  url: {{baseUrl}}/api/cart/cep
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "cep": "89010-000"
+  }
+}
+
+assert {
+  res.status: eq 200
+}

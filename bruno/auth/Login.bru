@@ -1,0 +1,34 @@
+meta {
+  name: Login
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/auth/login
+  body: json
+  auth: none
+}
+
+headers {
+  x-cart-id: {{cartId}}
+}
+
+body:json {
+  {
+    "email": "ana.souza@timbre.test",
+    "password": "Teste@1234"
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  bru.setEnvVar("token", res.body.token);
+}
+
+docs {
+  Se houver um carrinho de visitante em `x-cart-id`, ele e mesclado ao carrinho da conta neste momento.
+}

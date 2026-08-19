@@ -1,0 +1,24 @@
+meta {
+  name: Resetar a loja
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/test/reset
+  body: json
+  auth: none
+}
+
+body:json {
+  {}
+}
+
+assert {
+  res.status: eq 200
+  res.body.ok: eq true
+}
+
+docs {
+  Restaura tudo ao estado de fixture. Deve responder em menos de 50ms — e o que as duas suites E2E chamam no `beforeEach`.
+}

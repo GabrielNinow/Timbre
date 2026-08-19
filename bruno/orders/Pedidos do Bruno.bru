@@ -1,0 +1,24 @@
+meta {
+  name: Pedidos do Bruno
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/orders
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenBruno}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.total: eq 3
+}
+
+docs {
+  Tres pedidos, um em cada status documentado.
+}

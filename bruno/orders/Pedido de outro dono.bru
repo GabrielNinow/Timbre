@@ -1,0 +1,24 @@
+meta {
+  name: Pedido de outro dono
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/orders/TMB-100238
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenBruno}}
+}
+
+assert {
+  res.status: eq 403
+  res.body.error.code: eq FORBIDDEN
+}
+
+docs {
+  TMB-100238 existe e pertence ao quinto usuario oculto. E um 403 de verdade, nao sintetico.
+}

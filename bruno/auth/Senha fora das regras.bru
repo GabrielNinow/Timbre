@@ -1,0 +1,28 @@
+meta {
+  name: Senha fora das regras
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/api/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Carla Dias",
+    "email": "carla2@timbre.test",
+    "password": "fraca"
+  }
+}
+
+assert {
+  res.status: eq 422
+  res.body.error.code: eq VALIDATION_ERROR
+}
+
+docs {
+  As regras de senha vivem no schema Zod compartilhado, entao o cliente e o servidor recusam igual.
+}

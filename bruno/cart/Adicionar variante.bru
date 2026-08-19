@@ -1,0 +1,31 @@
+meta {
+  name: Adicionar variante
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/cart/items
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "productId": "p-0103",
+    "variantOptionId": "v-0103-sonic-blue",
+    "quantity": 1
+  }
+}
+
+assert {
+  res.status: eq 201
+}
+
+docs {
+  Sonic Blue tem `priceDelta` de 15000, entao o preco unitario sai R$ 3.449,00.
+}

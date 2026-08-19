@@ -1,0 +1,19 @@
+meta {
+  name: Remover cupom
+  type: http
+  seq: 10
+}
+
+delete {
+  url: {{baseUrl}}/api/cart/coupon
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+assert {
+  res.status: eq 200
+}

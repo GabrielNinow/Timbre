@@ -1,0 +1,26 @@
+meta {
+  name: Cotar CEP inexistente
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/shipping/quote
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "cep": "00000-000"
+  }
+}
+
+assert {
+  res.status: eq 422
+  res.body.error.code: eq CEP_NOT_FOUND
+}
+
+docs {
+  Erro de campo: a resposta traz `fields.cep`.
+}

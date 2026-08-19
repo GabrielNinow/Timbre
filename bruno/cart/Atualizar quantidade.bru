@@ -1,0 +1,29 @@
+meta {
+  name: Atualizar quantidade
+  type: http
+  seq: 6
+}
+
+patch {
+  url: {{baseUrl}}/api/cart/items/{{lineId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "quantity": 1
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+docs {
+  Quantidade 0 remove a linha.
+}

@@ -1,0 +1,25 @@
+meta {
+  name: Cotar frete
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/shipping/quote
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "cep": "89010-000"
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+docs {
+  Estimativa avulsa da pagina de produto. Mesmo CEP, mesma resposta, sempre.
+}

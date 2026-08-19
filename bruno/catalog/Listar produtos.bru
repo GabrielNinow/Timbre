@@ -1,0 +1,17 @@
+meta {
+  name: Listar produtos
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/products
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.total: eq 60
+  res.body.perPage: eq 24
+}

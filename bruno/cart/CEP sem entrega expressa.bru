@@ -1,0 +1,29 @@
+meta {
+  name: CEP sem entrega expressa
+  type: http
+  seq: 14
+}
+
+put {
+  url: {{baseUrl}}/api/cart/cep
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "cep": "69900-000"
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+docs {
+  Rio Branco e o unico CEP em que a lista de modalidades muda de forma, nao so de preco.
+}

@@ -1,0 +1,20 @@
+meta {
+  name: Pedido inexistente
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/orders/TMB-999999
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+assert {
+  res.status: eq 404
+  res.body.error.code: eq NOT_FOUND
+}

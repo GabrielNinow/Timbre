@@ -1,0 +1,19 @@
+meta {
+  name: Rota recuperada
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/products
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}
+
+docs {
+  A falha foi consumida: a chamada seguinte volta ao normal, sem reset.
+}

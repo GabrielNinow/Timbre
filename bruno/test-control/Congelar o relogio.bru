@@ -1,0 +1,25 @@
+meta {
+  name: Congelar o relogio
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/test/clock
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "now": "2026-08-10T12:00:00Z"
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+docs {
+  Controla o vencimento do boleto, a expiracao de cupons e os textos "anunciado ha N dias".
+}

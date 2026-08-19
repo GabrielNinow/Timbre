@@ -1,0 +1,20 @@
+meta {
+  name: Produto com variantes
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/products/p-0103
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.variants[0].options[1].stock: eq 0
+}
+
+docs {
+  `p-0103` tem uma opcao esgotada (Black) e uma com acrescimo de preco (Sonic Blue, +R$ 150,00).
+}
