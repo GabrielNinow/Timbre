@@ -1,0 +1,21 @@
+{
+  "name": "timbre",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "api"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "api:dev": "npm run dev --workspace @timbre/api",
+    "api:start": "npm run start --workspace @timbre/api",
+    "test": "npm run test --workspace @timbre/api",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
