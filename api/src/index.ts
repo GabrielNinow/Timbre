@@ -8,9 +8,7 @@ const { app } = await buildApp({ logger: true })
 try {
   await app.listen({ port, host })
   app.log.info(
-    `Timbre API em http://${host}:${port} — modo de teste ${
-      process.env.TIMBRE_TEST_MODE === '1' ? 'ligado' : 'desligado'
-    }`,
+    `Timbre API on http://${host}:${port} — test mode ${process.env.TIMBRE_TEST_MODE === '1' ? 'on' : 'off'}`,
   )
 } catch (error) {
   app.log.error(error)
