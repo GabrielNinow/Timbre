@@ -361,7 +361,7 @@
     "added": "Added to cart",
     "addedAction": "View cart",
     "addFailed": "Could not add to cart",
-    "insufficientStock": "Only {available} units available.",
+    "insufficientStock": "This product has sold out. | Only {available} unit available. | Only {available} units available.",
     "galleryLabel": "Product images",
     "thumbnail": "Show image {index} of {total}",
     "specsHeading": "Specifications",
@@ -407,5 +407,62 @@
     "sales": "Sales",
     "onTime": "On-time deliveries",
     "errorTitle": "Could not load this seller"
+  },
+  "cart": {
+    "title": "Cart",
+    "loading": "Loading cart",
+    "errorTitle": "Could not load the cart",
+    "errorDescription": "The request failed. Try again.",
+    "emptyTitle": "Your cart is empty",
+    "emptyDescription": "Browse the catalog and add whatever you like.",
+    "emptyAction": "Go to the home page",
+    "soldBy": "Sold by {seller}",
+    "unitPrice": "{price} each",
+    "lineTotal": "Item total",
+    "remove": "Remove",
+    "removeLabel": "Remove {name} from the cart",
+    "quantityLabel": "Quantity of {name}",
+    "lineError": "This item has sold out. | Only {available} unit of this item is left. | Only {available} units of this item are left.",
+    "lineFailed": "Could not update this item.",
+    "summaryHeading": "Order summary",
+    "subtotal": "Subtotal",
+    "discount": "Discount ({code})",
+    "shipping": "Shipping",
+    "free": "Free",
+    "total": "Total",
+    "shippingMethod": "Shipping method",
+    "eta": "{days} business day | {days} business day | {days} business days",
+    "checkout": "Check out",
+    "itemCount": "no items | {count} item | {count} items"
+  },
+  "coupon": {
+    "label": "Coupon code",
+    "apply": "Apply",
+    "remove": "Remove coupon",
+    "applied": "Coupon {code} applied",
+    "dropped": "Coupon {code} was removed because the cart no longer meets its rules.",
+    "errors": {
+      "VALIDATION_ERROR": "Enter a coupon.",
+      "COUPON_INVALID": "This coupon does not exist.",
+      "COUPON_EXPIRED": "This coupon has expired.",
+      "COUPON_MIN_NOT_MET": "This coupon requires a minimum purchase.",
+      "COUPON_NOT_APPLICABLE": "This coupon does not apply to the items in your cart.",
+      "COUPON_ALREADY_APPLIED": "A coupon is already applied. Remove it to use another.",
+      "fallback": "Could not apply the coupon. Try again."
+    }
+  },
+  "cepSelector": {
+    "trigger": "Ship to {cep}",
+    "title": "Enter your CEP",
+    "description": "We use the CEP (Brazilian postcode) to quote shipping and delivery time.",
+    "label": "CEP",
+    "submit": "Save",
+    "invalid": "Enter an 8-digit CEP.",
+    "notFound": "CEP not found. Check the digits.",
+    "failed": "Could not save the CEP. Try again."
+  },
+  "headerCart": {
+    "label": "Cart",
+    "count": "Cart with {count} items | Cart with {count} item | Cart with {count} items"
   }
 }

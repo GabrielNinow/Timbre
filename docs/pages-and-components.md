@@ -266,3 +266,25 @@ failures where retrying makes sense.
 
 `/` is the home page. The kitchen sink stays at `/kitchen-sink` only, still
 dev-only.
+
+---
+
+## Clarifications resolved while building milestone 5
+
+- **Line errors.** A quantity change the server refuses renders `cart-line-error`
+  under its line, carrying `data-error-code` (`INSUFFICIENT_STOCK` with the
+  available count in the copy). The stepper caps at the line's `availableStock`,
+  so this only happens when stock changes under an open page.
+- **A coupon the API drops.** When a cart change makes the applied coupon stop
+  qualifying, the API removes it. The summary then shows `coupon-dropped-notice`
+  with `data-code`, so the change is visible rather than silent. Removing a coupon
+  yourself never shows it.
+- **Seller groups** render as `cart-seller-group` with `data-seller-id`, ordered by
+  seller name with ties on id.
+- **Header.** `header-cart` links to the cart, and `cart-count` carries `data-count`
+  (units, not lines) with `aria-live="polite"`. The sub-strip holds `cep-selector`
+  and the language switcher on the right.
+- **Currency.** The cart refetches whenever the Page language's Currency changes.
+  While the cached cart is in the other currency, the page renders its loading
+  state instead of stale amounts.
+

@@ -3,6 +3,8 @@ import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import CategoryMenu from '@/components/layout/CategoryMenu.vue'
+import CepSelector from '@/components/layout/CepSelector.vue'
+import HeaderCart from '@/components/layout/HeaderCart.vue'
 import LanguageSwitcher from '@/components/layout/LanguageSwitcher.vue'
 import { usePageLanguage } from '@/composables/usePageLanguage'
 import { serializeListing, emptyListing } from '@/lib/listing'
@@ -65,11 +67,15 @@ function submit(): void {
           {{ t('header.searchSubmit') }}
         </button>
       </form>
+      <HeaderCart class="ml-auto md:ml-0" />
     </div>
     <nav :aria-label="t('header.primaryNav')" class="bg-band-sub">
       <div class="mx-auto flex max-w-[1400px] items-center gap-4 px-4 py-1 md:px-6">
         <CategoryMenu />
-        <LanguageSwitcher class="ml-auto" />
+        <div class="ml-auto flex items-center gap-2">
+          <CepSelector />
+          <LanguageSwitcher />
+        </div>
       </div>
     </nav>
   </header>

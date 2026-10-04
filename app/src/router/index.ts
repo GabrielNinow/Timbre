@@ -27,6 +27,7 @@ const routes: RouteRecordRaw[] = [
     name: 'seller',
     component: () => import('@/pages/SellerPage.vue'),
   },
+  { path: `${LANG}/cart`, name: 'cart', component: () => import('@/pages/CartPage.vue') },
   ...(kitchenSinkEnabled
     ? ([
         {
