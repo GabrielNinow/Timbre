@@ -13,10 +13,10 @@ import {
   ufSchema,
 } from './primitives.js'
 
+/** Category names are Platform copy, rendered by the client from `slug`. */
 export const categorySchema = z.object({
   id: idString,
   slug: slugString,
-  name: z.string().min(1),
   productCount: z.number().int().nonnegative(),
 })
 export type Category = z.infer<typeof categorySchema>
@@ -134,14 +134,13 @@ export type ResolvedProductListQuery = z.infer<typeof productListQuerySchema>
 
 export const facetValueSchema = z.object({
   value: z.string().min(1),
-  label: z.string().min(1),
   count: z.number().int().nonnegative(),
 })
 export type FacetValue = z.infer<typeof facetValueSchema>
 
+/** Bucket labels are Platform copy, formatted by the client from `min` and `max`. */
 export const priceBucketSchema = z.object({
   value: z.string().min(1),
-  label: z.string().min(1),
   min: centavos,
   max: centavos.nullable(),
   count: z.number().int().nonnegative(),
@@ -169,14 +168,13 @@ export type SellerPageResponse = z.infer<typeof sellerPageResponseSchema>
 
 /** The filter rail's price presets, in centavos. */
 export const PRICE_BUCKETS = [
-  { value: '0-20000', label: 'Até R$ 200', min: 0, max: 20000 },
-  { value: '20000-50000', label: 'R$ 200 a R$ 500', min: 20000, max: 50000 },
-  { value: '50000-150000', label: 'R$ 500 a R$ 1.500', min: 50000, max: 150000 },
-  { value: '150000-400000', label: 'R$ 1.500 a R$ 4.000', min: 150000, max: 400000 },
-  { value: '400000+', label: 'Acima de R$ 4.000', min: 400000, max: null },
+  { value: '0-20000', min: 0, max: 20000 },
+  { value: '20000-50000', min: 20000, max: 50000 },
+  { value: '50000-150000', min: 50000, max: 150000 },
+  { value: '150000-400000', min: 150000, max: 400000 },
+  { value: '400000+', min: 400000, max: null },
 ] as const satisfies ReadonlyArray<{
   value: string
-  label: string
   min: number
   max: number | null
 }>

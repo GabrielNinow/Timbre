@@ -7,7 +7,6 @@ export type ShippingMethodId = z.infer<typeof shippingMethodIdSchema>
 
 export const shippingOptionSchema = z.object({
   id: shippingMethodIdSchema,
-  label: z.string().min(1),
   price: centavos,
   etaDays: z.number().int().positive(),
 })

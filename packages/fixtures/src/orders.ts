@@ -18,7 +18,6 @@ export interface OrderFixture {
   readonly shipping: {
     readonly address: Address
     readonly methodId: ShippingMethodId
-    readonly methodLabel: string
     readonly price: number
     readonly etaDays: number
   }
@@ -69,7 +68,6 @@ export const orders: readonly OrderFixture[] = Object.freeze([
     shipping: {
       address: blumenau,
       methodId: 'standard',
-      methodLabel: 'Entrega padrão',
       price: 2490,
       etaDays: 2,
     },
@@ -93,7 +91,6 @@ export const orders: readonly OrderFixture[] = Object.freeze([
     shipping: {
       address: curitiba,
       methodId: 'standard',
-      methodLabel: 'Entrega padrão',
       price: 2490,
       etaDays: 4,
     },
@@ -117,7 +114,6 @@ export const orders: readonly OrderFixture[] = Object.freeze([
     shipping: {
       address: curitiba,
       methodId: 'express',
-      methodLabel: 'Entrega expressa',
       price: 4990,
       etaDays: 2,
     },
@@ -144,7 +140,6 @@ export const orders: readonly OrderFixture[] = Object.freeze([
     shipping: {
       address: blumenau,
       methodId: 'standard',
-      methodLabel: 'Entrega padrão',
       price: 0,
       etaDays: 2,
     },
@@ -168,7 +163,6 @@ export const orders: readonly OrderFixture[] = Object.freeze([
     shipping: {
       address: blumenau,
       methodId: 'standard',
-      methodLabel: 'Entrega padrão',
       price: 2490,
       etaDays: 2,
     },

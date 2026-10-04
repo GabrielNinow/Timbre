@@ -127,7 +127,6 @@ export function registerCheckoutRoutes(app: FastifyInstance, store: Store): void
       shipping: {
         address: body.shipping,
         methodId: option.id,
-        methodLabel: option.label,
         price: option.price,
         etaDays: option.etaDays,
       },

@@ -37,11 +37,6 @@ export function stockOf(product: StoreProduct): number {
 }
 
 const CONDITION_ORDER: Condition[] = ['new', 'like-new', 'used']
-const CONDITION_LABEL: Record<Condition, string> = {
-  new: 'Novo',
-  'like-new': 'Seminovo',
-  used: 'Usado',
-}
 
 function searchHaystack(store: Store, product: StoreProduct): string {
   const seller = store.sellerById(product.sellerId)
@@ -146,16 +141,14 @@ export function computeFacets(
 
   return {
     brand: [...brandCounts.entries()]
-      .map(([value, count]) => ({ value, label: value, count }))
+      .map(([value, count]) => ({ value, count }))
       .sort((a, b) => b.count - a.count || a.value.localeCompare(b.value, 'pt-BR')),
     condition: CONDITION_ORDER.map((value) => ({
       value,
-      label: CONDITION_LABEL[value],
       count: conditionCounts.get(value) ?? 0,
     })),
     price: PRICE_BUCKETS.map((bucket) => ({
       value: bucket.value,
-      label: bucket.label,
       min: bucket.min,
       max: bucket.max,
       count: pricePool.filter(

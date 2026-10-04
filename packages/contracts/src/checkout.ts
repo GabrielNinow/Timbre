@@ -153,7 +153,6 @@ export type OrderPayment = z.infer<typeof orderPaymentSchema>
 export const orderShippingSchema = z.object({
   address: addressSchema,
   methodId: shippingMethodIdSchema,
-  methodLabel: z.string().min(1),
   price: centavos,
   etaDays: z.number().int().positive(),
 })

@@ -172,7 +172,6 @@ export class Store {
       shipping: {
         address: structuredClone(fixture.shipping.address) as Address,
         methodId: fixture.shipping.methodId,
-        methodLabel: fixture.shipping.methodLabel,
         price: fixture.shipping.price,
         etaDays: fixture.shipping.etaDays,
       },

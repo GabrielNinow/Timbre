@@ -23,7 +23,6 @@ export function registerCatalogRoutes(app: FastifyInstance, store: Store): void 
     const items = store.categories.map((category) => ({
       id: category.id,
       slug: category.slug,
-      name: category.name,
       productCount: store.products.filter((product) => product.categoryId === category.id).length,
     }))
     return send(reply, categoryListSchema, { items })
