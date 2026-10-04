@@ -1,9 +1,12 @@
 import {
-  PRICE_BUCKETS,
+  BRL_PER_USD,
+  priceBucketsFor,
   type Condition,
+  type Currency,
   type Facets,
   type Sort,
 } from '@timbre/contracts'
+import { convert } from './currency.js'
 import type { Store, StoreProduct } from './store.js'
 
 export interface CatalogFilters {
@@ -17,6 +20,8 @@ export interface CatalogFilters {
   freeShipping?: boolean | undefined
   sponsored?: boolean | undefined
   onSale?: boolean | undefined
+  /** `minPrice`, `maxPrice` and the price buckets are in this currency. */
+  currency: Currency
 }
 
 export function normalizeText(value: string): string {
@@ -67,8 +72,9 @@ export function filterProducts(
       return false
     }
     if (skip !== 'price') {
-      if (filters.minPrice !== undefined && product.price < filters.minPrice) return false
-      if (filters.maxPrice !== undefined && product.price > filters.maxPrice) return false
+      const price = convert(product.price, filters.currency)
+      if (filters.minPrice !== undefined && price < filters.minPrice) return false
+      if (filters.maxPrice !== undefined && price > filters.maxPrice) return false
     }
     if (filters.freeShipping && !product.freeShipping) return false
     if (filters.sponsored && !product.sponsored) return false
@@ -147,14 +153,14 @@ export function computeFacets(
       value,
       count: conditionCounts.get(value) ?? 0,
     })),
-    price: PRICE_BUCKETS.map((bucket) => ({
+    price: priceBucketsFor(filters.currency, BRL_PER_USD).map((bucket) => ({
       value: bucket.value,
       min: bucket.min,
       max: bucket.max,
-      count: pricePool.filter(
-        (product) =>
-          product.price >= bucket.min && (bucket.max === null || product.price <= bucket.max),
-      ).length,
+      count: pricePool.filter((product) => {
+        const price = convert(product.price, filters.currency)
+        return price >= bucket.min && (bucket.max === null || price <= bucket.max)
+      }).length,
     })),
   }
 }

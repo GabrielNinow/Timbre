@@ -106,7 +106,14 @@ describe('english on the wire', () => {
       await post(h.app, '/api/shipping/quote', { cep: '00000-000' }),
       await post(h.app, '/api/auth/login', { email: 'ana.souza@timbre.test', password: 'errada' }),
       await post(h.app, '/api/orders', orderPayload(), { token }),
+      await post(h.app, '/api/shipping/quote', { cep: '99999-999' }),
+      await post(h.app, '/api/orders?currency=USD', orderPayload({ method: 'pix' }), { token }),
+      await get(h.app, '/api/products?currency=EUR'),
     ]
+    await addItem(h.app, { productId: 'p-0104' }, { token })
+    errorsSeen.push(
+      await post(h.app, '/api/orders', orderPayload({ cardNumber: '4000 0000 0000 0119' }), { token }),
+    )
     for (const response of errorsSeen) {
       const { error } = response.json() as { error: { message: string; fields?: object } }
       const texts = [error.message, ...stringValues(error.fields ?? {})]

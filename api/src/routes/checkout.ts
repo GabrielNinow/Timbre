@@ -11,6 +11,7 @@ import {
 } from '@timbre/contracts'
 import type { FastifyInstance } from 'fastify'
 import { requireUser } from '../auth.js'
+import { requestCurrency } from '../currency.js'
 import { ApiError } from '../errors.js'
 import { availableStock, findVariantOption } from '../mappers.js'
 import { buildCart } from '../pricing.js'
@@ -22,7 +23,7 @@ const PAYMENT_MESSAGES: Record<string, string> = {
   CARD_DECLINED: 'Payment declined by the card issuer.',
   INSUFFICIENT_FUNDS: 'Insufficient card limit for this purchase.',
   CARD_EXPIRED: 'Card expired. Check the expiry date and try again.',
-  PAYMENT_PROCESSOR_ERROR: 'A operadora de pagamento falhou. Tente novamente.',
+  PAYMENT_PROCESSOR_ERROR: 'The payment processor failed. Try again.',
 }
 
 function addDays(isoInstant: string, days: number): string {
@@ -43,20 +44,31 @@ export function registerCheckoutRoutes(app: FastifyInstance, store: Store): void
   app.post('/api/shipping/quote', async (request, reply) => {
     const body = parseBody(shippingQuoteBodySchema, request.body)
     const info = lookupCep(store, body.cep)
+    const currency = requestCurrency(request)
     return send(reply, shippingQuoteResponseSchema, {
+      currency,
       cep: info.cep,
       city: info.city,
       state: info.state,
-      options: buildShippingOptions(info, { standardFree: false, allFree: false }),
+      options: buildShippingOptions(info, { standardFree: false, allFree: false }, currency),
     })
   })
 
   app.post('/api/orders', async (request, reply) => {
     const user = requireUser(store, request)
     const body = parseBody(createOrderBodySchema, request.body)
+    const currency = requestCurrency(request)
+    // Pix and boleto move reais only (ADR 0002).
+    if (currency !== 'BRL' && body.payment.method !== 'card') {
+      throw new ApiError(
+        'PAYMENT_METHOD_UNAVAILABLE',
+        `${body.payment.method} is not available for ${currency}. Pay by card.`,
+        { fields: { 'payment.method': 'Unavailable for this currency.' } },
+      )
+    }
     const cart = store.cartForUser(user.id)
     cart.selectedShippingId = body.selectedShippingId
-    const built = buildCart(store, cart)
+    const built = buildCart(store, cart, currency)
 
     if (built.lines.length === 0) {
       throw new ApiError('CART_EMPTY', 'Your cart is empty.')
@@ -120,6 +132,7 @@ export function registerCheckoutRoutes(app: FastifyInstance, store: Store): void
       id: number,
       number,
       status: body.payment.method === 'card' ? 'paid' : 'awaiting_payment',
+      currency,
       createdAt: store.now,
       userId: user.id,
       items,

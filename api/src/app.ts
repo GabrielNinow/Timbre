@@ -1,5 +1,6 @@
 import cors from '@fastify/cors'
 import Fastify, { type FastifyInstance } from 'fastify'
+import { requestCurrency } from './currency.js'
 import { ApiError, errors } from './errors.js'
 import { registerAuthRoutes } from './routes/auth.js'
 import { registerCartRoutes } from './routes/cart.js'
@@ -29,6 +30,11 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<TimbreApp
     origin: true,
     exposedHeaders: ['x-cart-id'],
     allowedHeaders: ['content-type', 'authorization', 'x-cart-id'],
+  })
+
+  // Validate `?currency=` before any route mutates state, so a bad value changes nothing.
+  app.addHook('preValidation', async (request) => {
+    if (request.url.startsWith('/api/')) requestCurrency(request)
   })
 
   app.addHook('onRequest', async (request) => {

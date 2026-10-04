@@ -10,7 +10,8 @@ import type { FastifyInstance } from 'fastify'
 import { optionalUser, resolveCart } from '../auth.js'
 import { ApiError, errors } from '../errors.js'
 import { availableStock, findVariantOption } from '../mappers.js'
-import { assertCouponApplies, buildCart } from '../pricing.js'
+import { requestCurrency } from '../currency.js'
+import { assertCouponApplies, buildCart, priceCart } from '../pricing.js'
 import { lookupCep } from '../shipping.js'
 import type { Store } from '../store.js'
 import { parseBody, send } from '../validate.js'
@@ -18,7 +19,7 @@ import { parseBody, send } from '../validate.js'
 export function registerCartRoutes(app: FastifyInstance, store: Store): void {
   app.get('/api/cart', async (request, reply) => {
     const cart = resolveCart(store, request, optionalUser(store, request))
-    return send(reply, cartSchema, buildCart(store, cart))
+    return send(reply, cartSchema, buildCart(store, cart, requestCurrency(request)))
   })
 
   app.post('/api/cart/items', async (request, reply) => {
@@ -63,7 +64,7 @@ export function registerCartRoutes(app: FastifyInstance, store: Store): void {
         quantity: body.quantity,
       })
     }
-    return send(reply, cartSchema, buildCart(store, cart), 201)
+    return send(reply, cartSchema, buildCart(store, cart, requestCurrency(request)), 201)
   })
 
   app.patch<{ Params: { lineId: string } }>('/api/cart/items/:lineId', async (request, reply) => {
@@ -74,7 +75,7 @@ export function registerCartRoutes(app: FastifyInstance, store: Store): void {
 
     if (body.quantity === 0) {
       cart.lines = cart.lines.filter((candidate) => candidate.id !== line.id)
-      return send(reply, cartSchema, buildCart(store, cart))
+      return send(reply, cartSchema, buildCart(store, cart, requestCurrency(request)))
     }
 
     const product = store.productById(line.productId)
@@ -86,7 +87,7 @@ export function registerCartRoutes(app: FastifyInstance, store: Store): void {
       })
     }
     line.quantity = body.quantity
-    return send(reply, cartSchema, buildCart(store, cart))
+    return send(reply, cartSchema, buildCart(store, cart, requestCurrency(request)))
   })
 
   app.delete<{ Params: { lineId: string } }>('/api/cart/items/:lineId', async (request, reply) => {
@@ -94,35 +95,27 @@ export function registerCartRoutes(app: FastifyInstance, store: Store): void {
     const line = cart.lines.find((candidate) => candidate.id === request.params.lineId)
     if (!line) throw errors.notFound('Item not found in the cart.')
     cart.lines = cart.lines.filter((candidate) => candidate.id !== line.id)
-    return send(reply, cartSchema, buildCart(store, cart))
+    return send(reply, cartSchema, buildCart(store, cart, requestCurrency(request)))
   })
 
   app.post('/api/cart/coupon', async (request, reply) => {
     const body = parseBody(couponBodySchema, request.body)
     const cart = resolveCart(store, request, optionalUser(store, request))
-    const current = buildCart(store, cart)
-    if (current.coupon) {
+    const priced = priceCart(store, cart, 'BRL')
+    if (priced.cart.coupon) {
       throw new ApiError('COUPON_ALREADY_APPLIED', 'A coupon is already applied to this cart.')
     }
-
     const coupon = store.couponByCode(body.code)
     if (!coupon) throw new ApiError('COUPON_INVALID', 'Invalid coupon.')
-
-    const resolvedLines = current.lines.map((line) => ({
-      line,
-      product: store.productById(line.product.id)!,
-      variantOptionId: line.variant?.optionId ?? null,
-    }))
-    assertCouponApplies(store, coupon, resolvedLines, current.totals.subtotal)
-
+    assertCouponApplies(store, coupon, priced.resolved, priced.brlSubtotal)
     cart.couponCode = coupon.code
-    return send(reply, cartSchema, buildCart(store, cart))
+    return send(reply, cartSchema, buildCart(store, cart, requestCurrency(request)))
   })
 
   app.delete('/api/cart/coupon', async (request, reply) => {
     const cart = resolveCart(store, request, optionalUser(store, request))
     cart.couponCode = null
-    return send(reply, cartSchema, buildCart(store, cart))
+    return send(reply, cartSchema, buildCart(store, cart, requestCurrency(request)))
   })
 
   app.put('/api/cart/cep', async (request, reply) => {
@@ -130,13 +123,13 @@ export function registerCartRoutes(app: FastifyInstance, store: Store): void {
     const cart = resolveCart(store, request, optionalUser(store, request))
     lookupCep(store, body.cep)
     cart.cep = body.cep
-    return send(reply, cartSchema, buildCart(store, cart))
+    return send(reply, cartSchema, buildCart(store, cart, requestCurrency(request)))
   })
 
   app.put('/api/cart/shipping', async (request, reply) => {
     const body = parseBody(setShippingMethodBodySchema, request.body)
     const cart = resolveCart(store, request, optionalUser(store, request))
-    const current = buildCart(store, cart)
+    const current = buildCart(store, cart, requestCurrency(request))
     const option = current.shippingOptions.find((candidate) => candidate.id === body.shippingId)
     if (!option) {
       throw new ApiError(
@@ -146,6 +139,6 @@ export function registerCartRoutes(app: FastifyInstance, store: Store): void {
       )
     }
     cart.selectedShippingId = option.id
-    return send(reply, cartSchema, buildCart(store, cart))
+    return send(reply, cartSchema, buildCart(store, cart, requestCurrency(request)))
   })
 }

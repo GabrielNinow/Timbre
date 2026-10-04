@@ -163,6 +163,7 @@ export class Store {
       id: fixture.number,
       number: fixture.number,
       status: fixture.status,
+      currency: fixture.currency,
       createdAt: fixture.createdAt,
       userId: fixture.userId,
       items,

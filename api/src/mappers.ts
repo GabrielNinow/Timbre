@@ -1,5 +1,6 @@
-import type { ProductDetail, ProductSummary, SellerRef, User } from '@timbre/contracts'
+import type { Currency, ProductDetail, ProductSummary, SellerRef, User } from '@timbre/contracts'
 import { stockOf } from './catalog.js'
+import { convert } from './currency.js'
 import type { Store, StoreProduct, StoreUser } from './store.js'
 
 export function toSellerRef(store: Store, sellerId: string): SellerRef {
@@ -14,15 +15,19 @@ export function toSellerRef(store: Store, sellerId: string): SellerRef {
   }
 }
 
-export function toProductSummary(store: Store, product: StoreProduct): ProductSummary {
+export function toProductSummary(
+  store: Store,
+  product: StoreProduct,
+  currency: Currency,
+): ProductSummary {
   return {
     id: product.id,
     slug: product.slug,
     name: product.name,
     brand: product.brand,
     categoryId: product.categoryId,
-    price: product.price,
-    listPrice: product.listPrice,
+    price: convert(product.price, currency),
+    listPrice: product.listPrice === null ? null : convert(product.listPrice, currency),
     condition: product.condition,
     year: product.year,
     stock: stockOf(product),
@@ -36,9 +41,11 @@ export function toProductSummary(store: Store, product: StoreProduct): ProductSu
   }
 }
 
-export function toProductDetail(store: Store, product: StoreProduct): ProductDetail {
+export function toProductDetail(store: Store, product: StoreProduct, currency: Currency): ProductDetail {
+  const base = convert(product.price, currency)
   return {
-    ...toProductSummary(store, product),
+    ...toProductSummary(store, product, currency),
+    currency,
     description: product.description,
     images: [...product.images],
     specs: product.specs.map((spec) => ({ ...spec })),
@@ -46,7 +53,12 @@ export function toProductDetail(store: Store, product: StoreProduct): ProductDet
       ? {
           variants: product.variants.map((group) => ({
             label: group.label,
-            options: group.options.map((option) => ({ ...option })),
+            // A delta converts as unit prices do: base + delta in the currency equals the
+            // converted option price, so the buy path and the product page always agree.
+            options: group.options.map((option) => ({
+              ...option,
+              priceDelta: convert(product.price + option.priceDelta, currency) - base,
+            })),
           })),
         }
       : {}),
