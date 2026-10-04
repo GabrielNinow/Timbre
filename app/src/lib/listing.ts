@@ -46,6 +46,8 @@ export interface ListingState {
 export interface ListingContext {
   /** Set on `/c/:categorySlug`: the category is part of the path, not a filter. */
   pinnedCategory?: string
+  /** Set on `/s/:sellerSlug`: only this seller's listings, never a removable filter. */
+  pinnedSellerId?: string
 }
 
 /** Route query as Vue Router hands it over. */
@@ -162,11 +164,13 @@ export function toApiParams(
   state: ListingState,
   perPage = LISTING_PER_PAGE,
   currency: 'BRL' | 'USD' = 'BRL',
+  context: ListingContext = {},
 ): URLSearchParams {
   const params = new URLSearchParams()
   const set = (key: ApiKey, value: string) => params.append(key, value)
   if (state.q !== null) set('q', state.q)
   if (state.category !== null) set('category', state.category)
+  if (context.pinnedSellerId !== undefined) set('sellerId', context.pinnedSellerId)
   for (const brand of canonicalBrands(state.brands)) set('brand', brand)
   for (const condition of canonicalConditions(state.conditions)) set('condition', condition)
   if (state.price !== null) {

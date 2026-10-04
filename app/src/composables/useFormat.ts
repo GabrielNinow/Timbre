@@ -13,5 +13,6 @@ export function useFormat() {
     formatRating: (tenths: number) => format.formatRating(tenths, language()),
     formatPercent: (value: number) => format.formatPercent(value, language()),
     formatCount: (value: number) => format.formatCount(value, language()),
+    formatMonthYear: (iso: string) => format.formatMonthYear(iso, language()),
   }
 }

@@ -341,5 +341,71 @@
       "pt-BR": "PT",
       "en": "EN"
     }
+  },
+  "product": {
+    "loading": "Carregando produto",
+    "errorTitle": "Não foi possível carregar este produto",
+    "errorDescription": "A requisição falhou. Tente novamente.",
+    "reviewsLink": "Ver avaliações",
+    "optionSoldOut": "esgotado",
+    "optionDelta": "+{delta}",
+    "stock": {
+      "inStock": "Em estoque",
+      "low": "Última unidade | Últimas {count} unidades",
+      "soldOut": "Esgotado",
+      "optionSoldOut": "Esta opção está esgotada. Escolha outra opção para comprar."
+    },
+    "addToCart": "Adicionar ao carrinho",
+    "buyNow": "Comprar agora",
+    "unavailable": "Indisponível",
+    "added": "Adicionado ao carrinho",
+    "addedAction": "Ver carrinho",
+    "addFailed": "Não foi possível adicionar",
+    "insufficientStock": "Restam apenas {available} unidades disponíveis.",
+    "galleryLabel": "Imagens do produto",
+    "thumbnail": "Mostrar imagem {index} de {total}",
+    "specsHeading": "Especificações",
+    "descriptionHeading": "Descrição",
+    "reviewsHeading": "Avaliações",
+    "reviewsNone": "Este anúncio ainda não tem avaliações.",
+    "reviewsSummary": "{rating} de 5, com base em {count} avaliação | {rating} de 5, com base em {count} avaliação | {rating} de 5, com base em {count} avaliações",
+    "relatedHeading": "Produtos relacionados",
+    "relatedEmpty": "Nenhum produto relacionado agora."
+  },
+  "notifyMe": {
+    "title": "Avise-me quando chegar",
+    "description": "Deixe seu e-mail e avisamos quando houver estoque. Este site é uma demonstração: nenhum e-mail é enviado de verdade.",
+    "email": "E-mail",
+    "submit": "Avise-me",
+    "confirmation": "Pronto! Avisaremos {email} quando houver estoque.",
+    "invalid": "Informe um e-mail válido.",
+    "failed": "Não foi possível registrar o pedido. Tente novamente."
+  },
+  "shipping": {
+    "title": "Calcular frete e prazo",
+    "cep": "CEP",
+    "submit": "Calcular",
+    "destination": "Entrega em {city}/{state}",
+    "eta": "{days} dia útil | {days} dia útil | {days} dias úteis",
+    "free": "Grátis",
+    "invalid": "Informe um CEP com 8 dígitos.",
+    "notFound": "CEP não encontrado. Confira os números.",
+    "failedTitle": "Não foi possível calcular o frete agora",
+    "failedDescription": "A consulta de CEP falhou. Tente novamente."
+  },
+  "sellerPanel": {
+    "heading": "Vendido por",
+    "visit": "Ver loja",
+    "individual": "Vendedor individual"
+  },
+  "sellerPage": {
+    "loading": "Carregando vendedor",
+    "memberSince": "Vende no Timbre desde {date}",
+    "listingsHeading": "Anúncios",
+    "aboutHeading": "Sobre a loja",
+    "rating": "Avaliação",
+    "sales": "Vendas",
+    "onTime": "Entregas no prazo",
+    "errorTitle": "Não foi possível carregar este vendedor"
   }
 }
