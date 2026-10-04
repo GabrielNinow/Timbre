@@ -41,7 +41,8 @@ failure with `fields`, 500 simulated failure.
 ## Catalog
 
 ### `GET /api/categories`
-Flat list of six categories with `{ id, slug, name, productCount }`.
+Flat list of six categories with `{ id, slug, productCount }`. Category names
+are Platform copy: the client renders them from `slug` in the Page language.
 
 ### `GET /api/products`
 
@@ -123,7 +124,7 @@ never recalculates money:
   "id": "cart_...",
   "lines": [ /* line id, product summary, variant, unitPrice, quantity, lineTotal */ ],
   "coupon": { "code": "PRIMEIRACOMPRA", "discount": 5000 },
-  "shippingOptions": [ /* id, label, price, etaDays */ ],
+  "shippingOptions": [ /* id, price, etaDays */ ],
   "selectedShippingId": "standard",
   "totals": {
     "subtotal": 129990,
@@ -284,3 +285,23 @@ an empty cart), `SHIPPING_OPTION_UNAVAILABLE` (422), and `INJECTED_FAILURE`
 
 `POST /api/test/failure` also accepts an optional `code`, so a test can arm a
 specific documented failure rather than a generic one.
+
+---
+
+## Clarifications resolved while building milestone 3.2
+
+### The API sends codes, not copy
+
+Display text the platform owns is Platform copy and lives in the client's
+locale files, keyed by a stable code (ADR 0001). The API therefore carries no
+display labels:
+
+- categories carry `slug`, never a `name`;
+- facet values carry `value` and `count`, price buckets `value`, `min`, `max`
+  and `count` — no `label`;
+- shipping options and an order's shipping carry the method `id`, never a label.
+
+Listing content keeps its labels because a seller wrote them: variant group
+labels, option names, and spec label/value pairs are shown as written.
+`api/test/catalog.test.ts` asserts the absence of the removed fields.
+

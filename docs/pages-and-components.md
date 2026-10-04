@@ -18,6 +18,12 @@
 | `/sign-up` | register | |
 | `/account/orders` | orders | guarded: auth |
 
+Every route also exists under an `/en` prefix, which renders it in English
+(`/en/search`, `/en/c/guitars`). Portuguese is the unprefixed default. The
+Page language comes from the address alone; a header switcher (`language-switcher`,
+`language-option` + `data-language`) moves to the same path and query in the
+other language. Unknown prefixes such as `/fr/...` render the not-found page.
+
 Every filter and pagination change writes to the URL. A listing page must be fully
 reconstructible from its URL alone — this is what lets tests deep-link into a
 filtered state instead of clicking through the rail.
