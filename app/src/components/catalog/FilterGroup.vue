@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import BaseCheckbox from '@/components/base/BaseCheckbox.vue'
-import { formatCount } from '@/lib/format'
+import { useFormat } from '@/composables/useFormat'
 import type { ListingFilterFacet } from '@/lib/listing'
 
 export interface FilterGroupOption {
@@ -20,6 +20,7 @@ withDefaults(defineProps<Props>(), { disabled: false })
 defineEmits<{ toggle: [value: string] }>()
 
 const { t } = useI18n()
+const { formatCount } = useFormat()
 </script>
 
 <template>

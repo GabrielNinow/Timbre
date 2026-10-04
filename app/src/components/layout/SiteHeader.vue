@@ -3,12 +3,15 @@ import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import CategoryMenu from '@/components/layout/CategoryMenu.vue'
+import LanguageSwitcher from '@/components/layout/LanguageSwitcher.vue'
+import { usePageLanguage } from '@/composables/usePageLanguage'
 import { serializeListing, emptyListing } from '@/lib/listing'
-import { searchRoute } from '@/router/paths'
+import { homePath, searchRoute } from '@/router/paths'
 
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
+const language = usePageLanguage()
 
 const query = ref('')
 watch(
@@ -21,7 +24,7 @@ watch(
 
 function submit(): void {
   const q = query.value.trim()
-  void router.push(searchRoute(serializeListing({ ...emptyListing(), q: q.length > 0 ? q : null })))
+  void router.push(searchRoute(language.value, serializeListing({ ...emptyListing(), q: q.length > 0 ? q : null })))
 }
 </script>
 
@@ -29,7 +32,7 @@ function submit(): void {
   <header data-testid="site-header" class="sticky top-0 z-30 bg-band text-on-band">
     <div class="mx-auto flex max-w-[1400px] flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3 md:flex-nowrap md:px-6">
       <RouterLink
-        to="/"
+        :to="homePath(language)"
         data-testid="header-home"
         :aria-label="t('header.home')"
         class="font-wide text-display tracking-tight text-on-band uppercase focus-visible:outline-on-band"
@@ -66,6 +69,7 @@ function submit(): void {
     <nav :aria-label="t('header.primaryNav')" class="bg-band-sub">
       <div class="mx-auto flex max-w-[1400px] items-center gap-4 px-4 py-1 md:px-6">
         <CategoryMenu />
+        <LanguageSwitcher class="ml-auto" />
       </div>
     </nav>
   </header>

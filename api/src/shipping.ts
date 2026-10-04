@@ -61,7 +61,6 @@ export function buildShippingOptions(info: CepInfo, context: ShippingContext): S
   const options: ShippingOption[] = [
     {
       id: 'standard',
-      label: 'Entrega padrão',
       price: context.allFree || context.standardFree ? 0 : 2490,
       etaDays: info.standardEtaDays,
     },
@@ -69,7 +68,6 @@ export function buildShippingOptions(info: CepInfo, context: ShippingContext): S
   if (info.expressAvailable) {
     options.push({
       id: 'express',
-      label: 'Entrega expressa',
       price: context.allFree ? 0 : 4990,
       etaDays: info.expressEtaDays,
     })

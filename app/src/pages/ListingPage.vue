@@ -11,6 +11,7 @@ import FilterRail from '@/components/catalog/FilterRail.vue'
 import ListingHeader from '@/components/catalog/ListingHeader.vue'
 import ProductGrid from '@/components/catalog/ProductGrid.vue'
 import { useFilterLabel } from '@/composables/useFilterLabel'
+import { usePageLanguage } from '@/composables/usePageLanguage'
 import { RAIL_BREAKPOINT, useMediaQuery } from '@/composables/useMediaQuery'
 import { useRequest } from '@/composables/useRequest'
 import {
@@ -27,6 +28,7 @@ import {
   type ListingState,
 } from '@/lib/listing'
 import NotFoundPage from '@/pages/NotFoundPage.vue'
+import { categoryRoute, searchRoute } from '@/router/paths'
 import { useCatalogStore } from '@/stores/catalog'
 
 const { t } = useI18n()
@@ -36,6 +38,7 @@ const catalog = useCatalogStore()
 void catalog.loadCategories()
 const wide = useMediaQuery(RAIL_BREAKPOINT)
 const labelOf = useFilterLabel()
+const language = usePageLanguage()
 
 const context = computed<ListingContext>(() => {
   const slug = route.params.categorySlug
@@ -56,14 +59,14 @@ const pageCount = computed(() => Math.ceil(total.value / LISTING_PER_PAGE))
 const heading = computed(() => {
   const slug = context.value.pinnedCategory
   if (slug === undefined) return t('listing.searchHeading')
-  return catalog.bySlug.get(slug)?.name ?? ''
+  return catalog.bySlug.has(slug) ? t(`category.${slug}`) : ''
 })
 
 function routeFor(next: ListingState) {
   const query = serializeListing(next, context.value)
   return context.value.pinnedCategory === undefined
-    ? { name: 'search', query }
-    : { name: 'category', params: { categorySlug: context.value.pinnedCategory }, query }
+    ? searchRoute(language.value, query)
+    : categoryRoute(context.value.pinnedCategory, language.value, query)
 }
 function navigate(next: ListingState): void {
   void router.push(routeFor(next))

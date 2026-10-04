@@ -8,6 +8,7 @@ import {
   formatCount,
   formatPercent,
   formatPrice,
+  formatPriceShort,
   formatRating,
   splitPrice,
 } from '@/lib/format'
@@ -127,5 +128,36 @@ describe('daysSince', () => {
 
   it('is 0 for an unparseable instant rather than NaN', () => {
     expect(daysSince('not a date', clock.now())).toBe(0)
+  })
+})
+
+describe('formatting by Page language', () => {
+  it('formats BRL the English way on English pages', () => {
+    expect(formatPrice(129990, 'en')).toBe('R$1,299.90')
+    expect(formatPrice(3990, 'en')).toBe('R$39.90')
+    expect(formatPrice(899000, 'en')).toBe('R$8,990.00')
+  })
+
+  it('keeps the Portuguese default when no language is given', () => {
+    expect(formatPrice(129990)).toBe(formatPrice(129990, 'pt-BR'))
+  })
+
+  it('formats ratings, counts and percentages per language', () => {
+    expect(formatRating(48, 'en')).toBe('4.8')
+    expect(formatRating(48, 'pt-BR')).toBe('4,8')
+    expect(formatCount(4820, 'en')).toBe('4,820')
+    expect(formatCount(4820, 'pt-BR')).toBe('4.820')
+    expect(formatPercent(98, 'en')).toBe('98%')
+  })
+
+  it('splits prices with the language decimal separator', () => {
+    expect(splitPrice(129990, 'en')).toMatchObject({ integer: '1,299', decimalSeparator: '.', cents: '90' })
+    expect(splitPrice(129990, 'pt-BR')).toMatchObject({ integer: '1.299', decimalSeparator: ',', cents: '90' })
+  })
+
+  it('drops zero cents in short range labels only', () => {
+    expect(formatPriceShort(20000, 'pt-BR')).toBe(`R$${NBSP}200`)
+    expect(formatPriceShort(20000, 'en')).toBe('R$200')
+    expect(formatPriceShort(20050, 'en')).toBe('R$200.50')
   })
 })

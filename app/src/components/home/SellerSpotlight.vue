@@ -7,10 +7,13 @@ import SkeletonBlock from '@/components/base/SkeletonBlock.vue'
 import ProductGrid from '@/components/catalog/ProductGrid.vue'
 import { useRequest } from '@/composables/useRequest'
 import { SPOTLIGHT_SELLER_SLUG } from '@/config'
-import { formatCount, formatPercent, formatRating } from '@/lib/format'
+import { useFormat } from '@/composables/useFormat'
+import { usePageLanguage } from '@/composables/usePageLanguage'
 import { sellerPath } from '@/router/paths'
 
 const { t } = useI18n()
+const { formatCount, formatPercent, formatRating } = useFormat()
+const language = usePageLanguage()
 const params = new URLSearchParams({ perPage: '4' })
 const request = useRequest(
   () => SPOTLIGHT_SELLER_SLUG,
@@ -62,7 +65,7 @@ const request = useRequest(
           <p class="max-w-prose text-body text-muted">{{ request.data.value.seller.bio }}</p>
         </div>
         <RouterLink
-          :to="sellerPath(request.data.value.seller.slug)"
+          :to="sellerPath(request.data.value.seller.slug, language)"
           data-testid="seller-spotlight-link"
           class="btn h-10 shrink-0 self-start border-band bg-surface px-4 text-body text-band hover:bg-action-quiet md:self-auto"
         >

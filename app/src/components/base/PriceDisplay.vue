@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { discountPercent, formatPrice, splitPrice } from '@/lib/format'
+import { useFormat } from '@/composables/useFormat'
+import { discountPercent } from '@/lib/format'
 
 interface Props {
   price: number
@@ -13,6 +14,7 @@ const props = withDefaults(defineProps<Props>(), {
   testid: 'price-display',
 })
 const { t } = useI18n()
+const { formatPrice, splitPrice } = useFormat()
 
 const parts = computed(() => splitPrice(props.price))
 const percent = computed(() => discountPercent(props.price, props.listPrice))

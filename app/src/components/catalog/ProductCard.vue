@@ -7,6 +7,7 @@ import SpecStrip from '@/components/base/SpecStrip.vue'
 import StarRating from '@/components/base/StarRating.vue'
 import { selectBadges } from '@/lib/badges'
 import { discountPercent } from '@/lib/format'
+import { usePageLanguage } from '@/composables/usePageLanguage'
 import { productPath } from '@/router/paths'
 
 interface Props {
@@ -15,6 +16,7 @@ interface Props {
   sponsoredRow?: boolean
 }
 const props = withDefaults(defineProps<Props>(), { sponsoredRow: false })
+const language = usePageLanguage()
 
 const badges = computed(() =>
   selectBadges(props.product, { sponsoredRow: props.sponsoredRow }),
@@ -75,7 +77,7 @@ const stockState = computed(() => {
       />
       <h3 class="line-clamp-2 text-body text-ink">
         <RouterLink
-          :to="productPath(product)"
+          :to="productPath(product, language)"
           data-testid="product-card-title"
           class="outline-none after:absolute after:inset-0 after:content-[''] focus-visible:underline"
         >

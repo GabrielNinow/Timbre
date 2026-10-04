@@ -1,6 +1,6 @@
 import type { ProductListResponse, SellerPageResponse, ProductDetail } from '@timbre/contracts'
 import { beforeEach, describe, expect, it } from 'vitest'
-import { createHarness, get, type Harness } from './helpers.js'
+import { createHarness, get, post, type Harness } from './helpers.js'
 
 let h: Harness
 
@@ -27,6 +27,21 @@ describe('GET /api/categories', () => {
       'accessories',
     ])
     expect(body.items.reduce((sum, item) => sum + item.productCount, 0)).toBe(60)
+  })
+})
+
+describe('Platform copy stays on the client', () => {
+  it('sends no display labels for categories, facets, buckets or shipping', async () => {
+    const categories = (await get(h.app, '/api/categories')).json() as { items: object[] }
+    for (const item of categories.items) expect(item).not.toHaveProperty('name')
+    const body = await list('')
+    for (const facet of [...body.facets.brand, ...body.facets.condition, ...body.facets.price]) {
+      expect(facet).not.toHaveProperty('label')
+    }
+    const quote = (await post(h.app, '/api/shipping/quote', { cep: '01310-100' })).json() as {
+      options: object[]
+    }
+    for (const option of quote.options) expect(option).not.toHaveProperty('label')
   })
 })
 

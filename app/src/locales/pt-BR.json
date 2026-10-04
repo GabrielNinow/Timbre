@@ -310,5 +310,36 @@
     "emptyClear": "Limpar filtros",
     "errorTitle": "Não foi possível carregar os resultados",
     "errorDescription": "A busca falhou no servidor. Tente novamente."
+  },
+  "category": {
+    "guitars": "Guitarras e Baixos",
+    "keyboards": "Teclados e Sintetizadores",
+    "drums": "Bateria e Percussão",
+    "studio": "Estúdio e Gravação",
+    "pedals": "Pedais e Efeitos",
+    "accessories": "Acessórios"
+  },
+  "shippingMethod": {
+    "standard": "Entrega padrão",
+    "express": "Entrega expressa"
+  },
+  "orderStatus": {
+    "awaiting_payment": "Aguardando pagamento",
+    "paid": "Pago",
+    "shipped": "Enviado",
+    "delivered": "Entregue",
+    "cancelled": "Cancelado"
+  },
+  "language": {
+    "label": "Idioma",
+    "current": "Idioma atual: {language}",
+    "names": {
+      "pt-BR": "Português",
+      "en": "English"
+    },
+    "short": {
+      "pt-BR": "PT",
+      "en": "EN"
+    }
   }
 }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { formatRating } from '@/lib/format'
+import { useFormat } from '@/composables/useFormat'
 
 interface Props {
   rating: number
@@ -17,6 +17,7 @@ const props = withDefaults(defineProps<Props>(), {
   testid: 'star-rating',
 })
 const { t } = useI18n()
+const { formatRating } = useFormat()
 const STARS = 5
 const MAX_TENTHS = 50
 
