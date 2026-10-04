@@ -54,7 +54,7 @@ These carry the edge cases. Everything else is filler.
 | id | name | why it exists |
 |---|---|---|
 | `p-0101` | Fender Player Stratocaster HSS | `stock: 1` → `ÚLTIMA UNIDADE` badge, quantity stepper cap at 1 |
-| `p-0102` | Gibson Les Paul Studio 2018 | `stock: 0` → `ESGOTADO`, disabled buy path, "Avise-me" form |
+| `p-0102` | Gibson Les Paul Studio 2018 | `stock: 0` → `ESGOTADO`, disabled buy path, notify-me form |
 | `p-0103` | Squier Classic Vibe Telecaster | variant group **Cor**: Butterscotch (stock 4), Black (stock 0), Sonic Blue (stock 2, `priceDelta: 15000`). One sold-out option, one with a price delta. |
 | `p-0104` | Tagima TW-61 Woodstock | cheapest guitar, `price: 129900`, `listPrice: 169900` → -24% |
 | `p-0201` | Roland Juno-DS61 | `stock: 3` → "Últimas 3 unidades" notice |

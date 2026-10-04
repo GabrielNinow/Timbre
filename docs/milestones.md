@@ -174,9 +174,10 @@ Gallery, variant selector, quantity stepper, shipping estimator, seller panel,
 related products, seller page with its own filters.
 
 **Acceptance**
-- `p-0103` variant switching updates price, stock, and the `?opcao=` query; the
+- `p-0103` variant switching updates price, stock, and the `?option=` query; the
   sold-out Black option is selectable but blocks adding to cart with a clear reason.
-- `p-0102` renders the out-of-stock treatment with the "Avise-me" form.
+- `p-0102` renders the out-of-stock treatment with the notify-me form; submitting
+  it calls `POST /api/products/:id/notify` and renders a confirmation.
 - `p-0101` caps the stepper at 1 and disables increment with a visible notice.
 - CEP `69900-000` returns a shipping list without the express option.
 - CEP `00000-000` renders a field error, `99999-999` renders a retryable form error.
