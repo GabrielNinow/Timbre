@@ -50,8 +50,12 @@ Both suites do this in `beforeEach`:
 1. `POST /api/test/reset`
 2. `POST /api/test/session` with the fixture email, when the test needs auth,
    then write the token where the app reads it: `localStorage['timbre.session']`.
-   A guest cart's id lives in `localStorage['timbre.cart']`. These two keys are
-   the only client-side state; both point at server state (rule 4).
+   A guest cart's id lives in `localStorage['timbre.cart']`. These two keys
+   point at server state (rule 4). The third and last key is the checkout draft,
+   `sessionStorage['timbre.checkout']`: the shipping address, the chosen payment
+   method and which steps are complete — never a card number. The API has no
+   draft endpoint, so a test that starts mid-checkout seeds this key too, then
+   navigates straight to `/checkout/payment` or `/checkout/review`.
 3. Optionally `POST /api/test/clock` to freeze time
 4. Navigate directly to the deepest relevant URL
 
