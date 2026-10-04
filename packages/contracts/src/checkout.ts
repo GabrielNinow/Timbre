@@ -27,18 +27,18 @@ export const shippingQuoteResponseSchema = z.object({
 export type ShippingQuoteResponse = z.infer<typeof shippingQuoteResponseSchema>
 
 export const addressSchema = z.strictObject({
-  recipient: z.string().trim().min(2, 'Informe o destinatário.').max(120),
+  recipient: z.string().trim().min(2, 'Enter the recipient.').max(120),
   cep: cepSchema,
-  street: z.string().trim().min(2, 'Informe a rua.').max(160),
-  number: z.string().trim().min(1, 'Informe o número.').max(20),
+  street: z.string().trim().min(2, 'Enter the street.').max(160),
+  number: z.string().trim().min(1, 'Enter the number.').max(20),
   complement: z.string().trim().max(80).default(''),
-  district: z.string().trim().min(2, 'Informe o bairro.').max(80),
-  city: z.string().trim().min(2, 'Informe a cidade.').max(80),
+  district: z.string().trim().min(2, 'Enter the district.').max(80),
+  city: z.string().trim().min(2, 'Enter the city.').max(80),
   state: ufSchema,
 })
 export type Address = z.infer<typeof addressSchema>
 
-export const paymentMethodSchema = z.enum(['cartao', 'pix', 'boleto'])
+export const paymentMethodSchema = z.enum(['card', 'pix', 'boleto'])
 export type PaymentMethod = z.infer<typeof paymentMethodSchema>
 
 export function normalizeCardNumber(value: string): string {
@@ -62,7 +62,7 @@ export function luhnValid(value: string): boolean {
   return sum % 10 === 0
 }
 
-export const cardBrandSchema = z.enum(['visa', 'mastercard', 'amex', 'elo', 'desconhecida'])
+export const cardBrandSchema = z.enum(['visa', 'mastercard', 'amex', 'elo', 'unknown'])
 export type CardBrand = z.infer<typeof cardBrandSchema>
 
 export function cardBrandOf(value: string): CardBrand {
@@ -71,7 +71,7 @@ export function cardBrandOf(value: string): CardBrand {
   if (/^(5[1-5]|2[2-7])/.test(digits)) return 'mastercard'
   if (/^3[47]/.test(digits)) return 'amex'
   if (/^(4011|4312|4389|5041|5067|6362|6363)/.test(digits)) return 'elo'
-  return 'desconhecida'
+  return 'unknown'
 }
 
 export function cvvLengthFor(brand: CardBrand): number {
@@ -83,17 +83,17 @@ export const cardSchema = z
     number: z
       .string()
       .transform(normalizeCardNumber)
-      .refine((value) => /^\d{13,19}$/.test(value), 'Número do cartão inválido.')
-      .refine(luhnValid, 'Número do cartão inválido.'),
-    holder: z.string().trim().min(2, 'Informe o nome impresso no cartão.').max(120),
+      .refine((value) => /^\d{13,19}$/.test(value), 'Invalid card number.')
+      .refine(luhnValid, 'Invalid card number.'),
+    holder: z.string().trim().min(2, 'Enter the name printed on the card.').max(120),
     expiry: z
       .string()
       .trim()
-      .regex(/^(0[1-9]|1[0-2])\/\d{2}$/, 'Validade deve ser MM/AA.'),
-    cvv: z.string().trim().regex(/^\d{3,4}$/, 'CVV inválido.'),
+      .regex(/^(0[1-9]|1[0-2])\/\d{2}$/, 'Expiry must be MM/YY.'),
+    cvv: z.string().trim().regex(/^\d{3,4}$/, 'Invalid CVV.'),
   })
   .refine((card) => card.cvv.length === cvvLengthFor(cardBrandOf(card.number)), {
-    message: 'CVV inválido para a bandeira do cartão.',
+    message: 'Invalid CVV for the card brand.',
     path: ['cvv'],
   })
 export type Card = z.infer<typeof cardSchema>
@@ -103,8 +103,8 @@ export const paymentSchema = z
     method: paymentMethodSchema,
     card: cardSchema.optional(),
   })
-  .refine((payment) => payment.method !== 'cartao' || payment.card !== undefined, {
-    message: 'Informe os dados do cartão.',
+  .refine((payment) => payment.method !== 'card' || payment.card !== undefined, {
+    message: 'Enter the card details.',
     path: ['card'],
   })
 export type Payment = z.infer<typeof paymentSchema>
@@ -117,11 +117,11 @@ export const createOrderBodySchema = z.strictObject({
 export type CreateOrderBody = z.infer<typeof createOrderBodySchema>
 
 export const orderStatusSchema = z.enum([
-  'aguardando_pagamento',
-  'pago',
-  'enviado',
-  'entregue',
-  'cancelado',
+  'awaiting_payment',
+  'paid',
+  'shipped',
+  'delivered',
+  'cancelled',
 ])
 export type OrderStatus = z.infer<typeof orderStatusSchema>
 

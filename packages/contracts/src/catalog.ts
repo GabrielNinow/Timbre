@@ -98,7 +98,7 @@ export const productDetailSchema = productSummarySchema.extend({
 })
 export type ProductDetail = z.infer<typeof productDetailSchema>
 
-export const sortSchema = z.enum(['relevancia', 'menor-preco', 'maior-preco', 'mais-recentes'])
+export const sortSchema = z.enum(['relevance', 'price-asc', 'price-desc', 'newest'])
 export type Sort = z.infer<typeof sortSchema>
 
 const repeatable = <T extends z.ZodType>(item: T) =>
@@ -125,7 +125,7 @@ export const productListQuerySchema = z.object({
   sponsored: trueFlag,
   /** Only listings with `listPrice > price`. Feeds "Ofertas do dia". */
   onSale: trueFlag,
-  sort: sortSchema.default('relevancia'),
+  sort: sortSchema.default('relevance'),
   page: z.coerce.number().int().positive().default(1),
   perPage: z.coerce.number().int().positive().max(60).default(24),
 })

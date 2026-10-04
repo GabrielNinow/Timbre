@@ -10,18 +10,18 @@ export const percent = z.number().int().min(0).max(100)
 
 export const idString = z.string().min(1).max(64)
 
-export const slugString = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'slug inválido')
+export const slugString = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'invalid slug')
 
 export const isoDateTime = z
   .string()
-  .regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$/, 'timestamp ISO 8601 UTC esperado')
+  .regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$/, 'ISO 8601 UTC timestamp expected')
 
-export const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'data ISO esperada')
+export const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'ISO date expected')
 
-export const conditionSchema = z.enum(['novo', 'seminovo', 'usado'])
+export const conditionSchema = z.enum(['new', 'like-new', 'used'])
 export type Condition = z.infer<typeof conditionSchema>
 
-export const sellerTierSchema = z.enum(['PRATA', 'OURO', 'PLATINA'])
+export const sellerTierSchema = z.enum(['SILVER', 'GOLD', 'PLATINUM'])
 export type SellerTier = z.infer<typeof sellerTierSchema>
 
 export const ufSchema = z.enum([
@@ -32,7 +32,7 @@ export type UF = z.infer<typeof ufSchema>
 
 export const cepSchema = z
   .string()
-  .regex(/^\d{5}-?\d{3}$/, 'CEP deve ter 8 dígitos')
+  .regex(/^\d{5}-?\d{3}$/, 'CEP must have 8 digits')
   .transform((value) => value.replace('-', ''))
 
 export const cepDigits = z.string().regex(/^\d{8}$/)

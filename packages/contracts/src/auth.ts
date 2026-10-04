@@ -6,16 +6,16 @@ export const emailSchema = z
   .trim()
   .toLowerCase()
   .max(160)
-  .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'E-mail inválido')
+  .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Invalid email')
 
 export const passwordSchema = z
   .string()
-  .min(8, 'Use ao menos 8 caracteres.')
-  .max(72, 'Use no máximo 72 caracteres.')
-  .regex(/[a-z]/, 'Inclua ao menos uma letra minúscula.')
-  .regex(/[A-Z]/, 'Inclua ao menos uma letra maiúscula.')
-  .regex(/\d/, 'Inclua ao menos um número.')
-  .regex(/[^A-Za-z0-9]/, 'Inclua ao menos um símbolo.')
+  .min(8, 'Use at least 8 characters.')
+  .max(72, 'Use at most 72 characters.')
+  .regex(/[a-z]/, 'Include at least one lowercase letter.')
+  .regex(/[A-Z]/, 'Include at least one uppercase letter.')
+  .regex(/\d/, 'Include at least one number.')
+  .regex(/[^A-Za-z0-9]/, 'Include at least one symbol.')
 
 export const userSchema = z.object({
   id: idString,
@@ -27,12 +27,12 @@ export type User = z.infer<typeof userSchema>
 
 export const loginBodySchema = z.strictObject({
   email: emailSchema,
-  password: z.string().min(1, 'Informe a senha.'),
+  password: z.string().min(1, 'Enter the password.'),
 })
 export type LoginBody = z.infer<typeof loginBodySchema>
 
 export const registerBodySchema = z.strictObject({
-  name: z.string().trim().min(2, 'Informe seu nome.').max(120),
+  name: z.string().trim().min(2, 'Enter your name.').max(120),
   email: emailSchema,
   password: passwordSchema,
 })
