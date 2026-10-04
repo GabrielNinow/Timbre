@@ -24,6 +24,7 @@ export type Category = z.infer<typeof categorySchema>
 export const categoryListSchema = z.object({ items: z.array(categorySchema) })
 export type CategoryList = z.infer<typeof categoryListSchema>
 
+/** The seller as embedded in a product. Untiered individuals carry `tier: null`. */
 export const sellerRefSchema = z.object({
   id: idString,
   name: z.string().min(1),
@@ -92,6 +93,7 @@ export const productDetailSchema = productSummarySchema.extend({
   description: z.string().min(1),
   images: z.array(z.string().min(1)).min(1),
   specs: z.array(productSpecSchema),
+  /** Present only for products sold by variant. Stock is then per option. */
   variants: z.array(variantGroupSchema).optional(),
 })
 export type ProductDetail = z.infer<typeof productDetailSchema>
@@ -157,6 +159,7 @@ export const sellerPageResponseSchema = z.object({
 })
 export type SellerPageResponse = z.infer<typeof sellerPageResponseSchema>
 
+/** The filter rail's price presets, in centavos. */
 export const PRICE_BUCKETS = [
   { value: '0-20000', label: 'Até R$ 200', min: 0, max: 20000 },
   { value: '20000-50000', label: 'R$ 200 a R$ 500', min: 20000, max: 50000 },
