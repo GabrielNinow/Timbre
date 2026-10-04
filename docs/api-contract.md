@@ -52,13 +52,13 @@ Query parameters, all optional:
 | `q` | string | matches name, brand, seller name; accent-insensitive |
 | `category` | slug | |
 | `brand` | repeatable | |
-| `condition` | repeatable | `novo` \| `seminovo` \| `usado` |
+| `condition` | repeatable | `new` \| `like-new` \| `used` |
 | `sellerId` | string | |
 | `minPrice` `maxPrice` | int centavos | |
 | `freeShipping` | `true` | |
 | `sponsored` | `true` | only `sponsored: true` listings; feeds the home "Patrocinados" row |
 | `onSale` | `true` | only listings with `listPrice > price`; feeds "Ofertas do dia" |
-| `sort` | enum | `relevancia` (default) \| `menor-preco` \| `maior-preco` \| `mais-recentes` |
+| `sort` | enum | `relevance` (default) \| `price-asc` \| `price-desc` \| `newest` |
 | `page` | int, default 1 | |
 | `perPage` | int, default 24, max 60 | |
 
@@ -124,7 +124,7 @@ never recalculates money:
   "lines": [ /* line id, product summary, variant, unitPrice, quantity, lineTotal */ ],
   "coupon": { "code": "PRIMEIRACOMPRA", "discount": 5000 },
   "shippingOptions": [ /* id, label, price, etaDays */ ],
-  "selectedShippingId": "padrao",
+  "selectedShippingId": "standard",
   "totals": {
     "subtotal": 129990,
     "couponDiscount": 5000,
@@ -134,7 +134,7 @@ never recalculates money:
 }
 ```
 
-Shipping rules: `padrao` R$ 24,90, `expressa` R$ 49,90. `padrao` is free when
+Shipping rules: `standard` R$ 24,90, `express` R$ 49,90. `standard` is free when
 subtotal ≥ R$ 300,00 or when every line is flagged `freeShipping`.
 
 ### Coupons
@@ -146,7 +146,7 @@ subtotal ≥ R$ 300,00 or when every line is flagged `freeShipping`.
 | `FRETEGRATIS` | shipping to zero on any method | — |
 | `PALCO500` | R$ 100,00 off, requires subtotal ≥ R$ 500,00 | `COUPON_MIN_NOT_MET` |
 | `VERAO2024` | expired | `COUPON_EXPIRED` |
-| `SOMENTENOVOS` | 15% off, valid only if every line is `novo` | `COUPON_NOT_APPLICABLE` |
+| `SOMENTENOVOS` | 15% off, valid only if every line is `new` | `COUPON_NOT_APPLICABLE` |
 | anything else | — | `COUPON_INVALID` |
 
 Only one coupon at a time. Applying a second returns 409 `COUPON_ALREADY_APPLIED`.
@@ -163,7 +163,7 @@ from the CEP digits — same CEP, same answer, every time.
 Body carries `shipping` (recipient, cep, street, number, complement, district,
 city, state), `payment`, and `selectedShippingId`. Requires auth.
 
-Payment is `{ method: 'cartao' | 'pix' | 'boleto', card? }`. Card number drives
+Payment is `{ method: 'card' | 'pix' | 'boleto', card? }`. Card number drives
 the outcome:
 
 | Card number | Result |
@@ -174,7 +174,7 @@ the outcome:
 | `4000 0000 0000 0119` | 500 `PAYMENT_PROCESSOR_ERROR` |
 | `4000 0000 0000 0069` | 402 `CARD_EXPIRED` |
 
-`pix` returns the order in `aguardando_pagamento` with a static payload string.
+`pix` returns the order in `awaiting_payment` with a static payload string.
 `boleto` returns a due date computed from the injected clock, not wall time.
 
 A successful order decrements stock, empties the cart, and returns
@@ -224,7 +224,7 @@ fails on any non-integer number.
 
 Two fields the listed shape did not name but the pages spec requires:
 
-- `listedAt` — ISO instant. Drives the `mais-recentes` sort and every
+- `listedAt` — ISO instant. Drives the `newest` sort and every
   "anunciado há N dias" string. Derived from `LISTING_EPOCH` in the fixture, so
   the injected clock controls the rendered age.
 - `sponsored` — boolean. Only listings flagged here may appear in the labelled
@@ -241,7 +241,7 @@ against that, never against the aggregate.
 ### Order ids
 
 `id` and `number` are the same `TMB-` string. `GET /api/orders/TMB-100238`
-is the route, and `/pedido/:id` in the app carries the same value.
+is the route, and `/orders/:id` in the app carries the same value.
 
 ### Price range filtering
 

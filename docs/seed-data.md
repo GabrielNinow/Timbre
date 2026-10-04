@@ -12,12 +12,12 @@ seed and commit its output.
 
 | slug | name |
 |---|---|
-| `guitarras` | Guitarras e Baixos |
-| `teclados` | Teclados e Sintetizadores |
-| `bateria` | Bateria e Percussão |
-| `estudio` | Estúdio e Gravação |
-| `pedais` | Pedais e Efeitos |
-| `acessorios` | Acessórios |
+| `guitars` | Guitarras e Baixos |
+| `keyboards` | Teclados e Sintetizadores |
+| `drums` | Bateria e Percussão |
+| `studio` | Estúdio e Gravação |
+| `pedals` | Pedais e Efeitos |
+| `accessories` | Acessórios |
 
 ## Sellers — 8 total
 
@@ -25,22 +25,22 @@ Fixed distribution so seller filters and tier marks are all reachable:
 
 | id | name | tier | state | rating | products |
 |---|---|---|---|---|---|
-| `s-01` | Casa do Som | PLATINA | SP | 4.8 | 14 |
-| `s-02` | Áudio Prime | PLATINA | SP | 4.9 | 11 |
-| `s-03` | Loja do Músico | OURO | RJ | 4.5 | 10 |
-| `s-04` | Studio Norte | OURO | PR | 4.4 | 8 |
-| `s-05` | Instrumentos SC | PRATA | SC | 4.1 | 7 |
+| `s-01` | Casa do Som | PLATINUM | SP | 4.8 | 14 |
+| `s-02` | Áudio Prime | PLATINUM | SP | 4.9 | 11 |
+| `s-03` | Loja do Músico | GOLD | RJ | 4.5 | 10 |
+| `s-04` | Studio Norte | GOLD | PR | 4.4 | 8 |
+| `s-05` | Instrumentos SC | SILVER | SC | 4.1 | 7 |
 | `s-06` | Marcos Andrade | — | MG | 4.7 | 5 |
 | `s-07` | Julia Ferraz | — | BA | 3.9 | 3 |
-| `s-08` | Vintage Room | PRATA | RS | 4.6 | 2 |
+| `s-08` | Vintage Room | SILVER | RS | 4.6 | 2 |
 
 `s-08` having only two products is deliberate: it exercises a seller page that
 does not paginate. `s-07` is the only sub-4.0 rating, for rating-sort assertions.
 
 ## Products — 60 total
 
-Distribution: 14 guitarras, 10 teclados, 8 bateria, 10 estúdio, 9 pedais,
-9 acessórios. Conditions: 24 novo, 22 seminovo, 14 usado. 19 flagged
+Distribution: 14 guitars, 10 keyboards, 8 drums, 10 studio, 9 pedals,
+9 accessories. Conditions: 24 new, 22 like-new, 14 used. 19 flagged
 `freeShipping`. 21 carry a `listPrice` above `price`.
 
 Price spread must cover R$ 39,90 to R$ 8.990,00 with at least four products in
@@ -58,10 +58,10 @@ These carry the edge cases. Everything else is filler.
 | `p-0103` | Squier Classic Vibe Telecaster | variant group **Cor**: Butterscotch (stock 4), Black (stock 0), Sonic Blue (stock 2, `priceDelta: 15000`). One sold-out option, one with a price delta. |
 | `p-0104` | Tagima TW-61 Woodstock | cheapest guitar, `price: 129900`, `listPrice: 169900` → -24% |
 | `p-0201` | Roland Juno-DS61 | `stock: 3` → "Últimas 3 unidades" notice |
-| `p-0202` | Moog Subsequent 37 | `price: 899000`, most expensive item, top of `maior-preco` sort |
+| `p-0202` | Moog Subsequent 37 | `price: 899000`, most expensive item, top of `price-desc` sort |
 | `p-0301` | Pearl Export EXX 5 peças | heaviest item, never `freeShipping`, forces paid shipping |
-| `p-0401` | Focusrite Scarlett 2i2 4ª ger | condition `novo`, used by the `SOMENTENOVOS` coupon happy path |
-| `p-0501` | Boss DS-1 Distortion | `price: 3990`, cheapest item, bottom of `menor-preco` sort |
+| `p-0401` | Focusrite Scarlett 2i2 4ª ger | condition `new`, used by the `SOMENTENOVOS` coupon happy path |
+| `p-0501` | Boss DS-1 Distortion | `price: 3990`, cheapest item, bottom of `price-asc` sort |
 | `p-0502` | Strymon BigSky | shared across two sellers as separate listings, different prices and conditions — the classic marketplace duplicate-title case |
 | `p-0601` | Cabo P10 Santo Angelo 3m | `freeShipping: true` at a low price, proving free shipping is a product flag not a threshold |
 | `p-0602` | Palheta Dunlop Tortex (pacote 12) | only product with `reviewCount: 0` → empty rating state |
@@ -78,7 +78,7 @@ simplify them away.
 | `bloqueado@timbre.test` | `Teste@1234` | 403 `ACCOUNT_LOCKED` |
 | `lento@timbre.test` | `Teste@1234` | logs in successfully after a forced 3s delay |
 
-Bruno's orders cover `aguardando_pagamento`, `enviado`, and `entregue`, and one
+Bruno's orders cover `awaiting_payment`, `shipped`, and `delivered`, and one
 of them belongs to Ana — no, it belongs to a fifth hidden user, so that
 `GET /api/orders/:id` can return 403 for a real, existing order id. That id is
 `TMB-100238` and it must be reachable in tests.
@@ -124,11 +124,11 @@ numbers with no gap:
 
 | Order | Owner | Status |
 |---|---|---|
-| `TMB-100236` | Bruno (`u-02`) | `entregue` |
-| `TMB-100237` | hidden user (`u-05`) | `entregue` |
-| `TMB-100238` | hidden user (`u-05`) | `enviado` |
-| `TMB-100239` | Bruno (`u-02`) | `enviado` |
-| `TMB-100240` | Bruno (`u-02`) | `aguardando_pagamento` |
+| `TMB-100236` | Bruno (`u-02`) | `delivered` |
+| `TMB-100237` | hidden user (`u-05`) | `delivered` |
+| `TMB-100238` | hidden user (`u-05`) | `shipped` |
+| `TMB-100239` | Bruno (`u-02`) | `shipped` |
+| `TMB-100240` | Bruno (`u-02`) | `awaiting_payment` |
 
 Bruno keeps exactly three orders in the three documented statuses, `TMB-100238`
 is a real order owned by somebody else so the 403 is genuine, and the next order
@@ -152,8 +152,8 @@ labelled row: `p-0101`, `p-0203`, `p-0303`, `p-0401`, `p-0504`, `p-0601`.
 
 ### The second Strymon BigSky
 
-`p-0502` (Casa do Som, novo, R$ 4.499,00) and `p-0503` (Marcos Andrade,
-seminovo, R$ 3.799,00) share the name `Strymon BigSky` and the slug
+`p-0502` (Casa do Som, new, R$ 4.499,00) and `p-0503` (Marcos Andrade,
+like-new, R$ 3.799,00) share the name `Strymon BigSky` and the slug
 `strymon-bigsky`. The id in the URL is what disambiguates them.
 
 ### Images

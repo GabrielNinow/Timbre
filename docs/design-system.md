@@ -143,7 +143,7 @@ unmistakably like this app and not a generic store.
 
 Seller tier is also rendered as a small chevron mark beside the seller name on the
 product page and seller page: one chevron for Prata, two for Ouro, three for
-Platina, in `--color-action`. Tier vocabulary is fixed: `PRATA`, `OURO`, `PLATINA`,
+Platina, in `--color-action`. Tier vocabulary is fixed: `SILVER`, `GOLD`, `PLATINUM`,
 or absent for untiered individual sellers.
 
 ## Badge vocabulary — fixed, maximum two per card

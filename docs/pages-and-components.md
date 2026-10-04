@@ -5,24 +5,24 @@
 | Path | Name | Notes |
 |---|---|---|
 | `/` | home | category rows, one labelled sponsored row |
-| `/busca` | search | query in URL: `?q=&categoria=&marca=&condicao=&preco=&frete=&ordem=&pagina=` |
+| `/search` | search | query in URL: `?q=&category=&brand=&condition=&price=&freeShipping=&sort=&page=` |
 | `/c/:categorySlug` | category | same component as search, category pinned |
 | `/p/:slug--:id` | product | double dash separates slug from id |
-| `/v/:sellerSlug` | seller | |
-| `/carrinho` | cart | full page, not a drawer |
-| `/checkout/entrega` | checkout-shipping | guarded: auth + non-empty cart |
-| `/checkout/pagamento` | checkout-payment | guarded: shipping step complete |
-| `/checkout/revisao` | checkout-review | guarded: payment step complete |
-| `/pedido/:id` | order-confirmation | |
-| `/entrar` | login | `?redirect=` supported |
-| `/criar-conta` | register | |
-| `/minha-conta/pedidos` | orders | guarded: auth |
+| `/s/:sellerSlug` | seller | |
+| `/cart` | cart | full page, not a drawer |
+| `/checkout/shipping` | checkout-shipping | guarded: auth + non-empty cart |
+| `/checkout/payment` | checkout-payment | guarded: shipping step complete |
+| `/checkout/review` | checkout-review | guarded: payment step complete |
+| `/orders/:id` | order-confirmation | |
+| `/sign-in` | login | `?redirect=` supported |
+| `/sign-up` | register | |
+| `/account/orders` | orders | guarded: auth |
 
 Every filter and pagination change writes to the URL. A listing page must be fully
 reconstructible from its URL alone — this is what lets tests deep-link into a
 filtered state instead of clicking through the rail.
 
-Guards redirect to `/entrar?redirect=<encoded>` and return the user to the
+Guards redirect to `/sign-in?redirect=<encoded>` and return the user to the
 intended route after login. Test that round trip.
 
 ## Global chrome
@@ -168,7 +168,7 @@ so tests can start mid-flow after seeding state via the API.
 1. **Entrega** — address form. CEP field triggers a lookup on blur and populates
    street, district, city, state, which remain editable. `00000000` surfaces a
    field-level error; `99999999` surfaces a form-level error with retry.
-2. **Pagamento** — method tabs (cartão, pix, boleto). Card fields with live
+2. **Pagamento** — method tabs (card, pix, boleto). Card fields with live
    formatting on number and expiry, Luhn check on blur, CVV length by brand.
 3. **Revisão** — read-only summary of both prior steps with "Alterar" links back,
    totals, terms checkbox, `Finalizar compra`.
@@ -227,14 +227,14 @@ Each home section is one catalog request, so the home page needs no endpoint of
 its own:
 
 - "Ofertas do dia" — `onSale=true`, `perPage=8`.
-- "Recém-chegados" — `sort=mais-recentes`, `perPage=8`.
+- "Recém-chegados" — `sort=newest`, `perPage=8`.
 - "Patrocinados" — `sponsored=true`. The only place the `PATROCINADO` badge renders.
 - Seller spotlight — a fixed seller, `s-01` (Casa do Som), set in app config. Fixed
   rather than rotating, so the home page is deterministic.
 
-### `preco` in the URL
+### `price` in the URL
 
-`preco=MIN-MAX` in integer centavos, or `MIN+` when there is no ceiling — the same
+`price=MIN-MAX` in integer centavos, or `MIN+` when there is no ceiling — the same
 format as the `value` of each entry in `PRICE_BUCKETS`. A preset bucket and a
 typed range that cover the same numbers produce the same URL. A typed range is
 entered in reais and written to the URL in centavos.
