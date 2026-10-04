@@ -12,21 +12,21 @@ describe('seed integrity', () => {
       ]),
     )
     expect(perCategory).toEqual({
-      guitarras: 14,
-      teclados: 10,
-      bateria: 8,
-      estudio: 10,
-      pedais: 9,
-      acessorios: 9,
+      guitars: 14,
+      keyboards: 10,
+      drums: 8,
+      studio: 10,
+      pedals: 9,
+      accessories: 9,
     })
   })
 
   it('matches the documented condition split', () => {
     const count = (condition: string) =>
       products.filter((product) => product.condition === condition).length
-    expect(count('novo')).toBe(24)
-    expect(count('seminovo')).toBe(22)
-    expect(count('usado')).toBe(14)
+    expect(count('new')).toBe(24)
+    expect(count('like-new')).toBe(22)
+    expect(count('used')).toBe(14)
   })
 
   it('flags 19 products as free shipping and 21 with a list price', () => {
@@ -106,7 +106,7 @@ describe('seed integrity', () => {
     expect(byId('p-0201').stock).toBe(3)
     expect(byId('p-0202').price).toBe(899000)
     expect(byId('p-0301').freeShipping).toBe(false)
-    expect(byId('p-0401').condition).toBe('novo')
+    expect(byId('p-0401').condition).toBe('new')
     expect(byId('p-0501').price).toBe(3990)
     expect(byId('p-0601').freeShipping).toBe(true)
     expect(byId('p-0601').price).toBeLessThan(30000)
@@ -136,7 +136,7 @@ describe('seed integrity', () => {
       const summary = productSummarySchema.safeParse({
         ...product,
         stock: product.stock ?? 6,
-        seller: { id: 's-01', name: 'Casa do Som', slug: 'casa-do-som', tier: 'PLATINA', state: 'SP' },
+        seller: { id: 's-01', name: 'Casa do Som', slug: 'casa-do-som', tier: 'PLATINUM', state: 'SP' },
       })
       expect(summary.success, `${product.id}: ${summary.error?.message}`).toBe(true)
       expect(productDetailSchema.shape.description.safeParse(product.description).success).toBe(true)
@@ -156,7 +156,7 @@ describe('seed integrity', () => {
     const bruno = orders.filter((order) => order.userId === 'u-02')
     expect(bruno).toHaveLength(3)
     expect(new Set(bruno.map((order) => order.status))).toEqual(
-      new Set(['aguardando_pagamento', 'enviado', 'entregue']),
+      new Set(['awaiting_payment', 'shipped', 'delivered']),
     )
 
     const forbidden = orders.find((order) => order.number === 'TMB-100238')!

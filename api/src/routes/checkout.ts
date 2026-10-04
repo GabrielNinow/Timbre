@@ -19,9 +19,9 @@ import type { Store, StoreProduct } from '../store.js'
 import { parseBody, send } from '../validate.js'
 
 const PAYMENT_MESSAGES: Record<string, string> = {
-  CARD_DECLINED: 'Pagamento recusado pelo emissor do cartão.',
-  INSUFFICIENT_FUNDS: 'Cartão sem limite disponível para esta compra.',
-  CARD_EXPIRED: 'Cartão vencido. Confira a validade e tente de novo.',
+  CARD_DECLINED: 'Payment declined by the card issuer.',
+  INSUFFICIENT_FUNDS: 'Insufficient card limit for this purchase.',
+  CARD_EXPIRED: 'Card expired. Check the expiry date and try again.',
   PAYMENT_PROCESSOR_ERROR: 'A operadora de pagamento falhou. Tente novamente.',
 }
 
@@ -59,7 +59,7 @@ export function registerCheckoutRoutes(app: FastifyInstance, store: Store): void
     const built = buildCart(store, cart)
 
     if (built.lines.length === 0) {
-      throw new ApiError('CART_EMPTY', 'Seu carrinho está vazio.')
+      throw new ApiError('CART_EMPTY', 'Your cart is empty.')
     }
 
     const option = built.shippingOptions.find(
@@ -68,8 +68,8 @@ export function registerCheckoutRoutes(app: FastifyInstance, store: Store): void
     if (!option) {
       throw new ApiError(
         'SHIPPING_OPTION_UNAVAILABLE',
-        'Esta modalidade de entrega não atende o CEP informado.',
-        { fields: { selectedShippingId: 'Modalidade indisponível para este CEP.' } },
+        'This shipping method does not serve the given CEP.',
+        { fields: { selectedShippingId: 'Method unavailable for this CEP.' } },
       )
     }
 
@@ -83,18 +83,18 @@ export function registerCheckoutRoutes(app: FastifyInstance, store: Store): void
     if (staleLineIds.length > 0) {
       throw new ApiError(
         'STOCK_CHANGED',
-        'O estoque mudou enquanto você finalizava a compra.',
+        'Stock changed while you were checking out.',
         { lineIds: staleLineIds },
       )
     }
 
     let cardBrand: Order['payment']['cardBrand'] = null
     let cardLast4: string | null = null
-    if (body.payment.method === 'cartao') {
+    if (body.payment.method === 'card') {
       const card = body.payment.card!
       const outcome = CARD_OUTCOMES[card.number as keyof typeof CARD_OUTCOMES] ?? 'approved'
       if (outcome !== 'approved') {
-        throw new ApiError(outcome as ErrorCode, PAYMENT_MESSAGES[outcome] ?? 'Pagamento recusado.')
+        throw new ApiError(outcome as ErrorCode, PAYMENT_MESSAGES[outcome] ?? 'Payment declined.')
       }
       cardBrand = cardBrandOf(card.number)
       cardLast4 = card.number.slice(-4)
@@ -119,7 +119,7 @@ export function registerCheckoutRoutes(app: FastifyInstance, store: Store): void
     const order: Order = {
       id: number,
       number,
-      status: body.payment.method === 'cartao' ? 'pago' : 'aguardando_pagamento',
+      status: body.payment.method === 'card' ? 'paid' : 'awaiting_payment',
       createdAt: store.now,
       userId: user.id,
       items,

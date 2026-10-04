@@ -14,7 +14,7 @@ import {
 export const LISTING_PER_PAGE = 24
 const Q_MAX_LENGTH = 120
 const CONDITION_ORDER: readonly Condition[] = conditionSchema.options
-const DEFAULT_SORT: Sort = 'relevancia'
+const DEFAULT_SORT: Sort = 'relevance'
 
 export interface PriceRange {
   /** Inclusive, integer centavos. */
@@ -108,10 +108,10 @@ export function emptyListing(context: ListingContext = {}): ListingState {
 /** Never throws: unknown or malformed values are dropped, so any URL renders. */
 export function parseListing(raw: RawQuery, context: ListingContext = {}): ListingState {
   const q = first(raw, 'q')?.trim().slice(0, Q_MAX_LENGTH) ?? ''
-  const category = first(raw, 'categoria')
-  const sort = sortSchema.safeParse(first(raw, 'ordem'))
-  const page = Number(first(raw, 'pagina'))
-  const conditions = all(raw, 'condicao').filter(
+  const category = first(raw, 'category')
+  const sort = sortSchema.safeParse(first(raw, 'sort'))
+  const page = Number(first(raw, 'page'))
+  const conditions = all(raw, 'condition').filter(
     (value): value is Condition => conditionSchema.safeParse(value).success,
   )
 
@@ -119,10 +119,10 @@ export function parseListing(raw: RawQuery, context: ListingContext = {}): Listi
     q: q.length > 0 ? q : null,
     category:
       context.pinnedCategory ?? (category !== undefined && SLUG.test(category) ? category : null),
-    brands: canonicalBrands(all(raw, 'marca')),
+    brands: canonicalBrands(all(raw, 'brand')),
     conditions: canonicalConditions(conditions),
-    price: parsePrice(first(raw, 'preco')),
-    freeShipping: first(raw, 'frete') === 'true',
+    price: parsePrice(first(raw, 'price')),
+    freeShipping: first(raw, 'freeShipping') === 'true',
     sort: sort.success ? sort.data : DEFAULT_SORT,
     page: Number.isInteger(page) && page > 0 ? page : 1,
   }
@@ -133,16 +133,16 @@ export function serializeListing(state: ListingState, context: ListingContext = 
   const query: ListingQuery = {}
   if (state.q !== null) query.q = state.q
   if (state.category !== null && context.pinnedCategory === undefined) {
-    query.categoria = state.category
+    query.category = state.category
   }
   const brands = canonicalBrands(state.brands)
-  if (brands.length > 0) query.marca = brands
+  if (brands.length > 0) query.brand = brands
   const conditions = canonicalConditions(state.conditions)
-  if (conditions.length > 0) query.condicao = conditions
-  if (state.price !== null) query.preco = formatPriceParam(state.price)
-  if (state.freeShipping) query.frete = 'true'
-  if (state.sort !== DEFAULT_SORT) query.ordem = state.sort
-  if (state.page > 1) query.pagina = String(state.page)
+  if (conditions.length > 0) query.condition = conditions
+  if (state.price !== null) query.price = formatPriceParam(state.price)
+  if (state.freeShipping) query.freeShipping = 'true'
+  if (state.sort !== DEFAULT_SORT) query.sort = state.sort
+  if (state.page > 1) query.page = String(state.page)
   return query
 }
 

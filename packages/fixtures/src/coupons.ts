@@ -71,7 +71,7 @@ export const coupons: readonly CouponFixture[] = Object.freeze([
     maxDiscount: null,
     minSubtotal: null,
     expiresAt: null,
-    onlyConditions: Object.freeze(['novo'] as const),
+    onlyConditions: Object.freeze(['new'] as const),
     description: '15% de desconto exclusivo para produtos novos.',
   },
 ] as const)

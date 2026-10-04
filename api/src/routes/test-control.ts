@@ -24,7 +24,7 @@ export function registerTestRoutes(app: FastifyInstance, store: Store): void {
   app.post('/api/test/session', async (request, reply) => {
     const body = parseBody(testSessionBodySchema, request.body)
     const user = store.userByEmail(body.email)
-    if (!user) throw errors.notFound('Não existe conta com este e-mail no fixture.')
+    if (!user) throw errors.notFound('No fixture account has this email.')
     return send(reply, testSessionResponseSchema, { token: user.token, user: toUser(user) })
   })
 

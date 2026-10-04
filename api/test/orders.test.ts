@@ -19,9 +19,9 @@ describe('GET /api/orders', () => {
       'TMB-100236',
     ])
     expect(body.items.map((order) => order.status)).toEqual([
-      'aguardando_pagamento',
-      'enviado',
-      'entregue',
+      'awaiting_payment',
+      'shipped',
+      'delivered',
     ])
   })
 

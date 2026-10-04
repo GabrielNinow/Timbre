@@ -157,10 +157,10 @@ describe('shipping rules', () => {
     const cartId = await guestCart()
     await addItem(h.app, { productId: 'p-0602' }, { cartId })
     const cart = cartOf(await put(h.app, '/api/cart/cep', { cep: '69900-000' }, { cartId }))
-    expect(cart.shippingOptions.map((option) => option.id)).toEqual(['padrao'])
+    expect(cart.shippingOptions.map((option) => option.id)).toEqual(['standard'])
     expect(cart.shippingOptions[0]!.etaDays).toBe(9)
 
-    const response = await put(h.app, '/api/cart/shipping', { shippingId: 'expressa' }, { cartId })
+    const response = await put(h.app, '/api/cart/shipping', { shippingId: 'express' }, { cartId })
     expect(response.statusCode).toBe(422)
     expect(errorCodeOf(response)).toBe('SHIPPING_OPTION_UNAVAILABLE')
   })
@@ -168,8 +168,8 @@ describe('shipping rules', () => {
   it('switches to express and re-prices the total', async () => {
     const cartId = await guestCart()
     await addItem(h.app, { productId: 'p-0602' }, { cartId })
-    const cart = cartOf(await put(h.app, '/api/cart/shipping', { shippingId: 'expressa' }, { cartId }))
-    expect(cart.selectedShippingId).toBe('expressa')
+    const cart = cartOf(await put(h.app, '/api/cart/shipping', { shippingId: 'express' }, { cartId }))
+    expect(cart.selectedShippingId).toBe('express')
     expect(cart.totals.shipping).toBe(4990)
     expect(cart.totals.total).toBe(4990 + 4990)
   })
@@ -203,7 +203,7 @@ describe('the coupon matrix', () => {
 
   it('FRETEGRATIS zeroes any method', async () => {
     const cartId = await cartWith(['p-0602'])
-    await put(h.app, '/api/cart/shipping', { shippingId: 'expressa' }, { cartId })
+    await put(h.app, '/api/cart/shipping', { shippingId: 'express' }, { cartId })
     const cart = cartOf(await apply(cartId, 'FRETEGRATIS'))
     expect(cart.shippingOptions.every((option) => option.price === 0)).toBe(true)
     expect(cart.totals.shipping).toBe(0)

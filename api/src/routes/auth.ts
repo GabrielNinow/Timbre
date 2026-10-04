@@ -19,10 +19,10 @@ export function registerAuthRoutes(app: FastifyInstance, store: Store): void {
     const user = store.userByEmail(body.email)
 
     if (!user || user.password !== body.password) {
-      throw new ApiError('INVALID_CREDENTIALS', 'E-mail ou senha incorretos.')
+      throw new ApiError('INVALID_CREDENTIALS', 'Incorrect email or password.')
     }
     if (user.locked) {
-      throw new ApiError('ACCOUNT_LOCKED', 'Esta conta está bloqueada. Fale com o suporte.')
+      throw new ApiError('ACCOUNT_LOCKED', 'This account is locked. Contact support.')
     }
     if (user.loginDelayMs > 0) await delay(user.loginDelayMs)
 

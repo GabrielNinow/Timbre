@@ -15,23 +15,23 @@ const { t } = useI18n()
 const variants = ['action', 'outline', 'quiet', 'danger'] as const
 
 const cep = ref('89010')
-const sort = ref('relevancia')
+const sort = ref('relevance')
 const freeShipping = ref(true)
-const condition = ref('seminovo')
+const condition = ref('like-new')
 const quantity = ref(3)
 const lastUnit = ref(1)
 
 const sortOptions = [
-  { value: 'relevancia', label: t('kitchenSink.select.options.relevancia') },
-  { value: 'menor-preco', label: t('kitchenSink.select.options.menor-preco') },
-  { value: 'maior-preco', label: t('kitchenSink.select.options.maior-preco') },
-  { value: 'mais-recentes', label: t('kitchenSink.select.options.mais-recentes') },
+  { value: 'relevance', label: t('kitchenSink.select.options.relevance') },
+  { value: 'price-asc', label: t('kitchenSink.select.options.price-asc') },
+  { value: 'price-desc', label: t('kitchenSink.select.options.price-desc') },
+  { value: 'newest', label: t('kitchenSink.select.options.newest') },
 ]
 
 const conditionOptions = [
-  { value: 'novo', label: t('condition.novo') },
-  { value: 'seminovo', label: t('condition.seminovo') },
-  { value: 'usado', label: t('condition.usado') },
+  { value: 'new', label: t('condition.new') },
+  { value: 'like-new', label: t('condition.like-new') },
+  { value: 'used', label: t('condition.used') },
 ]
 </script>
 

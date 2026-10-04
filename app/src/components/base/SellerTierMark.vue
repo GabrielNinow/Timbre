@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<Props>(), {
   testid: 'seller-tier',
 })
 const { t } = useI18n()
-const chevrons: Record<SellerTier, number> = { PRATA: 1, OURO: 2, PLATINA: 3 }
+const chevrons: Record<SellerTier, number> = { SILVER: 1, GOLD: 2, PLATINUM: 3 }
 
 const count = computed(() => (props.tier === null ? 0 : chevrons[props.tier]))
 const tierName = computed(() => (props.tier === null ? '' : t(`tier.${props.tier}`)))

@@ -32,7 +32,7 @@ export function registerCatalogRoutes(app: FastifyInstance, store: Store): void 
   app.get('/api/products', async (request, reply) => {
     const query = parseQuery(productListQuerySchema, request.query)
     const category = query.category ? store.categoryBySlug(query.category) : undefined
-    if (query.category && !category) throw errors.notFound('Categoria não encontrada.')
+    if (query.category && !category) throw errors.notFound('Category not found.')
 
     const filters: CatalogFilters = {
       q: query.q,
@@ -64,13 +64,13 @@ export function registerCatalogRoutes(app: FastifyInstance, store: Store): void 
 
   app.get<{ Params: { id: string } }>('/api/products/:id', async (request, reply) => {
     const product = store.productById(request.params.id)
-    if (!product) throw errors.notFound('Produto não encontrado.')
+    if (!product) throw errors.notFound('Product not found.')
     return send(reply, productDetailSchema, toProductDetail(store, product))
   })
 
   app.get<{ Params: { slug: string } }>('/api/sellers/:slug', async (request, reply) => {
     const seller = store.sellerBySlug(request.params.slug)
-    if (!seller) throw errors.notFound('Vendedor não encontrado.')
+    if (!seller) throw errors.notFound('Seller not found.')
     const query = parseQuery(productListQuerySchema, request.query)
 
     const filters: CatalogFilters = {

@@ -36,11 +36,11 @@ export function stockOf(product: StoreProduct): number {
   return product.stock ?? 0
 }
 
-const CONDITION_ORDER: Condition[] = ['novo', 'seminovo', 'usado']
+const CONDITION_ORDER: Condition[] = ['new', 'like-new', 'used']
 const CONDITION_LABEL: Record<Condition, string> = {
-  novo: 'Novo',
-  seminovo: 'Seminovo',
-  usado: 'Usado',
+  new: 'Novo',
+  'like-new': 'Seminovo',
+  used: 'Usado',
 }
 
 function searchHaystack(store: Store, product: StoreProduct): string {
@@ -105,15 +105,15 @@ export function sortProducts(
   const byId = (a: StoreProduct, b: StoreProduct) => a.id.localeCompare(b.id)
   const sorted = [...products]
   switch (sort) {
-    case 'menor-preco':
+    case 'price-asc':
       return sorted.sort((a, b) => a.price - b.price || byId(a, b))
-    case 'maior-preco':
+    case 'price-desc':
       return sorted.sort((a, b) => b.price - a.price || byId(a, b))
-    case 'mais-recentes':
+    case 'newest':
       return sorted.sort(
         (a, b) => Date.parse(b.listedAt) - Date.parse(a.listedAt) || byId(a, b),
       )
-    case 'relevancia':
+    case 'relevance':
     default:
       return sorted.sort((a, b) => {
         if (needle) {

@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { productSummarySchema } from './catalog.js'
 import { centavos, cepSchema, cepDigits, idString } from './primitives.js'
 
-export const shippingMethodIdSchema = z.enum(['padrao', 'expressa'])
+export const shippingMethodIdSchema = z.enum(['standard', 'express'])
 export type ShippingMethodId = z.infer<typeof shippingMethodIdSchema>
 
 export const shippingOptionSchema = z.object({
@@ -69,7 +69,7 @@ export const updateCartItemBodySchema = z.strictObject({
 export type UpdateCartItemBody = z.infer<typeof updateCartItemBodySchema>
 
 export const couponBodySchema = z.strictObject({
-  code: z.string().trim().min(1, 'Informe um cupom.').max(40).toUpperCase(),
+  code: z.string().trim().min(1, 'Enter a coupon.').max(40).toUpperCase(),
 })
 export type CouponBody = z.infer<typeof couponBodySchema>
 
@@ -83,7 +83,7 @@ export type SetShippingMethodBody = z.infer<typeof setShippingMethodBodySchema>
 
 export const FREE_SHIPPING_THRESHOLD = 30000
 export const SHIPPING_PRICES: Record<ShippingMethodId, number> = {
-  padrao: 2490,
-  expressa: 4990,
+  standard: 2490,
+  express: 4990,
 }
 export const DEFAULT_CEP = '89010000'

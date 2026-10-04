@@ -34,12 +34,12 @@ export class ApiError extends Error {
 }
 
 export const errors = {
-  malformed: (message = 'Requisição malformada.', fields?: Record<string, string>) =>
+  malformed: (message = 'Malformed request.', fields?: Record<string, string>) =>
     new ApiError('MALFORMED_REQUEST', message, fields ? { fields } : {}),
-  validation: (fields: Record<string, string>, message = 'Confira os campos destacados.') =>
+  validation: (fields: Record<string, string>, message = 'Check the highlighted fields.') =>
     new ApiError('VALIDATION_ERROR', message, { fields }),
-  unauthorized: (message = 'Faça login para continuar.') => new ApiError('UNAUTHORIZED', message),
-  forbidden: (message = 'Este pedido não pertence à sua conta.') => new ApiError('FORBIDDEN', message),
-  notFound: (message = 'Não encontramos o que você procura.') => new ApiError('NOT_FOUND', message),
-  internal: (message = 'Falha inesperada no servidor.') => new ApiError('INTERNAL_ERROR', message),
+  unauthorized: (message = 'Sign in to continue.') => new ApiError('UNAUTHORIZED', message),
+  forbidden: (message = 'This order does not belong to your account.') => new ApiError('FORBIDDEN', message),
+  notFound: (message = 'We could not find what you are looking for.') => new ApiError('NOT_FOUND', message),
+  internal: (message = 'Unexpected server failure.') => new ApiError('INTERNAL_ERROR', message),
 }

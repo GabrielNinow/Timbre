@@ -109,16 +109,16 @@ export const shippingAddress = {
 export function orderPayload(
   overrides: {
     cardNumber?: string
-    method?: 'cartao' | 'pix' | 'boleto'
-    selectedShippingId?: 'padrao' | 'expressa'
+    method?: 'card' | 'pix' | 'boleto'
+    selectedShippingId?: 'standard' | 'express'
   } = {},
 ) {
-  const method = overrides.method ?? 'cartao'
+  const method = overrides.method ?? 'card'
   return {
     shipping: shippingAddress,
-    selectedShippingId: overrides.selectedShippingId ?? 'padrao',
+    selectedShippingId: overrides.selectedShippingId ?? 'standard',
     payment:
-      method === 'cartao'
+      method === 'card'
         ? { method, card: { ...APPROVED_CARD, ...(overrides.cardNumber ? { number: overrides.cardNumber } : {}) } }
         : { method },
   }

@@ -69,7 +69,7 @@ pages.
   operable.
 - The sponsored row is labelled and visually distinct from organic results.
 - Grid reflows at all four breakpoints without card height inconsistency.
-- axe passes on `/`, `/busca`, `/c/guitarras`.
+- axe passes on `/`, `/search`, `/c/guitars`.
 
 ---
 
@@ -210,8 +210,8 @@ Login, register, route guards with redirect round-trip, the three checkout steps
 order creation, confirmation, order history.
 
 **Acceptance**
-- Visiting `/checkout/entrega` unauthenticated redirects to
-  `/entrar?redirect=...` and returns after login.
+- Visiting `/checkout/shipping` unauthenticated redirects to
+  `/sign-in?redirect=...` and returns after login.
 - All four fixture accounts behave as documented, including the locked account
   and the slow login.
 - Validation runs on blur and on submit; submit failure moves focus to the first

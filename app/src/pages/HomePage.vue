@@ -9,7 +9,7 @@ import { searchRoute } from '@/router/paths'
 const { t } = useI18n()
 const perPage = String(HOME_ROW_SIZE)
 const deals = new URLSearchParams({ onSale: 'true', perPage })
-const recent = new URLSearchParams({ sort: 'mais-recentes', perPage })
+const recent = new URLSearchParams({ sort: 'newest', perPage })
 const sponsored = new URLSearchParams({ sponsored: 'true', perPage })
 </script>
 
@@ -22,7 +22,7 @@ const sponsored = new URLSearchParams({ sponsored: 'true', perPage })
       testid="home-recent"
       :heading="t('home.newHeading')"
       :params="recent"
-      :see-all-to="searchRoute({ ordem: 'mais-recentes' })"
+      :see-all-to="searchRoute({ sort: 'newest' })"
     />
     <HomeProductSection
       testid="home-sponsored"

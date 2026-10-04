@@ -58,7 +58,7 @@ export const orders: readonly OrderFixture[] = Object.freeze([
   {
     number: 'TMB-100236',
     userId: 'u-02',
-    status: 'entregue',
+    status: 'delivered',
     createdAt: '2025-12-03T18:24:00Z',
     items: [
       { productId: 'p-0601', variantOptionId: null, quantity: 2, unitPrice: 8990 },
@@ -68,13 +68,13 @@ export const orders: readonly OrderFixture[] = Object.freeze([
     couponDiscount: 0,
     shipping: {
       address: blumenau,
-      methodId: 'padrao',
+      methodId: 'standard',
       methodLabel: 'Entrega padrão',
       price: 2490,
       etaDays: 2,
     },
     payment: {
-      method: 'cartao',
+      method: 'card',
       cardBrand: 'visa',
       cardLast4: '1111',
       pixPayload: null,
@@ -85,14 +85,14 @@ export const orders: readonly OrderFixture[] = Object.freeze([
   {
     number: 'TMB-100237',
     userId: 'u-05',
-    status: 'entregue',
+    status: 'delivered',
     createdAt: '2026-01-14T13:10:00Z',
     items: [{ productId: 'p-0501', variantOptionId: null, quantity: 1, unitPrice: 3990 }],
     couponCode: null,
     couponDiscount: 0,
     shipping: {
       address: curitiba,
-      methodId: 'padrao',
+      methodId: 'standard',
       methodLabel: 'Entrega padrão',
       price: 2490,
       etaDays: 4,
@@ -109,20 +109,20 @@ export const orders: readonly OrderFixture[] = Object.freeze([
   {
     number: 'TMB-100238',
     userId: 'u-05',
-    status: 'enviado',
+    status: 'shipped',
     createdAt: '2026-05-21T15:02:00Z',
     items: [{ productId: 'p-0402', variantOptionId: null, quantity: 1, unitPrice: 129900 }],
     couponCode: null,
     couponDiscount: 0,
     shipping: {
       address: curitiba,
-      methodId: 'expressa',
+      methodId: 'express',
       methodLabel: 'Entrega expressa',
       price: 4990,
       etaDays: 2,
     },
     payment: {
-      method: 'cartao',
+      method: 'card',
       cardBrand: 'visa',
       cardLast4: '1111',
       pixPayload: null,
@@ -133,7 +133,7 @@ export const orders: readonly OrderFixture[] = Object.freeze([
   {
     number: 'TMB-100239',
     userId: 'u-02',
-    status: 'enviado',
+    status: 'shipped',
     createdAt: '2026-06-02T10:41:00Z',
     items: [
       { productId: 'p-0504', variantOptionId: null, quantity: 1, unitPrice: 149900 },
@@ -143,13 +143,13 @@ export const orders: readonly OrderFixture[] = Object.freeze([
     couponDiscount: 16280,
     shipping: {
       address: blumenau,
-      methodId: 'padrao',
+      methodId: 'standard',
       methodLabel: 'Entrega padrão',
       price: 0,
       etaDays: 2,
     },
     payment: {
-      method: 'cartao',
+      method: 'card',
       cardBrand: 'visa',
       cardLast4: '1111',
       pixPayload: null,
@@ -160,14 +160,14 @@ export const orders: readonly OrderFixture[] = Object.freeze([
   {
     number: 'TMB-100240',
     userId: 'u-02',
-    status: 'aguardando_pagamento',
+    status: 'awaiting_payment',
     createdAt: '2026-08-05T09:15:00Z',
     items: [{ productId: 'p-0308', variantOptionId: null, quantity: 2, unitPrice: 8990 }],
     couponCode: null,
     couponDiscount: 0,
     shipping: {
       address: blumenau,
-      methodId: 'padrao',
+      methodId: 'standard',
       methodLabel: 'Entrega padrão',
       price: 2490,
       etaDays: 2,
