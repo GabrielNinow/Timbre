@@ -19,12 +19,12 @@ import {
 
 const full: ListingState = {
   q: 'stratocaster',
-  category: 'guitarras',
+  category: 'guitars',
   brands: ['Fender', 'Gibson'],
-  conditions: ['novo', 'usado'],
+  conditions: ['new', 'used'],
   price: { min: 20000, max: 50000 },
   freeShipping: true,
-  sort: 'menor-preco',
+  sort: 'price-asc',
   page: 3,
 }
 
@@ -33,13 +33,13 @@ describe('parseListing and serializeListing', () => {
     const query = serializeListing(full)
     expect(query).toEqual({
       q: 'stratocaster',
-      categoria: 'guitarras',
-      marca: ['Fender', 'Gibson'],
-      condicao: ['novo', 'usado'],
-      preco: '20000-50000',
-      frete: 'true',
-      ordem: 'menor-preco',
-      pagina: '3',
+      category: 'guitars',
+      brand: ['Fender', 'Gibson'],
+      condition: ['new', 'used'],
+      price: '20000-50000',
+      freeShipping: 'true',
+      sort: 'price-asc',
+      page: '3',
     })
     expect(parseListing(query)).toEqual(full)
   })
@@ -50,40 +50,40 @@ describe('parseListing and serializeListing', () => {
   })
 
   it('writes repeatable values in a stable order regardless of input order', () => {
-    const a = parseListing({ marca: ['Gibson', 'Fender'], condicao: ['usado', 'novo'] })
-    const b = parseListing({ marca: ['Fender', 'Gibson'], condicao: ['novo', 'usado'] })
+    const a = parseListing({ brand: ['Gibson', 'Fender'], condition: ['used', 'new'] })
+    const b = parseListing({ brand: ['Fender', 'Gibson'], condition: ['new', 'used'] })
     expect(serializeListing(a)).toEqual(serializeListing(b))
-    expect(serializeListing(a).condicao).toEqual(['novo', 'usado'])
+    expect(serializeListing(a).condition).toEqual(['new', 'used'])
   })
 
   it('accepts a single repeatable value given as a plain string', () => {
-    expect(parseListing({ marca: 'Fender', condicao: 'seminovo' })).toMatchObject({
+    expect(parseListing({ brand: 'Fender', condition: 'like-new' })).toMatchObject({
       brands: ['Fender'],
-      conditions: ['seminovo'],
+      conditions: ['like-new'],
     })
   })
 
   it('drops unknown and malformed values instead of failing', () => {
     const state = parseListing({
-      condicao: ['novo', 'quebrado'],
-      ordem: 'aleatorio',
-      pagina: '-2',
-      preco: 'barato',
-      frete: 'sim',
-      categoria: 'Not A Slug',
-      marca: ['', '  '],
+      condition: ['new', 'broken'],
+      sort: 'random',
+      page: '-2',
+      price: 'cheap',
+      freeShipping: 'yes',
+      category: 'Not A Slug',
+      brand: ['', '  '],
       cor: 'azul',
     })
-    expect(state).toEqual({ ...emptyListing(), conditions: ['novo'] })
+    expect(state).toEqual({ ...emptyListing(), conditions: ['new'] })
   })
 
   it('rejects fractional and zero pages', () => {
-    expect(parseListing({ pagina: '2.5' }).page).toBe(1)
-    expect(parseListing({ pagina: '0' }).page).toBe(1)
+    expect(parseListing({ page: '2.5' }).page).toBe(1)
+    expect(parseListing({ page: '0' }).page).toBe(1)
   })
 
   it('dedupes brands and trims the search text', () => {
-    const state = parseListing({ marca: ['Fender', 'Fender'], q: '  strat  ' })
+    const state = parseListing({ brand: ['Fender', 'Fender'], q: '  strat  ' })
     expect(state.brands).toEqual(['Fender'])
     expect(state.q).toBe('strat')
     expect(parseListing({ q: '   ' }).q).toBeNull()
@@ -94,35 +94,35 @@ describe('parseListing and serializeListing', () => {
   })
 
   it('ignores null entries Vue Router can hand over', () => {
-    expect(parseListing({ marca: [null, 'Fender'], q: null }).brands).toEqual(['Fender'])
+    expect(parseListing({ brand: [null, 'Fender'], q: null }).brands).toEqual(['Fender'])
   })
 })
 
 describe('pinned category', () => {
-  const context = { pinnedCategory: 'guitarras' }
+  const context = { pinnedCategory: 'guitars' }
 
-  it('comes from the path, overriding any categoria in the query', () => {
-    expect(parseListing({ categoria: 'teclados' }, context).category).toBe('guitarras')
+  it('comes from the path, overriding any category in the query', () => {
+    expect(parseListing({ category: 'keyboards' }, context).category).toBe('guitars')
   })
 
   it('never appears in the serialized query', () => {
-    const state = parseListing({ marca: 'Fender' }, context)
-    expect(serializeListing(state, context)).toEqual({ marca: ['Fender'] })
+    const state = parseListing({ brand: 'Fender' }, context)
+    expect(serializeListing(state, context)).toEqual({ brand: ['Fender'] })
   })
 
   it('never surfaces as a removable chip and survives clearing', () => {
-    const state = parseListing({ marca: 'Fender' }, context)
+    const state = parseListing({ brand: 'Fender' }, context)
     expect(activeFilters(state, context)).toEqual([{ facet: 'brand', value: 'Fender' }])
-    expect(clearFilters(state, context).category).toBe('guitarras')
+    expect(clearFilters(state, context).category).toBe('guitars')
   })
 
   it('still reaches the API', () => {
     const state = parseListing({}, context)
-    expect(toApiParams(state).get('category')).toBe('guitarras')
+    expect(toApiParams(state).get('category')).toBe('guitars')
   })
 })
 
-describe('preco', () => {
+describe('price', () => {
   it('parses bounded and open-ended ranges', () => {
     expect(parsePrice('20000-50000')).toEqual({ min: 20000, max: 50000 })
     expect(parsePrice('400000+')).toEqual({ min: 400000, max: null })
@@ -137,9 +137,9 @@ describe('preco', () => {
 
   it('uses exactly the value format of every price bucket', () => {
     for (const bucket of PRICE_BUCKETS) {
-      const state = parseListing({ preco: bucket.value })
+      const state = parseListing({ price: bucket.value })
       expect(state.price).toEqual({ min: bucket.min, max: bucket.max })
-      expect(serializeListing(state).preco).toBe(bucket.value)
+      expect(serializeListing(state).price).toBe(bucket.value)
     }
   })
 
@@ -148,7 +148,7 @@ describe('preco', () => {
     expect(typed).toEqual({ ok: true, range: { min: 20000, max: 50000 } })
     if (!typed.ok) return
     const fromTyped = serializeListing(updateListing(emptyListing(), { price: typed.range }))
-    const fromPreset = serializeListing(parseListing({ preco: '20000-50000' }))
+    const fromPreset = serializeListing(parseListing({ price: '20000-50000' }))
     expect(fromTyped).toEqual(fromPreset)
   })
 })
@@ -178,8 +178,8 @@ describe('changes reset the page', () => {
 
   it('on any filter or sort change', () => {
     expect(toggleBrand(onPage3, 'Fender').page).toBe(1)
-    expect(toggleCondition(onPage3, 'novo').page).toBe(1)
-    expect(updateListing(onPage3, { sort: 'maior-preco' }).page).toBe(1)
+    expect(toggleCondition(onPage3, 'new').page).toBe(1)
+    expect(updateListing(onPage3, { sort: 'price-desc' }).page).toBe(1)
     expect(updateListing(onPage3, { freeShipping: true }).page).toBe(1)
   })
 
@@ -192,9 +192,9 @@ describe('changes reset the page', () => {
     const once = toggleBrand(emptyListing(), 'Fender')
     expect(once.brands).toEqual(['Fender'])
     expect(toggleBrand(once, 'Fender').brands).toEqual([])
-    expect(toggleCondition(toggleCondition(emptyListing(), 'usado'), 'novo').conditions).toEqual([
-      'novo',
-      'usado',
+    expect(toggleCondition(toggleCondition(emptyListing(), 'used'), 'new').conditions).toEqual([
+      'new',
+      'used',
     ])
   })
 })
@@ -202,11 +202,11 @@ describe('changes reset the page', () => {
 describe('chips', () => {
   it('lists every active filter in rail order, without search text or sort', () => {
     expect(activeFilters(full)).toEqual([
-      { facet: 'category', value: 'guitarras' },
+      { facet: 'category', value: 'guitars' },
       { facet: 'brand', value: 'Fender' },
       { facet: 'brand', value: 'Gibson' },
-      { facet: 'condition', value: 'novo' },
-      { facet: 'condition', value: 'usado' },
+      { facet: 'condition', value: 'new' },
+      { facet: 'condition', value: 'used' },
       { facet: 'price', value: { min: 20000, max: 50000 } },
       { facet: 'freeShipping' },
     ])
@@ -224,7 +224,7 @@ describe('chips', () => {
   it('clears every filter but keeps search text and sort', () => {
     const cleared = clearFilters(full)
     expect(activeFilters(cleared)).toEqual([])
-    expect(cleared).toMatchObject({ q: 'stratocaster', sort: 'menor-preco', page: 1 })
+    expect(cleared).toMatchObject({ q: 'stratocaster', sort: 'price-asc', page: 1 })
   })
 })
 
@@ -232,7 +232,7 @@ describe('toApiParams', () => {
   it('maps every field onto the API query and passes the contract', () => {
     const params = toApiParams(full)
     expect(params.getAll('brand')).toEqual(['Fender', 'Gibson'])
-    expect(params.getAll('condition')).toEqual(['novo', 'usado'])
+    expect(params.getAll('condition')).toEqual(['new', 'used'])
     expect(params.get('minPrice')).toBe('20000')
     expect(params.get('maxPrice')).toBe('50000')
     expect(params.get('freeShipping')).toBe('true')
@@ -247,14 +247,14 @@ describe('toApiParams', () => {
   })
 
   it('sends no ceiling for an open-ended range', () => {
-    const params = toApiParams(parseListing({ preco: '400000+' }))
+    const params = toApiParams(parseListing({ price: '400000+' }))
     expect(params.get('minPrice')).toBe('400000')
     expect(params.has('maxPrice')).toBe(false)
   })
 
   it('is deterministic for equivalent states', () => {
-    const a = parseListing({ marca: ['Gibson', 'Fender'] })
-    const b = parseListing({ marca: ['Fender', 'Gibson'] })
+    const a = parseListing({ brand: ['Gibson', 'Fender'] })
+    const b = parseListing({ brand: ['Fender', 'Gibson'] })
     expect(toApiParams(a).toString()).toBe(toApiParams(b).toString())
   })
 })

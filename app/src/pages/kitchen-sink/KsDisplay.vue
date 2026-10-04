@@ -38,9 +38,9 @@ const badges: readonly BadgeKind[] = ['free-shipping', 'discount', 'last-unit', 
 
   <KsSection id="spec" :title="t('kitchenSink.sections.spec')">
     <KsRow :label="t('kitchenSink.spec.full')" stacked>
-      <SpecStrip :year="2019" condition="seminovo" state="SP" tier="PLATINA" />
-      <SpecStrip :year="2023" condition="novo" state="RJ" tier="OURO" />
-      <SpecStrip condition="usado" state="MG" />
+      <SpecStrip :year="2019" condition="like-new" state="SP" tier="PLATINUM" />
+      <SpecStrip :year="2023" condition="new" state="RJ" tier="GOLD" />
+      <SpecStrip condition="used" state="MG" />
     </KsRow>
   </KsSection>
 
@@ -52,10 +52,10 @@ const badges: readonly BadgeKind[] = ['free-shipping', 'discount', 'last-unit', 
 
   <KsSection id="tier" :title="t('kitchenSink.sections.tier')">
     <KsRow :label="t('kitchenSink.states.default')">
-      <SellerTierMark tier="PRATA" show-label />
-      <SellerTierMark tier="OURO" show-label />
-      <SellerTierMark tier="PLATINA" show-label />
-      <SellerTierMark tier="PLATINA" />
+      <SellerTierMark tier="SILVER" show-label />
+      <SellerTierMark tier="GOLD" show-label />
+      <SellerTierMark tier="PLATINUM" show-label />
+      <SellerTierMark tier="PLATINUM" />
       <SellerTierMark :tier="null" />
     </KsRow>
   </KsSection>

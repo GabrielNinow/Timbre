@@ -31,14 +31,14 @@
     "srDiscounted": "De {list} por {value}, {percent}% de desconto"
   },
   "condition": {
-    "novo": "Novo",
-    "seminovo": "Seminovo",
-    "usado": "Usado"
+    "new": "Novo",
+    "like-new": "Seminovo",
+    "used": "Usado"
   },
   "tier": {
-    "PRATA": "Prata",
-    "OURO": "Ouro",
-    "PLATINA": "Platina"
+    "SILVER": "Prata",
+    "GOLD": "Ouro",
+    "PLATINUM": "Platina"
   },
   "tierMark": {
     "label": "Vendedor nível {tier}",
@@ -169,10 +169,10 @@
     "select": {
       "label": "Ordenar por",
       "options": {
-        "relevancia": "Mais relevantes",
-        "menor-preco": "Menor preço",
-        "maior-preco": "Maior preço",
-        "mais-recentes": "Mais recentes"
+        "relevance": "Mais relevantes",
+        "price-asc": "Menor preço",
+        "price-desc": "Maior preço",
+        "newest": "Mais recentes"
       }
     },
     "checkbox": {
@@ -297,10 +297,10 @@
     "clearAll": "Limpar tudo",
     "sortLabel": "Ordenar por",
     "sort": {
-      "relevancia": "Mais relevantes",
-      "menor-preco": "Menor preço",
-      "maior-preco": "Maior preço",
-      "mais-recentes": "Mais recentes"
+      "relevance": "Mais relevantes",
+      "price-asc": "Menor preço",
+      "price-desc": "Maior preço",
+      "newest": "Mais recentes"
     },
     "loading": "Carregando resultados",
     "emptyTitle": "Nenhum resultado",

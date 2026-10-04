@@ -16,5 +16,5 @@ export function searchRoute(query: ListingQuery = {}): RouteLocationRaw {
 }
 
 export function sellerPath(slug: string): string {
-  return `/v/${slug}`
+  return `/s/${slug}`
 }
