@@ -1,6 +1,8 @@
 import {
   BRL_PER_USD,
   categoryListSchema,
+  notifyMeBodySchema,
+  notifyMeResponseSchema,
   exchangeRateResponseSchema,
   productDetailSchema,
   productListQuerySchema,
@@ -19,7 +21,7 @@ import { requestCurrency } from '../currency.js'
 import { errors } from '../errors.js'
 import { toProductDetail, toProductSummary } from '../mappers.js'
 import type { Store } from '../store.js'
-import { parseQuery, send } from '../validate.js'
+import { parseBody, parseQuery, send } from '../validate.js'
 
 export function registerCatalogRoutes(app: FastifyInstance, store: Store): void {
   app.get('/api/categories', async (_request, reply) => {
@@ -74,6 +76,14 @@ export function registerCatalogRoutes(app: FastifyInstance, store: Store): void 
     const product = store.productById(request.params.id)
     if (!product) throw errors.notFound('Product not found.')
     return send(reply, productDetailSchema, toProductDetail(store, product, requestCurrency(request)))
+  })
+
+  app.post<{ Params: { id: string } }>('/api/products/:id/notify', async (request, reply) => {
+    const product = store.productById(request.params.id)
+    if (!product) throw errors.notFound('Product not found.')
+    const body = parseBody(notifyMeBodySchema, request.body)
+    store.requestNotify(product.id, body.email)
+    return send(reply, notifyMeResponseSchema, { ok: true }, 202)
   })
 
   app.get<{ Params: { slug: string } }>('/api/sellers/:slug', async (request, reply) => {

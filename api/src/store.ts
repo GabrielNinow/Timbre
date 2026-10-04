@@ -106,6 +106,8 @@ export class Store {
   orders: Order[] = []
   carts = new Map<string, StoreCart>()
   failures: ArmedFailure[] = []
+  /** Notify-me requests, `productId` → emails. Nothing is ever sent. */
+  notifyRequests = new Map<string, Set<string>>()
 
   readonly sellers: readonly SellerFixture[] = sellers
   readonly categories: readonly CategoryFixture[] = categories
@@ -128,12 +130,19 @@ export class Store {
     this.users = structuredClone(userFixtures) as unknown as StoreUser[]
     this.carts = new Map()
     this.failures = []
+    this.notifyRequests = new Map()
     this.now = FIXTURE_NOW
     this.cartSeq = FIRST_CART_SEQUENCE
     this.orderSeq = FIRST_ORDER_NUMBER
     this.userSeq = NEXT_USER_SEQUENCE
     this.lineSeq = 1
     this.orders = orderFixtures.map((fixture) => this.buildSeededOrder(fixture))
+  }
+
+  requestNotify(productId: string, email: string): void {
+    const emails = this.notifyRequests.get(productId) ?? new Set<string>()
+    emails.add(email)
+    this.notifyRequests.set(productId, emails)
   }
 
   private buildSeededOrder(fixture: (typeof orderFixtures)[number]): Order {

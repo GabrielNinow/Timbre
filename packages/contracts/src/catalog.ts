@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { emailSchema } from './auth.js'
 import {
   currencySchema,
   centavos,
@@ -209,4 +210,11 @@ export const exchangeRateResponseSchema = z.object({
   rate: z.number().int().positive(),
 })
 export type ExchangeRateResponse = z.infer<typeof exchangeRateResponseSchema>
+
+/** `POST /api/products/:id/notify`: the notify-me form on a sold-out listing. */
+export const notifyMeBodySchema = z.strictObject({ email: emailSchema })
+export type NotifyMeBody = z.infer<typeof notifyMeBodySchema>
+
+export const notifyMeResponseSchema = z.object({ ok: z.literal(true) })
+export type NotifyMeResponse = z.infer<typeof notifyMeResponseSchema>
 

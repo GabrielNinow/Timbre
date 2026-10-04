@@ -172,3 +172,13 @@ describe('seed integrity', () => {
     expect(byEmail('lento@timbre.test').loginDelayMs).toBe(3000)
   })
 })
+
+describe('listing content stays as sellers wrote it', () => {
+  it('never leaks an English condition code into a spec value', () => {
+    const leaks = products.flatMap((product) =>
+      product.specs.filter((spec) => /^(new|like-new|used)$/i.test(spec.value)).map((spec) => `${product.id} ${spec.label}=${spec.value}`),
+    )
+    expect(leaks).toEqual([])
+  })
+})
+
