@@ -1,5 +1,7 @@
 import {
+  BRL_PER_USD,
   categoryListSchema,
+  exchangeRateResponseSchema,
   productDetailSchema,
   productListQuerySchema,
   productListResponseSchema,
@@ -13,6 +15,7 @@ import {
   sortProducts,
   type CatalogFilters,
 } from '../catalog.js'
+import { requestCurrency } from '../currency.js'
 import { errors } from '../errors.js'
 import { toProductDetail, toProductSummary } from '../mappers.js'
 import type { Store } from '../store.js'
@@ -27,6 +30,10 @@ export function registerCatalogRoutes(app: FastifyInstance, store: Store): void 
     }))
     return send(reply, categoryListSchema, { items })
   })
+
+  app.get('/api/exchange-rate', async (_request, reply) =>
+    send(reply, exchangeRateResponseSchema, { base: 'USD', quote: 'BRL', rate: BRL_PER_USD }),
+  )
 
   app.get('/api/products', async (request, reply) => {
     const query = parseQuery(productListQuerySchema, request.query)
@@ -44,15 +51,17 @@ export function registerCatalogRoutes(app: FastifyInstance, store: Store): void 
       freeShipping: query.freeShipping,
       sponsored: query.sponsored,
       onSale: query.onSale,
+      currency: query.currency,
     }
 
     const matched = filterProducts(store, store.products, filters)
     const ordered = sortProducts(store, matched, query.sort, query.q)
     const items = paginate(ordered, query.page, query.perPage).map((product) =>
-      toProductSummary(store, product),
+      toProductSummary(store, product, query.currency),
     )
 
     return send(reply, productListResponseSchema, {
+      currency: query.currency,
       items,
       page: query.page,
       perPage: query.perPage,
@@ -64,7 +73,7 @@ export function registerCatalogRoutes(app: FastifyInstance, store: Store): void 
   app.get<{ Params: { id: string } }>('/api/products/:id', async (request, reply) => {
     const product = store.productById(request.params.id)
     if (!product) throw errors.notFound('Product not found.')
-    return send(reply, productDetailSchema, toProductDetail(store, product))
+    return send(reply, productDetailSchema, toProductDetail(store, product, requestCurrency(request)))
   })
 
   app.get<{ Params: { slug: string } }>('/api/sellers/:slug', async (request, reply) => {
@@ -83,11 +92,13 @@ export function registerCatalogRoutes(app: FastifyInstance, store: Store): void 
       freeShipping: query.freeShipping,
       sponsored: query.sponsored,
       onSale: query.onSale,
+      currency: query.currency,
     }
     const matched = filterProducts(store, store.products, filters)
     const ordered = sortProducts(store, matched, query.sort, query.q)
 
     return send(reply, sellerPageResponseSchema, {
+      currency: query.currency,
       seller: {
         id: seller.id,
         name: seller.name,
@@ -105,7 +116,7 @@ export function registerCatalogRoutes(app: FastifyInstance, store: Store): void 
       },
       products: {
         items: paginate(ordered, query.page, query.perPage).map((product) =>
-          toProductSummary(store, product),
+          toProductSummary(store, product, query.currency),
         ),
         page: query.page,
         perPage: query.perPage,

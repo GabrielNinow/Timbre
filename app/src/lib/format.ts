@@ -1,14 +1,18 @@
-import { DEFAULT_LANGUAGE, type PageLanguage } from '@/lib/language'
+import { DEFAULT_LANGUAGE, currencyFor, type PageCurrency, type PageLanguage } from '@/lib/language'
 
-/** Formatting follows the Page language. Money stays BRL until milestone 3.3. */
+/** Numbers format by Page language; money is in the page's Currency unless told otherwise. */
 const cache = new Map<string, Intl.NumberFormat>()
-function formatter(language: PageLanguage, kind: 'money' | 'money-whole' | 'decimal1' | 'integer') {
-  const key = `${language}:${kind}`
+function formatter(
+  language: PageLanguage,
+  kind: 'money' | 'money-whole' | 'decimal1' | 'integer',
+  currency: PageCurrency = currencyFor(language),
+) {
+  const key = `${language}:${kind}:${currency}`
   let found = cache.get(key)
   if (!found) {
     const options: Record<typeof kind, Intl.NumberFormatOptions> = {
-      money: { style: 'currency', currency: 'BRL' },
-      'money-whole': { style: 'currency', currency: 'BRL', maximumFractionDigits: 0, minimumFractionDigits: 0 },
+      money: { style: 'currency', currency },
+      'money-whole': { style: 'currency', currency, maximumFractionDigits: 0, minimumFractionDigits: 0 },
       decimal1: { minimumFractionDigits: 1, maximumFractionDigits: 1 },
       integer: { maximumFractionDigits: 0 },
     }
@@ -18,15 +22,24 @@ function formatter(language: PageLanguage, kind: 'money' | 'money-whole' | 'deci
   return found
 }
 
-export function formatPrice(centavos: number, language: PageLanguage = DEFAULT_LANGUAGE): string {
-  return formatter(language, 'money').format(centavos / 100)
+/** `cents` of `currency`, which defaults to the Page language's Currency. */
+export function formatPrice(
+  cents: number,
+  language: PageLanguage = DEFAULT_LANGUAGE,
+  currency: PageCurrency = currencyFor(language),
+): string {
+  return formatter(language, 'money', currency).format(cents / 100)
 }
 
 /** Drops the cents when they are zero: R$ 200 rather than R$ 200,00. For range labels. */
-export function formatPriceShort(centavos: number, language: PageLanguage = DEFAULT_LANGUAGE): string {
-  return centavos % 100 === 0
-    ? formatter(language, 'money-whole').format(centavos / 100)
-    : formatPrice(centavos, language)
+export function formatPriceShort(
+  cents: number,
+  language: PageLanguage = DEFAULT_LANGUAGE,
+  currency: PageCurrency = currencyFor(language),
+): string {
+  return cents % 100 === 0
+    ? formatter(language, 'money-whole', currency).format(cents / 100)
+    : formatPrice(cents, language, currency)
 }
 
 export interface PriceParts {
@@ -35,8 +48,12 @@ export interface PriceParts {
   decimalSeparator: string
   cents: string
 }
-export function splitPrice(centavos: number, language: PageLanguage = DEFAULT_LANGUAGE): PriceParts {
-  const parts = formatter(language, 'money').formatToParts(centavos / 100)
+export function splitPrice(
+  amount: number,
+  language: PageLanguage = DEFAULT_LANGUAGE,
+  moneyCurrency: PageCurrency = currencyFor(language),
+): PriceParts {
+  const parts = formatter(language, 'money', moneyCurrency).formatToParts(amount / 100)
   let currency = ''
   let integerPart = ''
   let decimalSeparator = ','

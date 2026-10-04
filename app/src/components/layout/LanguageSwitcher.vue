@@ -3,7 +3,8 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { usePageLanguage } from '@/composables/usePageLanguage'
-import { PAGE_LANGUAGES, localizePath } from '@/lib/language'
+import { PAGE_LANGUAGES } from '@/lib/language'
+import { switchLanguagePath } from '@/lib/listing'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -13,7 +14,7 @@ const current = usePageLanguage()
 const options = computed(() =>
   PAGE_LANGUAGES.map((language) => ({
     language,
-    to: localizePath(route.fullPath, language),
+    to: switchLanguagePath(route.fullPath, language),
     active: language === current.value,
   })),
 )

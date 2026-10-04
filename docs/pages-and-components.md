@@ -22,7 +22,10 @@ Every route also exists under an `/en` prefix, which renders it in English
 (`/en/search`, `/en/c/guitars`). Portuguese is the unprefixed default. The
 Page language comes from the address alone; a header switcher (`language-switcher`,
 `language-option` + `data-language`) moves to the same path and query in the
-other language. Unknown prefixes such as `/fr/...` render the not-found page.
+other language. Unknown prefixes such as `/fr/...` render the not-found page. Prices follow the language's Currency: reais
+unprefixed, dollars under `/en`. Because the `price` filter is in the page's
+currency cents, the switcher converts it along with the language
+(`/search?price=20000-50000` becomes `/en/search?price=4000-10000`).
 
 Every filter and pagination change writes to the URL. A listing page must be fully
 reconstructible from its URL alone — this is what lets tests deep-link into a

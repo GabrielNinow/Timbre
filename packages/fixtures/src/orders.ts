@@ -1,4 +1,4 @@
-import type { Address, CardBrand, OrderStatus, PaymentMethod, ShippingMethodId } from '@timbre/contracts'
+import type { Address, CardBrand, Currency, OrderStatus, PaymentMethod, ShippingMethodId } from '@timbre/contracts'
 
 export interface OrderItemFixture {
   readonly productId: string
@@ -11,6 +11,8 @@ export interface OrderFixture {
   readonly number: string
   readonly userId: string
   readonly status: OrderStatus
+  /** Every fixture order was charged in reais. */
+  readonly currency: Currency
   readonly createdAt: string
   readonly items: readonly OrderItemFixture[]
   readonly couponCode: string | null
@@ -58,6 +60,7 @@ export const orders: readonly OrderFixture[] = Object.freeze([
     number: 'TMB-100236',
     userId: 'u-02',
     status: 'delivered',
+    currency: 'BRL',
     createdAt: '2025-12-03T18:24:00Z',
     items: [
       { productId: 'p-0601', variantOptionId: null, quantity: 2, unitPrice: 8990 },
@@ -84,6 +87,7 @@ export const orders: readonly OrderFixture[] = Object.freeze([
     number: 'TMB-100237',
     userId: 'u-05',
     status: 'delivered',
+    currency: 'BRL',
     createdAt: '2026-01-14T13:10:00Z',
     items: [{ productId: 'p-0501', variantOptionId: null, quantity: 1, unitPrice: 3990 }],
     couponCode: null,
@@ -107,6 +111,7 @@ export const orders: readonly OrderFixture[] = Object.freeze([
     number: 'TMB-100238',
     userId: 'u-05',
     status: 'shipped',
+    currency: 'BRL',
     createdAt: '2026-05-21T15:02:00Z',
     items: [{ productId: 'p-0402', variantOptionId: null, quantity: 1, unitPrice: 129900 }],
     couponCode: null,
@@ -130,6 +135,7 @@ export const orders: readonly OrderFixture[] = Object.freeze([
     number: 'TMB-100239',
     userId: 'u-02',
     status: 'shipped',
+    currency: 'BRL',
     createdAt: '2026-06-02T10:41:00Z',
     items: [
       { productId: 'p-0504', variantOptionId: null, quantity: 1, unitPrice: 149900 },
@@ -156,6 +162,7 @@ export const orders: readonly OrderFixture[] = Object.freeze([
     number: 'TMB-100240',
     userId: 'u-02',
     status: 'awaiting_payment',
+    currency: 'BRL',
     createdAt: '2026-08-05T09:15:00Z',
     items: [{ productId: 'p-0308', variantOptionId: null, quantity: 2, unitPrice: 8990 }],
     couponCode: null,

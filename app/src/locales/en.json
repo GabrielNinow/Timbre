@@ -281,12 +281,12 @@
       "freeShipping": "Shipping"
     },
     "freeShippingOption": "Free shipping only",
-    "priceMin": "Min (R$)",
-    "priceMax": "Max (R$)",
+    "priceMin": "Min ($)",
+    "priceMax": "Max ($)",
     "priceApplyShort": "Apply",
     "priceError": {
       "min-above-max": "The minimum cannot be higher than the maximum.",
-      "invalid": "Enter amounts in reais, like 1,299.90."
+      "invalid": "Enter amounts in dollars, like 1,299.90."
     },
     "priceRange": "{min} to {max}",
     "priceFrom": "{min} and up",

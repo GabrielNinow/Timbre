@@ -1,5 +1,6 @@
-import type { ShippingOption, UF } from '@timbre/contracts'
+import type { Currency, ShippingOption, UF } from '@timbre/contracts'
 import { cepRanges } from '@timbre/fixtures'
+import { convert } from './currency.js'
 import { ApiError } from './errors.js'
 import type { Store } from './store.js'
 
@@ -21,7 +22,7 @@ export function lookupCep(store: Store, cep: string): CepInfo {
       })
     }
     if (fixture.behaviour === 'server-error') {
-      throw new ApiError('INTERNAL_ERROR', 'A consulta de CEP falhou. Tente novamente.')
+      throw new ApiError('INTERNAL_ERROR', 'The CEP lookup failed. Try again.')
     }
     return {
       cep: fixture.cep,
@@ -57,18 +58,23 @@ export interface ShippingContext {
   allFree: boolean
 }
 
-export function buildShippingOptions(info: CepInfo, context: ShippingContext): ShippingOption[] {
+/** Shipping prices are set in reais and convert like every other amount. */
+export function buildShippingOptions(
+  info: CepInfo,
+  context: ShippingContext,
+  currency: Currency,
+): ShippingOption[] {
   const options: ShippingOption[] = [
     {
       id: 'standard',
-      price: context.allFree || context.standardFree ? 0 : 2490,
+      price: context.allFree || context.standardFree ? 0 : convert(2490, currency),
       etaDays: info.standardEtaDays,
     },
   ]
   if (info.expressAvailable) {
     options.push({
       id: 'express',
-      price: context.allFree ? 0 : 4990,
+      price: context.allFree ? 0 : convert(4990, currency),
       etaDays: info.expressEtaDays,
     })
   }

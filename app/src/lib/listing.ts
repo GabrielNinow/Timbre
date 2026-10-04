@@ -5,7 +5,15 @@ import {
   type ProductListQuery,
   type Sort,
 } from '@timbre/contracts'
-import { DEFAULT_LANGUAGE, type PageLanguage } from '@/lib/language'
+import { BRL_PER_USD } from '@timbre/contracts'
+import {
+  DEFAULT_LANGUAGE,
+  currencyFor,
+  languageOfPath,
+  localizePath,
+  type PageCurrency,
+  type PageLanguage,
+} from '@/lib/language'
 
 /**
  * The one place that knows how a listing view maps to its URL and to the API.
@@ -150,7 +158,11 @@ export function serializeListing(state: ListingState, context: ListingContext = 
 type ApiKey = keyof ProductListQuery
 
 /** The `GET /api/products` query for this state, already validated by the contract. */
-export function toApiParams(state: ListingState, perPage = LISTING_PER_PAGE): URLSearchParams {
+export function toApiParams(
+  state: ListingState,
+  perPage = LISTING_PER_PAGE,
+  currency: 'BRL' | 'USD' = 'BRL',
+): URLSearchParams {
   const params = new URLSearchParams()
   const set = (key: ApiKey, value: string) => params.append(key, value)
   if (state.q !== null) set('q', state.q)
@@ -165,6 +177,7 @@ export function toApiParams(state: ListingState, perPage = LISTING_PER_PAGE): UR
   set('sort', state.sort)
   set('page', String(state.page))
   set('perPage', String(perPage))
+  if (currency !== 'BRL') set('currency', currency)
   return params
 }
 
@@ -287,3 +300,37 @@ export function priceToInput(centavos: number | null, language: PageLanguage = D
 export function samePrice(a: PriceRange | null, b: PriceRange | null): boolean {
   return a?.min === b?.min && a?.max === b?.max
 }
+
+/** Converts cents between currencies by the Demo exchange rate, half-up, as the API does. */
+function convertCents(cents: number, from: PageCurrency, to: PageCurrency): number {
+  if (from === to) return cents
+  return to === 'BRL' ? cents * BRL_PER_USD : Math.floor((cents * 2 + BRL_PER_USD) / (BRL_PER_USD * 2))
+}
+
+export function convertPriceRange(range: PriceRange, from: PageCurrency, to: PageCurrency): PriceRange {
+  return {
+    min: convertCents(range.min, from, to),
+    max: range.max === null ? null : convertCents(range.max, from, to),
+  }
+}
+
+/**
+ * The same page in another Page language. The `price` filter is in the page's
+ * Currency, so it converts with the language: R$ 200 a R$ 500 becomes $40 to $100.
+ */
+export function switchLanguagePath(fullPath: string, language: PageLanguage): string {
+  const target = localizePath(fullPath, language)
+  const from = currencyFor(languageOfPath(fullPath))
+  const to = currencyFor(language)
+  const queryStart = target.indexOf('?')
+  if (from === to || queryStart === -1) return target
+  const hashStart = target.indexOf('#', queryStart)
+  const path = target.slice(0, queryStart)
+  const hash = hashStart === -1 ? '' : target.slice(hashStart)
+  const params = new URLSearchParams(target.slice(queryStart + 1, hashStart === -1 ? undefined : hashStart))
+  const price = parsePrice(params.get('price') ?? undefined)
+  if (price === null) return target
+  params.set('price', formatPriceParam(convertPriceRange(price, from, to)))
+  return `${path}?${params.toString()}${hash}`
+}
+

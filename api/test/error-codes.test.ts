@@ -197,6 +197,19 @@ describe('every documented error code is reachable', () => {
     )
   })
 
+  it.each(['pix', 'boleto'] as const)(
+    'PAYMENT_METHOD_UNAVAILABLE — %s with USD',
+    async (method) => {
+      const token = await seedSession(h.app, 'ana.souza@timbre.test')
+      await addItem(h.app, { productId: 'p-0104' }, { token })
+      await expectCode(
+        await post(h.app, '/api/orders?currency=USD', orderPayload({ method }), { token }),
+        'PAYMENT_METHOD_UNAVAILABLE',
+        422,
+      )
+    },
+  )
+
   it('STOCK_CHANGED — stock vanished between cart and order', async () => {
     const token = await seedSession(h.app, 'ana.souza@timbre.test')
     await addItem(h.app, { productId: 'p-0106', quantity: 3 }, { token })

@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { productSummarySchema } from './catalog.js'
-import { centavos, cepSchema, cepDigits, idString } from './primitives.js'
+import { centavos, cepSchema, cepDigits, currencySchema, idString } from './primitives.js'
 
 export const shippingMethodIdSchema = z.enum(['standard', 'express'])
 export type ShippingMethodId = z.infer<typeof shippingMethodIdSchema>
@@ -46,6 +46,7 @@ export type CartTotals = z.infer<typeof cartTotalsSchema>
 
 export const cartSchema = z.object({
   id: idString,
+  currency: currencySchema,
   cep: cepDigits,
   lines: z.array(cartLineSchema),
   coupon: appliedCouponSchema.nullable(),
@@ -81,6 +82,14 @@ export const setShippingMethodBodySchema = z.strictObject({
 export type SetShippingMethodBody = z.infer<typeof setShippingMethodBodySchema>
 
 export const FREE_SHIPPING_THRESHOLD = 30000
+
+/**
+ * The Demo exchange rate (ADR 0002): US$ 1 = R$ 5,00. Fixed and fictional, so a
+ * dollar price is always the reais price divided by five, rounded half-up. Lives
+ * here, beside the other money rules, because the API prices with it and the app
+ * converts a price filter with it when the Page language switches.
+ */
+export const BRL_PER_USD = 5
 export const SHIPPING_PRICES: Record<ShippingMethodId, number> = {
   standard: 2490,
   express: 4990,
