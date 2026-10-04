@@ -27,7 +27,7 @@ body:json {
       "state": "SC"
     },
     "payment": {
-      "method": "cartao",
+      "method": "card",
       "card": {
         "number": "4111 1111 1111 1111",
         "holder": "ANA SOUZA",
@@ -35,14 +35,14 @@ body:json {
         "cvv": "123"
       }
     },
-    "selectedShippingId": "padrao"
+    "selectedShippingId": "standard"
   }
 }
 
 assert {
   res.status: eq 201
   res.body.number: eq TMB-100241
-  res.body.status: eq pago
+  res.body.status: eq paid
 }
 
 script:post-response {
