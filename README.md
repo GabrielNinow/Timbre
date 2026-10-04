@@ -109,11 +109,16 @@ Wall-clock times from GitHub Actions (ubuntu-latest), from the run linked under
 each workflow badge.
 
 <!-- ci-times:start -->
-| Suite | Tests | Parallelism | Slowest job | Workflow total |
-|---|---|---|---|---|
-| Cypress E2E | 114 | 2 containers | _pending first CI run_ | _pending_ |
-| Cypress component | 14 | 1 container | _pending_ | — |
-| Playwright | 201 per browser set | 3 browsers × 3 shards × 3 workers | _pending_ | _pending_ |
+| Suite | Tests | Parallelism | Slowest test step | Slowest job (with install and build) | Workflow, start to report |
+|---|---|---|---|---|---|
+| Cypress E2E | 114 | 2 containers | 1:38 | 2:18 | 2:41 |
+| Cypress component | 14 | 1 container | 0:25 | 1:04 | (same workflow) |
+| Playwright | 301: 100 per browser × chromium, firefox, webkit + 1 mobile | 3 browsers × 3 shards × 3 workers | 1:48 (firefox 1/3) | 2:40 | 3:08 |
+
+Measured on the first green run of each workflow (PR #22). Read it per test:
+Playwright ran 2.6× as many tests, across three engines including WebKit, in 27
+seconds more of wall clock. Within Playwright, Firefox is the slowest engine and
+Chromium the fastest (its slowest shard took 0:59 against Firefox's 1:48).
 <!-- ci-times:end -->
 
 Locally, on one machine: Cypress runs its 114 E2E tests serially in about
