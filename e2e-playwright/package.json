@@ -1,0 +1,17 @@
+{
+  "name": "@timbre/e2e-playwright",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "pw:test": "playwright test --project=chromium --project=firefox --project=webkit --project=mobile",
+    "pw:report": "playwright show-report",
+    "pw:trace-demo": "playwright test --project=trace-demo",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.63.0",
+    "typescript": "^5.9.3"
+  }
+}

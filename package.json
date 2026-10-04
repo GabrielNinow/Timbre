@@ -6,7 +6,8 @@
     "packages/*",
     "api",
     "app",
-    "e2e-cypress"
+    "e2e-cypress",
+    "e2e-playwright"
   ],
   "engines": {
     "node": ">=20"
@@ -23,7 +24,8 @@
     "e2e:serve": "node e2e-cypress/scripts/serve.mjs",
     "e2e:build": "npm run app:build",
     "cypress": "npm run e2e:build && start-server-and-test e2e:serve http-get://localhost:4173/api/categories \"npm run cy:run -w @timbre/e2e-cypress\"",
-    "cypress:component": "npm run cy:component -w @timbre/e2e-cypress"
+    "cypress:component": "npm run cy:component -w @timbre/e2e-cypress",
+    "playwright": "npm run app:build && npm run pw:test -w @timbre/e2e-playwright"
   },
   "devDependencies": {
     "typescript": "^5.9.3"
