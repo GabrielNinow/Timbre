@@ -80,6 +80,14 @@ filter rail tests will exercise.
 A variant group is `{ label, options: [{ id, name, priceDelta, stock }] }`.
 Products with variants have no top-level stock; stock is per option.
 
+### `POST /api/products/:id/notify` — `{ email }`
+
+The notify-me form on a sold-out product. Stores the request in the in-memory
+store (cleared by `POST /api/test/reset`) and returns 202 `{ ok: true }`.
+422 `VALIDATION_ERROR` on an invalid email, 404 `NOT_FOUND` on an unknown product.
+Asking twice with the same email is idempotent. Nothing is ever sent: Visitors
+are never real customers.
+
 ### `GET /api/sellers/:slug`
 `{ seller, stats: { rating, salesCount, onTimeRate, memberSince }, products }`,
 products paginated with the same shape as the catalog list.

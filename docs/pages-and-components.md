@@ -132,12 +132,15 @@ variant selector, stock line, quantity stepper, `Comprar agora` (action) and
 with tier chevrons.
 
 Rules:
-- Selecting a variant updates price, stock, and the URL query `?opcao=`.
+- Selecting a variant updates price, stock, and the URL query `?option=`.
 - Quantity stepper is capped at available stock and disables the increment button
   at the cap, with a `stock-limit-notice` message.
 - Stock ≤ 3 shows "Últimas N unidades" in `--color-fault`.
-- Out of stock replaces both buttons with a disabled state and an "Avise-me"
-  input.
+- Out of stock replaces both buttons with a disabled state and a notify-me form
+  ("Avise-me" / "Notify me"): an email field and a submit that calls
+  `POST /api/products/:id/notify`, then renders a confirmation in place.
+  `data-testid`: `notify-me-form`, `notify-me-email`, `notify-me-submit`,
+  `notify-me-confirmation`.
 - Adding to cart shows a toast with a link to the cart. No modal, no redirect.
 
 `data-testid`: `product-title`, `product-price`, `variant-group`,

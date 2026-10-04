@@ -49,7 +49,9 @@ Both suites do this in `beforeEach`:
 
 1. `POST /api/test/reset`
 2. `POST /api/test/session` with the fixture email, when the test needs auth,
-   then write the token where the app reads it
+   then write the token where the app reads it: `localStorage['timbre.session']`.
+   A guest cart's id lives in `localStorage['timbre.cart']`. These two keys are
+   the only client-side state; both point at server state (rule 4).
 3. Optionally `POST /api/test/clock` to freeze time
 4. Navigate directly to the deepest relevant URL
 
