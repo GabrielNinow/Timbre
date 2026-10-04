@@ -1,0 +1,89 @@
+name: playwright
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: playwright-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    name: ${{ matrix.project }} (${{ matrix.shard }}/3)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [chromium, firefox, webkit]
+        shard: [1, 2, 3]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+        env:
+          CYPRESS_INSTALL_BINARY: '0'
+      - run: npx playwright install --with-deps ${{ matrix.project }}
+      # Against the production build; each worker starts its own API in test mode (ADR 0003).
+      - run: npm run app:build
+      - name: Run Playwright
+        working-directory: e2e-playwright
+        # The mobile project (a chromium device descriptor) rides with the chromium shards.
+        run: >
+          npx playwright test --project=${{ matrix.project }}
+          ${{ matrix.project == 'chromium' && '--project=mobile' || '' }}
+          --shard=${{ matrix.shard }}/3 --reporter=blob
+        env:
+          CI: '1'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: blob-${{ matrix.project }}-${{ matrix.shard }}
+          path: e2e-playwright/blob-report
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: traces-${{ matrix.project }}-${{ matrix.shard }}
+          path: e2e-playwright/test-results
+
+  report:
+    needs: e2e
+    if: always()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+        env:
+          CYPRESS_INSTALL_BINARY: '0'
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: blob-*
+          path: e2e-playwright/all-blob-reports
+          merge-multiple: true
+      - name: Merge shards into one HTML report
+        working-directory: e2e-playwright
+        run: npx playwright merge-reports --reporter html ./all-blob-reports
+      - uses: actions/upload-artifact@v4
+        with:
+          name: playwright-html-report
+          path: e2e-playwright/playwright-report
+      - name: Publish to GitHub Pages
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: e2e-playwright/playwright-report
+          destination_dir: playwright
+          keep_files: true
