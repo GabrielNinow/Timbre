@@ -13,12 +13,14 @@ import {
   isoDate,
   isoDateTime,
   ufSchema,
+  currencySchema,
 } from './primitives.js'
 
 export const shippingQuoteBodySchema = z.strictObject({ cep: cepSchema })
 export type ShippingQuoteBody = z.infer<typeof shippingQuoteBodySchema>
 
 export const shippingQuoteResponseSchema = z.object({
+  currency: currencySchema,
   cep: cepDigits,
   city: z.string().min(1),
   state: ufSchema,
@@ -162,6 +164,8 @@ export const orderSchema = z.object({
   id: z.string().regex(/^TMB-\d{6}$/),
   number: z.string().regex(/^TMB-\d{6}$/),
   status: orderStatusSchema,
+  /** The Currency the order was charged in. Never reconverted. */
+  currency: currencySchema,
   createdAt: isoDateTime,
   userId: idString,
   items: z.array(orderItemSchema).min(1),

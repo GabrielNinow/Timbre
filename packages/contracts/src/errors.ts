@@ -30,6 +30,8 @@ export const errorCodeSchema = z.enum([
   'PAYMENT_PROCESSOR_ERROR',
   'STOCK_CHANGED',
 
+  'PAYMENT_METHOD_UNAVAILABLE',
+
   'INJECTED_FAILURE',
 ])
 export type ErrorCode = z.infer<typeof errorCodeSchema>
@@ -74,6 +76,8 @@ export const errorStatusByCode: Record<ErrorCode, number> = {
   CARD_EXPIRED: 402,
   PAYMENT_PROCESSOR_ERROR: 500,
   STOCK_CHANGED: 409,
+
+  PAYMENT_METHOD_UNAVAILABLE: 422,
 
   INJECTED_FAILURE: 500,
 }

@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import {
+  currencySchema,
   centavos,
   centavosDelta,
   conditionSchema,
@@ -11,6 +12,7 @@ import {
   sellerTierSchema,
   slugString,
   ufSchema,
+  type Currency,
 } from './primitives.js'
 
 /** Category names are Platform copy, rendered by the client from `slug`. */
@@ -90,6 +92,7 @@ export const productSpecSchema = z.object({
 export type ProductSpec = z.infer<typeof productSpecSchema>
 
 export const productDetailSchema = productSummarySchema.extend({
+  currency: currencySchema,
   description: z.string().min(1),
   images: z.array(z.string().min(1)).min(1),
   specs: z.array(productSpecSchema),
@@ -128,6 +131,8 @@ export const productListQuerySchema = z.object({
   sort: sortSchema.default('relevance'),
   page: z.coerce.number().int().positive().default(1),
   perPage: z.coerce.number().int().positive().max(60).default(24),
+  /** `minPrice`, `maxPrice` and the price buckets are in this currency's cents. */
+  currency: currencySchema.default('BRL'),
 })
 export type ProductListQuery = z.input<typeof productListQuerySchema>
 export type ResolvedProductListQuery = z.infer<typeof productListQuerySchema>
@@ -155,11 +160,13 @@ export const facetsSchema = z.object({
 export type Facets = z.infer<typeof facetsSchema>
 
 export const productListResponseSchema = paginatedSchema(productSummarySchema).extend({
+  currency: currencySchema,
   facets: facetsSchema,
 })
 export type ProductListResponse = z.infer<typeof productListResponseSchema>
 
 export const sellerPageResponseSchema = z.object({
+  currency: currencySchema,
   seller: sellerSchema,
   stats: sellerStatsSchema,
   products: paginatedSchema(productSummarySchema),
@@ -178,3 +185,28 @@ export const PRICE_BUCKETS = [
   min: number
   max: number | null
 }>
+
+/**
+ * The price presets in a currency. USD bounds are the BRL bounds converted by the
+ * Demo exchange rate, so both currencies offer the same five ranges.
+ */
+export function priceBucketsFor(
+  currency: Currency,
+  brlPerUsd: number,
+): ReadonlyArray<{ value: string; min: number; max: number | null }> {
+  if (currency === 'BRL') return PRICE_BUCKETS
+  return PRICE_BUCKETS.map((bucket) => {
+    const min = Math.round(bucket.min / brlPerUsd)
+    const max = bucket.max === null ? null : Math.round(bucket.max / brlPerUsd)
+    return { value: max === null ? `${min}+` : `${min}-${max}`, min, max }
+  })
+}
+
+/** `GET /api/exchange-rate`: US$ 1 = `rate` reais. An integer, so no floats on the wire. */
+export const exchangeRateResponseSchema = z.object({
+  base: z.literal('USD'),
+  quote: z.literal('BRL'),
+  rate: z.number().int().positive(),
+})
+export type ExchangeRateResponse = z.infer<typeof exchangeRateResponseSchema>
+

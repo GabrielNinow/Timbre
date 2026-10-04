@@ -21,6 +21,16 @@ export const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'ISO date expecte
 export const conditionSchema = z.enum(['new', 'like-new', 'used'])
 export type Condition = z.infer<typeof conditionSchema>
 
+/**
+ * The Currency follows the Page language (ADR 0002). Every amount on the wire is
+ * integer cents of the response's `currency`.
+ */
+export const currencySchema = z.enum(['BRL', 'USD'])
+export type Currency = z.infer<typeof currencySchema>
+
+/** `?currency=` on money-bearing endpoints. Omitted means BRL. */
+export const currencyQuerySchema = z.object({ currency: currencySchema.default('BRL') })
+
 export const sellerTierSchema = z.enum(['SILVER', 'GOLD', 'PLATINUM'])
 export type SellerTier = z.infer<typeof sellerTierSchema>
 
