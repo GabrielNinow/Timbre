@@ -305,3 +305,56 @@ Listing content keeps its labels because a seller wrote them: variant group
 labels, option names, and spec label/value pairs are shown as written.
 `api/test/catalog.test.ts` asserts the absence of the removed fields.
 
+---
+
+## Clarifications resolved while building milestone 3.3
+
+Multi-currency follows ADR 0002. Everything below is covered by
+`api/test/currency.test.ts`.
+
+### Asking for a currency
+
+Every money-bearing endpoint takes `?currency=BRL|USD`: the catalog list, product
+detail, seller page, the cart and all its mutations, the shipping quote and order
+creation. Omitted means `BRL`, so a request without it is byte-identical to one
+with `currency=BRL`. An unknown value returns 422 `VALIDATION_ERROR`. It is checked
+before any route runs, so a rejected mutation changes nothing.
+
+Money-bearing responses carry `currency` at their top level. Every amount in them
+is integer cents of that currency.
+
+### The Demo exchange rate
+
+`BRL_PER_USD = 5` lives in `packages/contracts`, beside `FREE_SHIPPING_THRESHOLD`.
+The API prices with it, and the app needs it to convert a price filter when the
+Page language switches. `GET /api/exchange-rate` returns
+`{ base: 'USD', quote: 'BRL', rate: 5 }`, an integer, so there are no floats.
+
+### How amounts convert
+
+- A BRL amount converts once to USD: `÷ 5`, rounded half-up to the cent.
+- A variant's `priceDelta` in USD is `convert(base + delta) − convert(base)`, so
+  base plus delta always equals the converted option price.
+- Line totals, subtotal, shipping, discount and total are computed from converted
+  values. A coupon discount is computed in BRL, converted, and capped at the
+  converted subtotal.
+- Free shipping and every coupon rule read the BRL subtotal. A R$ 299,99 cart is
+  US$ 60.00, but it never gets free shipping.
+- Price sorting uses the BRL price, so result order is identical in both
+  currencies.
+
+### Price filtering
+
+`minPrice`, `maxPrice` and the price buckets are in the request's currency. The
+USD buckets are the BRL buckets ÷ 5: `0-4000`, `4000-10000`, `10000-30000`,
+`30000-80000`, `80000+`. No converted price lands on a boundary, so bucket counts
+still equal filtered totals.
+
+### Payments and orders
+
+- With `currency=USD`, `pix` and `boleto` return 422 `PAYMENT_METHOD_UNAVAILABLE`
+  before anything is charged, with `fields: { 'payment.method': … }`. The cart and
+  stock are left as they were.
+- Orders store `currency` and the amounts charged and are never reconverted.
+  Fixture orders are `BRL`.
+

@@ -140,8 +140,8 @@ Currency follows Page language: BRL for Portuguese, USD for English. See ADR 000
   parameter (catalog, seller, cart and its mutations, shipping quote, order
   creation). Omitted means `BRL`, so existing callers keep working. Responses
   carry `currency` beside amounts.
-- The Demo exchange rate is a fixture constant, R$ 5,00 = US$ 1, exposed by the
-  API.
+- The Demo exchange rate is a shared constant, R$ 5,00 = US$ 1, defined in
+  `packages/contracts` beside the other money rules and exposed by the API.
 - Conversion: each unit price converts once, rounded half-up to the cent; every
   sum (line totals, subtotal, shipping, discount, total) is computed from
   converted values, so totals always add up.
