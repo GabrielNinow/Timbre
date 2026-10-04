@@ -7,6 +7,7 @@ import {
   formatCep,
   formatCount,
   formatPercent,
+  formatMonthYear,
   formatPrice,
   formatPriceShort,
   formatRating,
@@ -166,3 +167,12 @@ describe('formatting by Page language', () => {
     expect(formatPriceShort(4050, 'en')).toBe('$40.50')
   })
 })
+
+describe('formatMonthYear', () => {
+  it('formats in UTC by Page language', () => {
+    expect(formatMonthYear('2019-03-12T00:00:00Z', 'en')).toBe('March 2019')
+    expect(formatMonthYear('2019-03-12T00:00:00Z', 'pt-BR')).toBe('março de 2019')
+    expect(formatMonthYear('2019-03-01T00:00:00Z', 'en')).toBe('March 2019')
+  })
+})
+

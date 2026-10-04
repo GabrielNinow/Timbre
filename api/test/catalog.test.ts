@@ -223,3 +223,32 @@ describe('GET /api/sellers/:slug', () => {
     expect((await get(h.app, '/api/sellers/ninguem')).statusCode).toBe(404)
   })
 })
+
+describe('POST /api/products/:id/notify', () => {
+  it('accepts a notify-me request for a sold-out listing with 202', async () => {
+    const response = await post(h.app, '/api/products/p-0102/notify', { email: 'ana.souza@timbre.test' })
+    expect(response.statusCode).toBe(202)
+    expect(response.json()).toEqual({ ok: true })
+    expect([...h.store.notifyRequests.get('p-0102')!]).toEqual(['ana.souza@timbre.test'])
+  })
+
+  it('is idempotent per email, case-insensitively', async () => {
+    await post(h.app, '/api/products/p-0102/notify', { email: 'Ana.Souza@timbre.test' })
+    await post(h.app, '/api/products/p-0102/notify', { email: 'ana.souza@timbre.test' })
+    expect(h.store.notifyRequests.get('p-0102')!.size).toBe(1)
+  })
+
+  it('rejects an invalid email with 422 and an unknown product with 404', async () => {
+    const invalid = await post(h.app, '/api/products/p-0102/notify', { email: 'not-an-email' })
+    expect(invalid.statusCode).toBe(422)
+    expect((invalid.json() as { error: { code: string } }).error.code).toBe('VALIDATION_ERROR')
+    const unknown = await post(h.app, '/api/products/p-9999/notify', { email: 'a@b.co' })
+    expect(unknown.statusCode).toBe(404)
+  })
+
+  it('is cleared by a store reset', async () => {
+    await post(h.app, '/api/products/p-0102/notify', { email: 'a@b.co' })
+    await post(h.app, '/api/test/reset', {})
+    expect(h.store.notifyRequests.size).toBe(0)
+  })
+})

@@ -271,6 +271,14 @@ describe('toApiParams', () => {
     expect(toApiParams(emptyListing(), 24, 'USD').get('currency')).toBe('USD')
   })
 
+  it('scopes a seller page to its seller without a removable filter', () => {
+    const context = { pinnedSellerId: 's-08' }
+    const state = parseListing({ brand: 'Fender' }, context)
+    expect(toApiParams(state, 24, 'BRL', context).get('sellerId')).toBe('s-08')
+    expect(activeFilters(state, context)).toEqual([{ facet: 'brand', value: 'Fender' }])
+    expect(serializeListing(state, context)).toEqual({ brand: ['Fender'] })
+  })
+
   it('sends no ceiling for an open-ended range', () => {
     const params = toApiParams(parseListing({ price: '400000+' }))
     expect(params.get('minPrice')).toBe('400000')

@@ -16,6 +16,17 @@ const routes: RouteRecordRaw[] = [
     name: 'category',
     component: () => import('@/pages/ListingPage.vue'),
   },
+  {
+    // `/p/:slug--:id`: the double dash separates slug from id, the id is authoritative.
+    path: `${LANG}/p/:slug([a-z0-9-]+?)--:id(p-[0-9]+)`,
+    name: 'product',
+    component: () => import('@/pages/ProductPage.vue'),
+  },
+  {
+    path: `${LANG}/s/:sellerSlug([a-z0-9-]+)`,
+    name: 'seller',
+    component: () => import('@/pages/SellerPage.vue'),
+  },
   ...(kitchenSinkEnabled
     ? ([
         {

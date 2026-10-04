@@ -108,3 +108,15 @@ export function daysSince(iso: string, nowMs: number): number {
   if (Number.isNaN(then)) return 0
   return Math.max(0, Math.floor((nowMs - then) / DAY_MS))
 }
+
+const dateCache = new Map<string, Intl.DateTimeFormat>()
+/** "março de 2019" / "March 2019", in UTC so the rendered month never drifts by timezone. */
+export function formatMonthYear(iso: string, language: PageLanguage = DEFAULT_LANGUAGE): string {
+  let found = dateCache.get(language)
+  if (!found) {
+    found = new Intl.DateTimeFormat(language, { month: 'long', year: 'numeric', timeZone: 'UTC' })
+    dateCache.set(language, found)
+  }
+  return found.format(Date.parse(iso))
+}
+

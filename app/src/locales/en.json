@@ -341,5 +341,71 @@
       "pt-BR": "PT",
       "en": "EN"
     }
+  },
+  "product": {
+    "loading": "Loading product",
+    "errorTitle": "Could not load this product",
+    "errorDescription": "The request failed. Try again.",
+    "reviewsLink": "See reviews",
+    "optionSoldOut": "sold out",
+    "optionDelta": "+{delta}",
+    "stock": {
+      "inStock": "In stock",
+      "low": "Last one | Only {count} left",
+      "soldOut": "Sold out",
+      "optionSoldOut": "This option is sold out. Choose another option to buy."
+    },
+    "addToCart": "Add to cart",
+    "buyNow": "Buy now",
+    "unavailable": "Unavailable",
+    "added": "Added to cart",
+    "addedAction": "View cart",
+    "addFailed": "Could not add to cart",
+    "insufficientStock": "Only {available} units available.",
+    "galleryLabel": "Product images",
+    "thumbnail": "Show image {index} of {total}",
+    "specsHeading": "Specifications",
+    "descriptionHeading": "Description",
+    "reviewsHeading": "Reviews",
+    "reviewsNone": "This listing has no reviews yet.",
+    "reviewsSummary": "{rating} out of 5, based on {count} reviews | {rating} out of 5, based on {count} review | {rating} out of 5, based on {count} reviews",
+    "relatedHeading": "Related products",
+    "relatedEmpty": "No related products right now."
+  },
+  "notifyMe": {
+    "title": "Notify me when it's back",
+    "description": "Leave your email and we'll tell you when it's in stock. This site is a demo: no email is ever actually sent.",
+    "email": "Email",
+    "submit": "Notify me",
+    "confirmation": "Done! We'll notify {email} when it's back in stock.",
+    "invalid": "Enter a valid email.",
+    "failed": "Could not save your request. Try again."
+  },
+  "shipping": {
+    "title": "Estimate shipping",
+    "cep": "CEP (Brazilian postcode)",
+    "submit": "Estimate",
+    "destination": "Delivery to {city}/{state}",
+    "eta": "{days} business day | {days} business day | {days} business days",
+    "free": "Free",
+    "invalid": "Enter an 8-digit CEP.",
+    "notFound": "CEP not found. Check the digits.",
+    "failedTitle": "Could not estimate shipping right now",
+    "failedDescription": "The CEP lookup failed. Try again."
+  },
+  "sellerPanel": {
+    "heading": "Sold by",
+    "visit": "Visit shop",
+    "individual": "Individual seller"
+  },
+  "sellerPage": {
+    "loading": "Loading seller",
+    "memberSince": "Selling on Timbre since {date}",
+    "listingsHeading": "Listings",
+    "aboutHeading": "About the shop",
+    "rating": "Rating",
+    "sales": "Sales",
+    "onTime": "On-time deliveries",
+    "errorTitle": "Could not load this seller"
   }
 }
