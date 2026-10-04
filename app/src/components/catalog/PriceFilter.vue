@@ -4,8 +4,10 @@ import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import BaseButton from '@/components/base/BaseButton.vue'
 import BaseInput from '@/components/base/BaseInput.vue'
-import { formatCount } from '@/lib/format'
-import { parsePrice, priceFromInputs, samePrice, type PriceRange } from '@/lib/listing'
+import { usePriceLabel } from '@/composables/useFilterLabel'
+import { useFormat } from '@/composables/useFormat'
+import { usePageLanguage } from '@/composables/usePageLanguage'
+import { parsePrice, priceFromInputs, priceToInput, samePrice, type PriceRange } from '@/lib/listing'
 
 interface Props {
   buckets: readonly PriceBucket[]
@@ -16,22 +18,19 @@ const props = withDefaults(defineProps<Props>(), { disabled: false })
 const emit = defineEmits<{ change: [range: PriceRange | null] }>()
 
 const { t } = useI18n()
-
-function toInput(centavos: number | null | undefined): string {
-  if (centavos === null || centavos === undefined) return ''
-  const cents = centavos % 100
-  return cents === 0 ? String(centavos / 100) : `${Math.trunc(centavos / 100)},${String(cents).padStart(2, '0')}`
-}
+const { formatCount } = useFormat()
+const priceLabel = usePriceLabel()
+const language = usePageLanguage()
 
 const minText = ref('')
 const maxText = ref('')
 const error = ref<'invalid' | 'min-above-max' | null>(null)
 
 watch(
-  () => props.selected,
-  (range) => {
-    minText.value = range && range.min > 0 ? toInput(range.min) : ''
-    maxText.value = toInput(range?.max)
+  [() => props.selected, language],
+  ([range]) => {
+    minText.value = range && range.min > 0 ? priceToInput(range.min, language.value) : ''
+    maxText.value = priceToInput(range?.max ?? null, language.value)
     error.value = null
   },
   { immediate: true },
@@ -43,7 +42,7 @@ function pickBucket(bucket: PriceBucket): void {
 }
 
 function applyTyped(): void {
-  const result = priceFromInputs(minText.value, maxText.value)
+  const result = priceFromInputs(minText.value, maxText.value, language.value)
   if (!result.ok) {
     error.value = result.reason
     return
@@ -70,7 +69,7 @@ function applyTyped(): void {
           class="btn w-full justify-between rounded-control px-2 py-1 text-left text-body font-normal text-ink hover:bg-sunken aria-pressed:bg-action-quiet aria-pressed:font-semibold"
           @click="pickBucket(bucket)"
         >
-          <span>{{ bucket.label }}</span>
+          <span>{{ priceLabel(bucket) }}</span>
           <span data-testid="filter-option-count" class="text-body-sm text-muted">
             {{ formatCount(bucket.count) }}
           </span>

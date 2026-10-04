@@ -5,6 +5,7 @@ import {
   type ProductListQuery,
   type Sort,
 } from '@timbre/contracts'
+import { DEFAULT_LANGUAGE, type PageLanguage } from '@/lib/language'
 
 /**
  * The one place that knows how a listing view maps to its URL and to the API.
@@ -249,23 +250,38 @@ export type PriceInputResult =
   | { ok: true; range: PriceRange | null }
   | { ok: false; reason: 'invalid' | 'min-above-max' }
 
-function reaisToCentavos(text: string): number | null | 'invalid' {
+/** Separators follow the Page language: `1.299,90` in Portuguese, `1,299.90` in English. */
+function reaisToCentavos(text: string, language: PageLanguage): number | null | 'invalid' {
   const trimmed = text.trim()
   if (trimmed === '') return null
-  const match = /^(\d{1,7})(?:,(\d{1,2}))?$/.exec(trimmed.replace(/\./g, ''))
-  if (!match) return 'invalid'
-  const cents = (match[2] ?? '').padEnd(2, '0')
-  return Number(match[1]) * 100 + Number(cents)
+  const [group, decimal] = language === 'en' ? [',', '.'] : ['.', ',']
+  const bare = trimmed.split(group).join('')
+  const [whole, cents, ...rest] = bare.split(decimal)
+  if (rest.length > 0 || whole === undefined || !/^\d{1,7}$/.test(whole)) return 'invalid'
+  if (cents !== undefined && !/^\d{1,2}$/.test(cents)) return 'invalid'
+  return Number(whole) * 100 + Number((cents ?? '').padEnd(2, '0'))
 }
 
 /** Validates the typed min/max pair, entered in reais. Invalid input fires no request. */
-export function priceFromInputs(minText: string, maxText: string): PriceInputResult {
-  const min = reaisToCentavos(minText)
-  const max = reaisToCentavos(maxText)
+export function priceFromInputs(
+  minText: string,
+  maxText: string,
+  language: PageLanguage = DEFAULT_LANGUAGE,
+): PriceInputResult {
+  const min = reaisToCentavos(minText, language)
+  const max = reaisToCentavos(maxText, language)
   if (min === 'invalid' || max === 'invalid') return { ok: false, reason: 'invalid' }
   if (min === null && max === null) return { ok: true, range: null }
   if (min !== null && max !== null && min > max) return { ok: false, reason: 'min-above-max' }
   return { ok: true, range: { min: min ?? 0, max } }
+}
+
+/** The inverse of `priceFromInputs`, to prefill the inputs from the URL. */
+export function priceToInput(centavos: number | null, language: PageLanguage = DEFAULT_LANGUAGE): string {
+  if (centavos === null) return ''
+  const cents = centavos % 100
+  const whole = String(Math.trunc(centavos / 100))
+  return cents === 0 ? whole : `${whole}${language === 'en' ? '.' : ','}${String(cents).padStart(2, '0')}`
 }
 
 export function samePrice(a: PriceRange | null, b: PriceRange | null): boolean {

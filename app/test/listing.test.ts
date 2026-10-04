@@ -8,6 +8,7 @@ import {
   parseListing,
   parsePrice,
   priceFromInputs,
+  priceToInput,
   removeFilter,
   serializeListing,
   toApiParams,
@@ -165,6 +166,24 @@ describe('priceFromInputs', () => {
 
   it('flags min above max, which must fire no request', () => {
     expect(priceFromInputs('500', '200')).toEqual({ ok: false, reason: 'min-above-max' })
+  })
+
+  it('reads separators by Page language', () => {
+    expect(priceFromInputs('1,299.90', '', 'en')).toEqual({ ok: true, range: { min: 129990, max: null } })
+    expect(priceFromInputs('1.299,90', '', 'pt-BR')).toEqual({ ok: true, range: { min: 129990, max: null } })
+    expect(priceFromInputs('1.299,90', '', 'en')).toEqual({ ok: false, reason: 'invalid' })
+    expect(priceFromInputs('200', '500', 'en')).toEqual(priceFromInputs('200', '500', 'pt-BR'))
+  })
+
+  it('prefills inputs in the Page language and round-trips', () => {
+    expect(priceToInput(129990, 'en')).toBe('1299.90')
+    expect(priceToInput(129990, 'pt-BR')).toBe('1299,90')
+    expect(priceToInput(20000, 'en')).toBe('200')
+    expect(priceToInput(null)).toBe('')
+    for (const language of ['pt-BR', 'en'] as const) {
+      const text = priceToInput(3990, language)
+      expect(priceFromInputs(text, '', language)).toEqual({ ok: true, range: { min: 3990, max: null } })
+    }
   })
 
   it('flags text that is not a price', () => {

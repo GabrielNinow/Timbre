@@ -2,11 +2,13 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import BasePopover from '@/components/base/BasePopover.vue'
+import { usePageLanguage } from '@/composables/usePageLanguage'
 import { categoryRoute } from '@/router/paths'
 import { useCatalogStore } from '@/stores/catalog'
 
 const { t } = useI18n()
 const catalog = useCatalogStore()
+const language = usePageLanguage()
 void catalog.loadCategories()
 const open = ref(false)
 </script>
@@ -36,13 +38,13 @@ const open = ref(false)
     <ul v-else class="flex flex-col">
       <li v-for="category in catalog.categories" :key="category.slug">
         <RouterLink
-          :to="categoryRoute(category.slug)"
+          :to="categoryRoute(category.slug, language)"
           data-testid="category-menu-item"
           :data-category="category.slug"
           class="block rounded-control px-2 py-2 text-body text-ink hover:bg-sunken"
           @click="open = false"
         >
-          {{ category.name }}
+          {{ t(`category.${category.slug}`) }}
         </RouterLink>
       </li>
     </ul>

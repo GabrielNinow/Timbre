@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import BaseButton from '@/components/base/BaseButton.vue'
+import { usePageLanguage } from '@/composables/usePageLanguage'
+import { homePath } from '@/router/paths'
 
 const { t } = useI18n()
+const language = usePageLanguage()
 </script>
 
 <template>
@@ -10,7 +13,7 @@ const { t } = useI18n()
     <p class="font-mono text-mono text-ink">{{ t('notFound.code') }}</p>
     <h1 class="mt-2 font-wide text-display-lg">{{ t('notFound.title') }}</h1>
     <p class="mt-3 text-body text-ink">{{ t('notFound.description') }}</p>
-    <BaseButton testid="not-found-home" variant="outline" :to="{ path: '/' }" class="mt-6">
+    <BaseButton testid="not-found-home" variant="outline" :to="homePath(language)" class="mt-6">
       {{ t('common.backToHome') }}
     </BaseButton>
   </main>

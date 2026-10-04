@@ -1,0 +1,345 @@
+{
+  "app": {
+    "name": "Timbre",
+    "description": "Musical instruments and audio gear, new and used."
+  },
+  "a11y": {
+    "skipToContent": "Skip to content",
+    "mainContent": "Main content"
+  },
+  "common": {
+    "loading": "Loading",
+    "retry": "Try again",
+    "close": "Close",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "apply": "Apply",
+    "remove": "Remove",
+    "clear": "Clear",
+    "back": "Back",
+    "previous": "Previous",
+    "next": "Next",
+    "required": "required",
+    "optional": "optional",
+    "backToHome": "Back to home"
+  },
+  "price": {
+    "current": "{value}",
+    "listLabel": "Previous price {value}",
+    "discountBadge": "-{percent}%",
+    "srSimple": "{value}",
+    "srDiscounted": "Was {list}, now {value}, {percent}% off"
+  },
+  "condition": {
+    "new": "New",
+    "like-new": "Like new",
+    "used": "Used"
+  },
+  "tier": {
+    "SILVER": "Silver",
+    "GOLD": "Gold",
+    "PLATINUM": "Platinum"
+  },
+  "tierMark": {
+    "label": "{tier} seller",
+    "none": "Seller without a tier"
+  },
+  "specStrip": {
+    "year": "Year {value}",
+    "condition": "Condition {value}",
+    "state": "Seller in {value}",
+    "tier": "Tier {value}"
+  },
+  "badge": {
+    "freeShipping": "Free shipping",
+    "discount": "-{percent}%",
+    "lastUnit": "Last one",
+    "soldOut": "Sold out",
+    "sponsored": "Sponsored"
+  },
+  "rating": {
+    "value": "{value} out of 5 stars",
+    "reviews": "no reviews | {count} review | {count} reviews",
+    "none": "No reviews yet"
+  },
+  "quantity": {
+    "label": "Quantity",
+    "increase": "Increase quantity",
+    "decrease": "Decrease quantity",
+    "atMax": "Only {max} available | Only {max} units available",
+    "atMin": "Minimum quantity is {min}"
+  },
+  "pagination": {
+    "label": "Pagination",
+    "previous": "Previous page",
+    "next": "Next page",
+    "goToPage": "Page {page}",
+    "currentPage": "Page {page}, current page",
+    "summary": "Page {page} of {pages}",
+    "ellipsis": "More pages"
+  },
+  "dialog": {
+    "close": "Close dialog"
+  },
+  "popover": {
+    "close": "Close"
+  },
+  "toast": {
+    "region": "Notifications",
+    "close": "Dismiss notification",
+    "variant": {
+      "info": "Information",
+      "success": "Success",
+      "error": "Error"
+    }
+  },
+  "skeleton": {
+    "label": "Loading content"
+  },
+  "select": {
+    "placeholder": "Select"
+  },
+  "errorState": {
+    "title": "Could not load",
+    "description": "The request failed. Try again.",
+    "codeLabel": "Error code"
+  },
+  "emptyState": {
+    "title": "Nothing here",
+    "description": "No results for the current filters."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The address you opened does not exist.",
+    "code": "404"
+  },
+  "kitchenSink": {
+    "title": "Kitchen sink",
+    "subtitle": "Every primitive, in every state. Route available in development only.",
+    "tocLabel": "Section index",
+    "states": {
+      "default": "Default",
+      "hover": "Hover",
+      "focus": "Focus visible",
+      "loading": "Loading",
+      "disabled": "Disabled",
+      "error": "Error",
+      "selected": "Selected",
+      "empty": "Empty"
+    },
+    "hint": {
+      "hover": "Hover to see the hover state.",
+      "focus": "Press Tab to see the focus ring."
+    },
+    "sections": {
+      "tokens": "Tokens",
+      "type": "Typography",
+      "button": "BaseButton",
+      "input": "BaseInput",
+      "select": "BaseSelect",
+      "checkbox": "BaseCheckbox",
+      "radio": "BaseRadioGroup",
+      "quantity": "QuantityStepper",
+      "dialog": "BaseDialog",
+      "popover": "BasePopover",
+      "toast": "BaseToast",
+      "skeleton": "SkeletonBlock",
+      "pagination": "Pagination",
+      "stars": "StarRating",
+      "price": "PriceDisplay",
+      "spec": "SpecStrip",
+      "badge": "BadgeChip",
+      "tier": "SellerTierMark",
+      "empty": "EmptyState",
+      "error": "ErrorState"
+    },
+    "button": {
+      "action": "Add to cart",
+      "outline": "Buy now",
+      "quiet": "View details",
+      "danger": "Remove item",
+      "sizes": "Sizes"
+    },
+    "input": {
+      "label": "CEP",
+      "placeholder": "00000-000",
+      "hint": "Digits only.",
+      "error": "CEP not found."
+    },
+    "select": {
+      "label": "Sort by",
+      "options": {
+        "relevance": "Most relevant",
+        "price-asc": "Lowest price",
+        "price-desc": "Highest price",
+        "newest": "Newest"
+      }
+    },
+    "checkbox": {
+      "label": "Free shipping only",
+      "error": "Select at least one option."
+    },
+    "radio": {
+      "label": "Condition",
+      "error": "Choose a condition."
+    },
+    "dialog": {
+      "trigger": "Open dialog",
+      "title": "Filters",
+      "description": "Focus stays trapped in the dialog and returns to the trigger on close.",
+      "confirm": "Apply filters",
+      "triggerFull": "Open full screen"
+    },
+    "popover": {
+      "trigger": "Ship to 89010-000",
+      "title": "Enter your CEP",
+      "description": "We use the CEP to quote shipping and delivery time."
+    },
+    "toast": {
+      "trigger": "Show notification",
+      "triggerError": "Show error",
+      "title": "Added to cart",
+      "description": "Fender Player Stratocaster HSS",
+      "action": "View cart",
+      "errorTitle": "Could not add",
+      "errorDescription": "Not enough stock for the requested quantity."
+    },
+    "empty": {
+      "title": "No results for “stratocaster”",
+      "description": "No products match the selected filters.",
+      "action": "Clear filters"
+    },
+    "error": {
+      "title": "Could not load the results",
+      "description": "The search failed on the server. Try again."
+    },
+    "price": {
+      "cheapest": "Cheapest",
+      "expensive": "Most expensive",
+      "discounted": "Discounted",
+      "sizes": "Sizes"
+    },
+    "product": {
+      "name": "Fender Player Stratocaster HSS"
+    },
+    "tokens": {
+      "colors": "Colors",
+      "type": "Typography",
+      "sample": "Timbre · instruments and audio"
+    },
+    "quantity": {
+      "plenty": "In stock",
+      "lastUnit": "Last one — increment blocked",
+      "soldOut": "Out of stock"
+    },
+    "spec": {
+      "full": "Complete, no year, no tier"
+    },
+    "pagination": {
+      "middlePage": "Middle page, with ellipses",
+      "fewPages": "Few pages, no ellipses"
+    }
+  },
+  "header": {
+    "home": "Timbre, home page",
+    "primaryNav": "Main navigation",
+    "searchLabel": "Search products",
+    "searchPlaceholder": "Search instruments, brands and shops",
+    "searchSubmit": "Search",
+    "categories": "Categories",
+    "categoriesError": "Could not load the categories."
+  },
+  "home": {
+    "title": "Timbre — musical instruments and audio",
+    "categoriesHeading": "Categories",
+    "categoryCount": "no products | {count} product | {count} products",
+    "dealsHeading": "Today's deals",
+    "newHeading": "Just listed",
+    "sponsoredHeading": "Sponsored",
+    "sponsoredNote": "Ads paid for by sellers. They are not part of search results.",
+    "spotlightHeading": "Seller spotlight",
+    "spotlightCta": "Visit shop",
+    "spotlightStats": "{rating} out of 5 · {sales} sales · {onTime} on-time deliveries",
+    "seeAll": "See all",
+    "sectionEmpty": "No products in this section right now.",
+    "sectionErrorTitle": "Could not load this section",
+    "sectionErrorDescription": "The request failed. Try again."
+  },
+  "listing": {
+    "searchHeading": "Search",
+    "resultsCount": "no results | {count} result | {count} results",
+    "resultsCountFor": "no results for “{q}” | {count} result for “{q}” | {count} results for “{q}”",
+    "filtersHeading": "Filters",
+    "openFilters": "Filters",
+    "openFiltersCount": "Filters ({count})",
+    "showResults": "Show results",
+    "facet": {
+      "category": "Category",
+      "brand": "Brand",
+      "condition": "Condition",
+      "price": "Price",
+      "freeShipping": "Shipping"
+    },
+    "freeShippingOption": "Free shipping only",
+    "priceMin": "Min (R$)",
+    "priceMax": "Max (R$)",
+    "priceApplyShort": "Apply",
+    "priceError": {
+      "min-above-max": "The minimum cannot be higher than the maximum.",
+      "invalid": "Enter amounts in reais, like 1,299.90."
+    },
+    "priceRange": "{min} to {max}",
+    "priceFrom": "{min} and up",
+    "priceUpTo": "Up to {max}",
+    "noOptions": "No options for the current search.",
+    "chipsLabel": "Active filters",
+    "chipRemove": "Remove filter: {label}",
+    "clearAll": "Clear all",
+    "sortLabel": "Sort by",
+    "sort": {
+      "relevance": "Most relevant",
+      "price-asc": "Lowest price",
+      "price-desc": "Highest price",
+      "newest": "Newest"
+    },
+    "loading": "Loading results",
+    "emptyTitle": "No results",
+    "emptyTitleFor": "No results for “{q}”",
+    "emptyWithFilters": "No products match: {filters}. Remove a filter or clear them all.",
+    "emptyNoFilters": "Try another term or browse the categories.",
+    "emptyClear": "Clear filters",
+    "errorTitle": "Could not load the results",
+    "errorDescription": "The search failed on the server. Try again."
+  },
+  "category": {
+    "guitars": "Guitars and Basses",
+    "keyboards": "Keyboards and Synths",
+    "drums": "Drums and Percussion",
+    "studio": "Studio and Recording",
+    "pedals": "Pedals and Effects",
+    "accessories": "Accessories"
+  },
+  "shippingMethod": {
+    "standard": "Standard shipping",
+    "express": "Express shipping"
+  },
+  "orderStatus": {
+    "awaiting_payment": "Awaiting payment",
+    "paid": "Paid",
+    "shipped": "Shipped",
+    "delivered": "Delivered",
+    "cancelled": "Cancelled"
+  },
+  "language": {
+    "label": "Language",
+    "current": "Current language: {language}",
+    "names": {
+      "pt-BR": "Português",
+      "en": "English"
+    },
+    "short": {
+      "pt-BR": "PT",
+      "en": "EN"
+    }
+  }
+}

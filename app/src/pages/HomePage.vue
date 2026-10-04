@@ -4,9 +4,11 @@ import CategoryTiles from '@/components/home/CategoryTiles.vue'
 import HomeProductSection from '@/components/home/HomeProductSection.vue'
 import SellerSpotlight from '@/components/home/SellerSpotlight.vue'
 import { HOME_ROW_SIZE } from '@/config'
+import { usePageLanguage } from '@/composables/usePageLanguage'
 import { searchRoute } from '@/router/paths'
 
 const { t } = useI18n()
+const language = usePageLanguage()
 const perPage = String(HOME_ROW_SIZE)
 const deals = new URLSearchParams({ onSale: 'true', perPage })
 const recent = new URLSearchParams({ sort: 'newest', perPage })
@@ -22,7 +24,7 @@ const sponsored = new URLSearchParams({ sponsored: 'true', perPage })
       testid="home-recent"
       :heading="t('home.newHeading')"
       :params="recent"
-      :see-all-to="searchRoute({ sort: 'newest' })"
+      :see-all-to="searchRoute(language, { sort: 'newest' })"
     />
     <HomeProductSection
       testid="home-sponsored"

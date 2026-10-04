@@ -29,7 +29,7 @@ const { t } = useI18n()
 const brandOptions = computed<FilterGroupOption[]>(() => {
   const options = (props.facets?.brand ?? []).map((facet) => ({
     value: facet.value,
-    label: facet.label,
+    label: facet.value,
     count: facet.count,
     selected: props.state.brands.includes(facet.value),
   }))
@@ -78,7 +78,7 @@ function pickCategory(slug: string): void {
         class="btn justify-start rounded-control px-2 py-1 text-left text-body font-normal text-ink hover:bg-sunken aria-pressed:bg-action-quiet aria-pressed:font-semibold"
         @click="pickCategory(category.slug)"
       >
-        {{ category.name }}
+        {{ t(`category.${category.slug}`) }}
       </button>
     </fieldset>
 
