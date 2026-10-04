@@ -73,6 +73,101 @@ pages.
 
 ---
 
+## 3.1 — English contracts and routes
+
+Rename every technical surface to English. No behaviour changes: the existing
+tests, updated, are the proof. See ADR 0001. Update the specs first — they are
+authoritative — then contracts, fixtures, API, app, and the Bruno collection.
+
+| Surface | Before | After |
+|---|---|---|
+| Condition | `novo` `seminovo` `usado` | `new` `like-new` `used` |
+| Seller tier | `PRATA` `OURO` `PLATINA` | `SILVER` `GOLD` `PLATINUM` |
+| Sort | `relevancia` `menor-preco` `maior-preco` `mais-recentes` | `relevance` `price-asc` `price-desc` `newest` |
+| Shipping method | `padrao` `expressa` | `standard` `express` |
+| Payment method | `cartao` `pix` `boleto` | `card` `pix` `boleto` |
+| Unknown card brand | `desconhecida` | `unknown` |
+| Order status | `aguardando_pagamento` `pago` `enviado` `entregue` `cancelado` | `awaiting_payment` `paid` `shipped` `delivered` `cancelled` |
+| Category slugs | `guitarras` `teclados` `bateria` `estudio` `pedais` `acessorios` | `guitars` `keyboards` `drums` `studio` `pedals` `accessories` |
+| Routes | `/busca` `/v/:seller` `/carrinho` `/checkout/entrega\|pagamento\|revisao` `/pedido/:id` `/entrar` `/criar-conta` `/minha-conta/pedidos` | `/search` `/s/:seller` `/cart` `/checkout/shipping\|payment\|review` `/orders/:id` `/sign-in` `/sign-up` `/account/orders` (`/c/:slug` and `/p/:slug--:id` unchanged) |
+| Listing query | `categoria` `marca` `condicao` `preco` `frete` `ordem` `pagina` | `category` `brand` `condition` `price` `freeShipping` `sort` `page` (`q` unchanged; `price` stays one `MIN-MAX` param) |
+| API error messages | pt-BR | English; the app shows Platform copy keyed by `code` |
+
+Unchanged on purpose: `pix`, `boleto`, CEP, UF (Brazilian domain names), product
+and seller slugs (Listing content), coupon codes (campaign content).
+
+**Acceptance**
+- Every value in the table is renamed across specs, contracts, fixtures, API,
+  app, tests, and the Bruno collection. No Portuguese remains on the wire or in a
+  URL, except the unchanged values above and Listing content.
+- Every existing test passes after being updated, with no behaviour change.
+- Acceptance criteria in later milestones are rewritten to the new names.
+
+---
+
+## 3.2 — Bilingual UI
+
+Two Page languages: Portuguese (default, unprefixed) and English under `/en`.
+See ADR 0001.
+
+- The router accepts an optional `/en` prefix on every route; every internal
+  link preserves the current Page language. No browser-language detection.
+- `app/src/locales/en.json` alongside `pt-BR.json`, with identical keys.
+- A language switcher in the header keeps the current path and query.
+- `<html lang>` follows the Page language.
+- Platform copy moves to the client, keyed by stable codes: category names
+  (by slug) and price-bucket labels join conditions and tiers. The API stops
+  sending display labels.
+- Listing content (product names, descriptions, specs, store bios) is shown as
+  written, in both languages.
+- Numbers and dates format by Page language.
+
+**Acceptance**
+- The same page renders under `/x` and `/en/x` with identical `data-testid`
+  structure and data attributes; only copy and formatting differ.
+- Switching language keeps the path, query, and scroll target.
+- `en.json` and `pt-BR.json` have exactly the same keys, enforced by a unit test.
+- axe passes on `/`, `/search`, `/c/guitars` in both languages.
+- Kitchen sink renders every primitive in both languages.
+
+---
+
+## 3.3 — Multi-currency
+
+Currency follows Page language: BRL for Portuguese, USD for English. See ADR 0002.
+
+- Every money-bearing endpoint takes the Currency as a `currency=BRL|USD` query
+  parameter (catalog, seller, cart and its mutations, shipping quote, order
+  creation). Omitted means `BRL`, so existing callers keep working. Responses
+  carry `currency` beside amounts.
+- The Demo exchange rate is a fixture constant, R$ 5,00 = US$ 1, exposed by the
+  API.
+- Conversion: each unit price converts once, rounded half-up to the cent; every
+  sum (line totals, subtotal, shipping, discount, total) is computed from
+  converted values, so totals always add up.
+- **Eligibility is always decided in BRL**: free-shipping threshold, coupon
+  minimums and applicability. Only resulting amounts convert.
+- USD accepts only `card`. `pix` or `boleto` with USD returns 422
+  `PAYMENT_METHOD_UNAVAILABLE`.
+- Orders store their `currency` and charged amounts and are never reconverted;
+  fixture orders are BRL. An order renders in its own Currency, formatted by Page
+  language.
+- The app's catalog shows USD under `/en`. Cart and checkout UI land in
+  milestones 5 and 6, carrying the currency criteria listed there.
+
+**Acceptance**
+- The same product carries the same BRL-based identity in both currencies, and
+  its USD price equals its BRL price divided by the Demo exchange rate, rounded
+  half-up — asserted for all 60 products and every variant option.
+- A cart with subtotal R$ 299,99 gets no free shipping in either currency.
+- Every coupon in the matrix produces the same outcome in both currencies.
+- Line totals, subtotal, discount, shipping, and total add up exactly in USD.
+- `PAYMENT_METHOD_UNAVAILABLE` is reachable and covered by a test.
+- `TMB-100236` renders in BRL under `/en`.
+- Facet price buckets and the `price` filter work in the request's Currency.
+
+---
+
 ## 4 — Product page and seller page
 
 Gallery, variant selector, quantity stepper, shipping estimator, seller panel,
@@ -104,6 +199,8 @@ method selection, summary. Cart persists across reload and merges on login.
   any method.
 - Empty cart renders its own state.
 - A guest cart survives reload and merges into the user cart on login.
+- The same cart under `/en/cart` shows USD amounts that add up exactly, with the
+  same free-shipping and coupon outcomes as under `/cart`.
 
 ---
 
@@ -126,6 +223,9 @@ order creation, confirmation, order history.
 - `TMB-100238` returns 403 for a logged-in user who does not own it, and the app
   renders a proper forbidden state rather than a crash.
 - Stock decrements after a successful order.
+- Under `/en`, checkout offers card only. Choosing pix, then switching to
+  `/en/checkout/review`, returns the Visitor to `/en/checkout/payment` with
+  `data-error-code="PAYMENT_METHOD_UNAVAILABLE"` and the cart intact.
 
 ---
 
