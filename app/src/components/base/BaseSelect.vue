@@ -97,7 +97,7 @@ function onValueChange(value: unknown) {
       >
         <SelectValue
           :placeholder="placeholder ?? t('select.placeholder')"
-          class="min-w-0 truncate data-[placeholder]:text-faint"
+          class="min-w-0 truncate data-[placeholder]:text-muted"
         />
         <SelectIcon class="shrink-0 text-muted">
           <svg class="size-4" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
