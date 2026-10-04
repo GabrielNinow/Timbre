@@ -78,6 +78,18 @@ The app must never require a fixed sleep to be testable. Concretely:
 - Anything that reads "the operation finished" is expressed in the DOM, not only
   in a console log or a network response.
 
+## Parallel isolation
+
+The API holds one in-memory store, so two tests sharing it would reset each
+other's state. The Playwright suite runs workers in parallel anyway, because
+**each worker starts its own API process** on its own port (`3400 + worker
+index`). Every page and context routes `/api/*` to its worker's API with
+`context.route`. The app build and the preview server stay shared; the store
+never is. Routes a test adds later (stubs) take precedence. Shards on different
+machines each run their own workers, so sharding needs nothing extra. See ADR 0003.
+
+The Cypress suite runs specs serially against one API and resets in `beforeEach`.
+
 ## Error injection
 
 Three layers, and the project should demonstrate all three because they suit
