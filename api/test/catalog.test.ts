@@ -88,6 +88,42 @@ describe('GET /api/products', () => {
     expect((await list('?minPrice=0&maxPrice=20000')).total).toBe(5)
   })
 
+  it('filters to exactly the six sponsored listings', async () => {
+    const body = await list('?sponsored=true&perPage=60')
+    expect(body.items.map((item) => item.id).sort()).toEqual([
+      'p-0101',
+      'p-0203',
+      'p-0303',
+      'p-0401',
+      'p-0504',
+      'p-0601',
+    ])
+    expect(body.items.every((item) => item.sponsored)).toBe(true)
+  })
+
+  it('filters to listings on sale, meaning listPrice above price', async () => {
+    const all = await list('?perPage=60')
+    const expected = all.items
+      .filter((item) => item.listPrice !== null && item.listPrice > item.price)
+      .map((item) => item.id)
+    const body = await list('?onSale=true&perPage=60')
+    expect(body.total).toBeGreaterThan(0)
+    expect(body.items.map((item) => item.id).sort()).toEqual([...expected].sort())
+  })
+
+  it('composes sponsored and onSale with other filters and with facets', async () => {
+    const body = await list('?onSale=true&condition=novo&perPage=60')
+    expect(body.items.every((item) => item.condition === 'novo')).toBe(true)
+    expect(body.items.every((item) => item.listPrice !== null && item.listPrice > item.price)).toBe(
+      true,
+    )
+    const novo = body.facets.condition.find((facet) => facet.value === 'novo')
+    expect(novo?.count).toBe(body.total)
+
+    const sponsoredGuitars = await list('?sponsored=true&category=guitarras')
+    expect(sponsoredGuitars.items.map((item) => item.id)).toEqual(['p-0101'])
+  })
+
   it('rejects a page size above the documented maximum', async () => {
     const response = await get(h.app, '/api/products?perPage=61')
     expect(response.statusCode).toBe(422)

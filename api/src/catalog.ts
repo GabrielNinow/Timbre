@@ -15,6 +15,8 @@ export interface CatalogFilters {
   minPrice?: number | undefined
   maxPrice?: number | undefined
   freeShipping?: boolean | undefined
+  sponsored?: boolean | undefined
+  onSale?: boolean | undefined
 }
 
 export function normalizeText(value: string): string {
@@ -74,6 +76,10 @@ export function filterProducts(
       if (filters.maxPrice !== undefined && product.price > filters.maxPrice) return false
     }
     if (filters.freeShipping && !product.freeShipping) return false
+    if (filters.sponsored && !product.sponsored) return false
+    if (filters.onSale && !(product.listPrice !== null && product.listPrice > product.price)) {
+      return false
+    }
     return true
   })
 }

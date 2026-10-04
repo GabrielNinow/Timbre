@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import BaseToast from '@/components/base/BaseToast.vue'
+import SiteHeader from '@/components/layout/SiteHeader.vue'
 
 const { t } = useI18n()
 </script>
@@ -13,6 +14,8 @@ const { t } = useI18n()
   >
     {{ t('a11y.skipToContent') }}
   </a>
+
+  <SiteHeader />
 
   <RouterView />
 
