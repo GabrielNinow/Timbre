@@ -11,6 +11,6 @@ export const DEMO_PASSWORD = 'Teste@1234'
 export const DEMO_ACCOUNTS = [
   { key: 'ana', name: 'Ana Souza', email: 'ana.souza@timbre.test' },
   { key: 'bruno', name: 'Bruno Lima', email: 'bruno.lima@timbre.test' },
-  { key: 'locked', name: 'Conta bloqueada', email: 'bloqueado@timbre.test' },
-  { key: 'slow', name: 'Login lento', email: 'lento@timbre.test' },
+  { key: 'locked', name: 'Marina Rocha', email: 'bloqueado@timbre.test' },
+  { key: 'slow', name: 'Paulo Tavares', email: 'lento@timbre.test' },
 ] as const
