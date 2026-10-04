@@ -43,6 +43,13 @@ export function slugify(value: string): string {
     .replace(/^-+|-+$/g, '')
 }
 
+/** Listing content, as sellers wrote it (ADR 0001): the condition code is never shown raw. */
+const conditionSpec: Record<Condition, string> = {
+  new: 'NOVO',
+  'like-new': 'SEMINOVO',
+  used: 'USADO',
+}
+
 const conditionSentence: Record<Condition, string> = {
   new: 'Unidade nova, lacrada, com garantia de 12 meses.',
   'like-new': 'Unidade seminova, com poucos sinais de uso e totalmente revisada.',
@@ -107,7 +114,7 @@ function defineProduct(input: ProductInput): ProductFixture {
   const baseSpecs: ProductSpec[] = [
     { label: 'Marca', value: input.brand },
     ...(input.year ? [{ label: 'Ano', value: String(input.year) }] : []),
-    { label: 'Condição', value: input.condition.toUpperCase() },
+    { label: 'Condição', value: conditionSpec[input.condition] },
   ]
   return Object.freeze({
     id: input.id,
