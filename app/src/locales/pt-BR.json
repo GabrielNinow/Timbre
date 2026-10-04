@@ -239,5 +239,76 @@
       "middlePage": "Página no meio, com reticências",
       "fewPages": "Poucas páginas, sem reticências"
     }
+  },
+  "header": {
+    "home": "Timbre, página inicial",
+    "primaryNav": "Navegação principal",
+    "searchLabel": "Buscar produtos",
+    "searchPlaceholder": "Buscar instrumentos, marcas e lojas",
+    "searchSubmit": "Buscar",
+    "categories": "Categorias",
+    "categoriesError": "Não foi possível carregar as categorias."
+  },
+  "home": {
+    "title": "Timbre — instrumentos musicais e áudio",
+    "categoriesHeading": "Categorias",
+    "categoryCount": "nenhum produto | {count} produto | {count} produtos",
+    "dealsHeading": "Ofertas do dia",
+    "newHeading": "Recém-chegados",
+    "sponsoredHeading": "Patrocinados",
+    "sponsoredNote": "Anúncios pagos por vendedores. Não fazem parte dos resultados de busca.",
+    "spotlightHeading": "Vendedor em destaque",
+    "spotlightCta": "Ver loja",
+    "spotlightStats": "{rating} de 5 · {sales} vendas · {onTime} de entregas no prazo",
+    "seeAll": "Ver tudo",
+    "sectionEmpty": "Nenhum produto nesta seção agora.",
+    "sectionErrorTitle": "Não foi possível carregar esta seção",
+    "sectionErrorDescription": "A requisição falhou. Tente novamente."
+  },
+  "listing": {
+    "searchHeading": "Busca",
+    "resultsCount": "nenhum resultado | {count} resultado | {count} resultados",
+    "resultsCountFor": "nenhum resultado para “{q}” | {count} resultado para “{q}” | {count} resultados para “{q}”",
+    "filtersHeading": "Filtros",
+    "openFilters": "Filtros",
+    "openFiltersCount": "Filtros ({count})",
+    "showResults": "Ver resultados",
+    "facet": {
+      "category": "Categoria",
+      "brand": "Marca",
+      "condition": "Condição",
+      "price": "Preço",
+      "freeShipping": "Frete"
+    },
+    "freeShippingOption": "Somente com frete grátis",
+    "priceMin": "Mínimo (R$)",
+    "priceMax": "Máximo (R$)",
+    "priceApplyShort": "Aplicar",
+    "priceError": {
+      "min-above-max": "O mínimo não pode ser maior que o máximo.",
+      "invalid": "Informe valores em reais, como 1.299,90."
+    },
+    "priceRange": "{min} a {max}",
+    "priceFrom": "A partir de {min}",
+    "priceUpTo": "Até {max}",
+    "noOptions": "Nenhuma opção para a busca atual.",
+    "chipsLabel": "Filtros ativos",
+    "chipRemove": "Remover filtro: {label}",
+    "clearAll": "Limpar tudo",
+    "sortLabel": "Ordenar por",
+    "sort": {
+      "relevancia": "Mais relevantes",
+      "menor-preco": "Menor preço",
+      "maior-preco": "Maior preço",
+      "mais-recentes": "Mais recentes"
+    },
+    "loading": "Carregando resultados",
+    "emptyTitle": "Nenhum resultado",
+    "emptyTitleFor": "Nenhum resultado para “{q}”",
+    "emptyWithFilters": "Nenhum produto combina com: {filters}. Remova um filtro ou limpe todos.",
+    "emptyNoFilters": "Tente outro termo ou navegue pelas categorias.",
+    "emptyClear": "Limpar filtros",
+    "errorTitle": "Não foi possível carregar os resultados",
+    "errorDescription": "A busca falhou no servidor. Tente novamente."
   }
 }
