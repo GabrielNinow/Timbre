@@ -31,8 +31,9 @@ and form validation. Never duplicate a shape — import it.
 - Vite, Vue Router, Pinia
 - Tailwind CSS v4, configured with the tokens in `docs/design-system.md`
 - Reka UI for dialog, popover, select, and combobox primitives
-- vue-i18n, pt-BR only for now, but every user-facing string lives in
-  `app/src/locales/pt-BR.json`. Zero hardcoded copy in components.
+- vue-i18n with two Page languages, pt-BR (default) and en, from milestone 3.2.
+  Every user-facing string lives in `app/src/locales/`. Zero hardcoded copy in
+  components. Code, URLs, API values and docs are English (ADR 0001).
 - Zod for validation, shared via `packages/contracts`
 - Fastify for the API, no database — an in-memory store reset from fixtures
 - Vitest for unit tests of pure logic only (pricing, filters, validators)
