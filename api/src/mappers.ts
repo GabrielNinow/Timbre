@@ -4,7 +4,7 @@ import type { Store, StoreProduct, StoreUser } from './store.js'
 
 export function toSellerRef(store: Store, sellerId: string): SellerRef {
   const seller = store.sellerById(sellerId)
-  if (!seller) throw new Error(`Vendedor inexistente no fixture: ${sellerId}`)
+  if (!seller) throw new Error(`Seller missing from fixtures: ${sellerId}`)
   return {
     id: seller.id,
     name: seller.name,

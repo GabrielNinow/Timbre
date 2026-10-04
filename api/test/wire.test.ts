@@ -25,7 +25,7 @@ describe('no floats anywhere on the wire', () => {
     const token = await seedSession(h.app, 'bruno.lima@timbre.test')
     await addItem(h.app, { productId: 'p-0103', variantOptionId: 'v-0103-sonic-blue' }, { token })
     await post(h.app, '/api/cart/coupon', { code: 'TIMBRE10' }, { token })
-    await put(h.app, '/api/cart/shipping', { shippingId: 'expressa' }, { token })
+    await put(h.app, '/api/cart/shipping', { shippingId: 'express' }, { token })
 
     const responses = [
       await get(h.app, '/api/categories'),
@@ -50,6 +50,68 @@ describe('no floats anywhere on the wire', () => {
     await post(h.app, '/api/cart/coupon', { code: 'TIMBRE10' }, { token })
     const cart = (await get(h.app, '/api/cart', { token })).json()
     expect(findFloats(cart)).toEqual([])
+  })
+})
+
+describe('english on the wire', () => {
+  // Retired by milestone 3.1 (ADR 0001). Listing content may still contain these
+  // words inside prose, so only whole string values count.
+  const RETIRED = new Set([
+    'novo', 'seminovo', 'usado',
+    'PRATA', 'OURO', 'PLATINA',
+    'relevancia', 'menor-preco', 'maior-preco', 'mais-recentes',
+    'padrao', 'expressa', 'cartao', 'desconhecida',
+    'aguardando_pagamento', 'pago', 'enviado', 'entregue', 'cancelado',
+    'guitarras', 'teclados', 'bateria', 'estudio', 'pedais', 'acessorios',
+  ])
+
+  function stringValues(value: unknown, out: string[] = []): string[] {
+    if (typeof value === 'string') out.push(value)
+    else if (Array.isArray(value)) for (const item of value) stringValues(item, out)
+    else if (value && typeof value === 'object') {
+      for (const item of Object.values(value)) stringValues(item, out)
+    }
+    return out
+  }
+
+  it('carries no retired Portuguese value in any response', async () => {
+    const token = await seedSession(h.app, 'bruno.lima@timbre.test')
+    await addItem(h.app, { productId: 'p-0103', variantOptionId: 'v-0103-sonic-blue' }, { token })
+    await put(h.app, '/api/cart/shipping', { shippingId: 'express' }, { token })
+
+    const responses = [
+      await get(h.app, '/api/categories'),
+      await get(h.app, '/api/products?perPage=60'),
+      await get(h.app, '/api/products?perPage=60&page=2'),
+      await get(h.app, '/api/products/p-0103'),
+      await get(h.app, '/api/sellers/casa-do-som'),
+      await get(h.app, '/api/cart', { token }),
+      await post(h.app, '/api/shipping/quote', { cep: '01310-100' }),
+      await get(h.app, '/api/orders', { token }),
+      await post(h.app, '/api/orders', orderPayload(), { token }),
+    ]
+    const found = responses.flatMap((response) =>
+      stringValues(response.json()).filter((value) => RETIRED.has(value)),
+    )
+    expect(found).toEqual([])
+  })
+
+  it('explains every error in English', async () => {
+    const token = await seedSession(h.app, 'ana.souza@timbre.test')
+    const errorsSeen = [
+      await get(h.app, '/api/products/p-9999'),
+      await get(h.app, '/api/nowhere'),
+      await get(h.app, '/api/orders/TMB-100238', { token }),
+      await post(h.app, '/api/cart/coupon', { code: 'NAOEXISTE' }, { token }),
+      await post(h.app, '/api/shipping/quote', { cep: '00000-000' }),
+      await post(h.app, '/api/auth/login', { email: 'ana.souza@timbre.test', password: 'errada' }),
+      await post(h.app, '/api/orders', orderPayload(), { token }),
+    ]
+    for (const response of errorsSeen) {
+      const { error } = response.json() as { error: { message: string; fields?: object } }
+      const texts = [error.message, ...stringValues(error.fields ?? {})]
+      for (const text of texts) expect(text, text).toMatch(/^[\x20-\x7E—]+$/)
+    }
   })
 })
 
@@ -88,7 +150,7 @@ describe('determinism', () => {
   it('repeats byte-identical answers for repeated reads', async () => {
     const urls = [
       '/api/categories',
-      '/api/products?q=strymon&sort=relevancia',
+      '/api/products?q=strymon&sort=relevance',
       '/api/products/p-0103',
       '/api/sellers/vintage-room',
     ]

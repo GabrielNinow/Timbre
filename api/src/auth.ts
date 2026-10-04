@@ -14,7 +14,7 @@ export function requireUser(store: Store, request: FastifyRequest): StoreUser {
   const header = request.headers.authorization
   if (!header) throw errors.unauthorized()
   const user = optionalUser(store, request)
-  if (!user) throw errors.unauthorized('Sessão inválida ou expirada.')
+  if (!user) throw errors.unauthorized('Invalid or expired session.')
   return user
 }
 

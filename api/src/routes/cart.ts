@@ -25,16 +25,16 @@ export function registerCartRoutes(app: FastifyInstance, store: Store): void {
     const body = parseBody(addCartItemBodySchema, request.body)
     const cart = resolveCart(store, request, optionalUser(store, request))
     const product = store.productById(body.productId)
-    if (!product) throw errors.notFound('Produto não encontrado.')
+    if (!product) throw errors.notFound('Product not found.')
 
     if (product.variants && !body.variantOptionId) {
-      throw errors.validation({ variantOptionId: 'Escolha uma opção do produto.' })
+      throw errors.validation({ variantOptionId: 'Choose a product option.' })
     }
     if (!product.variants && body.variantOptionId) {
-      throw errors.validation({ variantOptionId: 'Este produto não tem opções.' })
+      throw errors.validation({ variantOptionId: 'This product has no options.' })
     }
     if (body.variantOptionId && !findVariantOption(product, body.variantOptionId)) {
-      throw errors.notFound('Opção de produto não encontrada.')
+      throw errors.notFound('Product option not found.')
     }
 
     const variantOptionId = body.variantOptionId ?? null
@@ -47,8 +47,8 @@ export function registerCartRoutes(app: FastifyInstance, store: Store): void {
       throw new ApiError(
         'INSUFFICIENT_STOCK',
         available === 0
-          ? 'Este produto está esgotado.'
-          : `Restam apenas ${available} unidade(s) deste produto.`,
+          ? 'This product is sold out.'
+          : `Only ${available} unit(s) of this product left.`,
         { available },
       )
     }
@@ -70,7 +70,7 @@ export function registerCartRoutes(app: FastifyInstance, store: Store): void {
     const body = parseBody(updateCartItemBodySchema, request.body)
     const cart = resolveCart(store, request, optionalUser(store, request))
     const line = cart.lines.find((candidate) => candidate.id === request.params.lineId)
-    if (!line) throw errors.notFound('Item não encontrado no carrinho.')
+    if (!line) throw errors.notFound('Item not found in the cart.')
 
     if (body.quantity === 0) {
       cart.lines = cart.lines.filter((candidate) => candidate.id !== line.id)
@@ -78,10 +78,10 @@ export function registerCartRoutes(app: FastifyInstance, store: Store): void {
     }
 
     const product = store.productById(line.productId)
-    if (!product) throw errors.notFound('Produto não encontrado.')
+    if (!product) throw errors.notFound('Product not found.')
     const available = availableStock(product, line.variantOptionId)
     if (body.quantity > available) {
-      throw new ApiError('INSUFFICIENT_STOCK', `Restam apenas ${available} unidade(s).`, {
+      throw new ApiError('INSUFFICIENT_STOCK', `Only ${available} unit(s) left.`, {
         available,
       })
     }
@@ -92,7 +92,7 @@ export function registerCartRoutes(app: FastifyInstance, store: Store): void {
   app.delete<{ Params: { lineId: string } }>('/api/cart/items/:lineId', async (request, reply) => {
     const cart = resolveCart(store, request, optionalUser(store, request))
     const line = cart.lines.find((candidate) => candidate.id === request.params.lineId)
-    if (!line) throw errors.notFound('Item não encontrado no carrinho.')
+    if (!line) throw errors.notFound('Item not found in the cart.')
     cart.lines = cart.lines.filter((candidate) => candidate.id !== line.id)
     return send(reply, cartSchema, buildCart(store, cart))
   })
@@ -102,11 +102,11 @@ export function registerCartRoutes(app: FastifyInstance, store: Store): void {
     const cart = resolveCart(store, request, optionalUser(store, request))
     const current = buildCart(store, cart)
     if (current.coupon) {
-      throw new ApiError('COUPON_ALREADY_APPLIED', 'Já existe um cupom aplicado neste carrinho.')
+      throw new ApiError('COUPON_ALREADY_APPLIED', 'A coupon is already applied to this cart.')
     }
 
     const coupon = store.couponByCode(body.code)
-    if (!coupon) throw new ApiError('COUPON_INVALID', 'Cupom inválido.')
+    if (!coupon) throw new ApiError('COUPON_INVALID', 'Invalid coupon.')
 
     const resolvedLines = current.lines.map((line) => ({
       line,
@@ -141,8 +141,8 @@ export function registerCartRoutes(app: FastifyInstance, store: Store): void {
     if (!option) {
       throw new ApiError(
         'SHIPPING_OPTION_UNAVAILABLE',
-        'Esta modalidade de entrega não atende o CEP informado.',
-        { fields: { shippingId: 'Modalidade indisponível para este CEP.' } },
+        'This shipping method does not serve the given CEP.',
+        { fields: { shippingId: 'Method unavailable for this CEP.' } },
       )
     }
     cart.selectedShippingId = option.id

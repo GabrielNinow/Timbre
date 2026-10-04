@@ -24,12 +24,12 @@ describe('POST /api/shipping/quote', () => {
     const body = response.json() as ShippingQuoteResponse
     expect(body.city).toBe('Blumenau')
     expect(body.state).toBe('SC')
-    expect(body.options.find((option) => option.id === 'padrao')!.etaDays).toBe(2)
+    expect(body.options.find((option) => option.id === 'standard')!.etaDays).toBe(2)
   })
 
   it('drops the express option for Rio Branco', async () => {
     const body = (await post(h.app, '/api/shipping/quote', { cep: '69900-000' })).json() as ShippingQuoteResponse
-    expect(body.options.map((option) => option.id)).toEqual(['padrao'])
+    expect(body.options.map((option) => option.id)).toEqual(['standard'])
     expect(body.options[0]!.etaDays).toBe(9)
   })
 
@@ -74,7 +74,7 @@ describe('POST /api/orders', () => {
     const order = response.json() as Order
     expect(order.number).toBe('TMB-100241')
     expect(order.id).toBe(order.number)
-    expect(order.status).toBe('pago')
+    expect(order.status).toBe('paid')
     expect(order.payment.cardLast4).toBe('1111')
   })
 
@@ -152,7 +152,7 @@ describe('POST /api/orders', () => {
   it('returns pix awaiting payment with a static payload', async () => {
     const token = await readyCart()
     const order = (await post(h.app, '/api/orders', orderPayload({ method: 'pix' }), { token })).json() as Order
-    expect(order.status).toBe('aguardando_pagamento')
+    expect(order.status).toBe('awaiting_payment')
     expect(order.payment.pixPayload).toContain('TIMBRE-PIX-100241')
   })
 
@@ -196,7 +196,7 @@ describe('POST /api/orders', () => {
     const cart = h.store.cartForUser('u-01')
     cart.cep = '69900000'
 
-    const response = await post(h.app, '/api/orders', orderPayload({ selectedShippingId: 'expressa' }), { token })
+    const response = await post(h.app, '/api/orders', orderPayload({ selectedShippingId: 'express' }), { token })
     expect(response.statusCode).toBe(422)
     expect(errorCodeOf(response)).toBe('SHIPPING_OPTION_UNAVAILABLE')
   })

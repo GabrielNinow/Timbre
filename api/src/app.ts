@@ -35,7 +35,7 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<TimbreApp
     if (request.url.startsWith('/api/test/')) return
     const armed = store.takeFailure(request.method, request.url)
     if (armed) {
-      throw new ApiError(armed.code, 'Falha simulada para teste.', { status: armed.status })
+      throw new ApiError(armed.code, 'Simulated failure for testing.', { status: armed.status })
     }
   })
 
@@ -47,7 +47,7 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<TimbreApp
   if (testMode) registerTestRoutes(app, store)
 
   app.setNotFoundHandler(async (_request, reply) => {
-    const error = errors.notFound('Rota não encontrada.')
+    const error = errors.notFound('Route not found.')
     return reply.status(error.status).send(error.toEnvelope())
   })
 
@@ -59,7 +59,7 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<TimbreApp
     if (statusCode && statusCode >= 400 && statusCode < 500) {
       const mapped = new ApiError(
         statusCode === 401 ? 'UNAUTHORIZED' : 'MALFORMED_REQUEST',
-        'Requisição malformada.',
+        'Malformed request.',
         { status: statusCode },
       )
       return reply.status(mapped.status).send(mapped.toEnvelope())

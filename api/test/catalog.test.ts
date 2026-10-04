@@ -19,12 +19,12 @@ describe('GET /api/categories', () => {
     const response = await get(h.app, '/api/categories')
     const body = response.json() as { items: Array<{ slug: string; productCount: number }> }
     expect(body.items.map((item) => item.slug)).toEqual([
-      'guitarras',
-      'teclados',
-      'bateria',
-      'estudio',
-      'pedais',
-      'acessorios',
+      'guitars',
+      'keyboards',
+      'drums',
+      'studio',
+      'pedals',
+      'accessories',
     ])
     expect(body.items.reduce((sum, item) => sum + item.productCount, 0)).toBe(60)
   })
@@ -40,13 +40,13 @@ describe('GET /api/products', () => {
   })
 
   it('returns identical bytes for two identical requests', async () => {
-    const first = await get(h.app, '/api/products?condition=usado&sort=menor-preco&page=2&perPage=5')
-    const second = await get(h.app, '/api/products?condition=usado&sort=menor-preco&page=2&perPage=5')
+    const first = await get(h.app, '/api/products?condition=used&sort=price-asc&page=2&perPage=5')
+    const second = await get(h.app, '/api/products?condition=used&sort=price-asc&page=2&perPage=5')
     expect(first.body).toBe(second.body)
   })
 
   it('breaks ties on id ascending', async () => {
-    const body = await list('?sort=menor-preco&perPage=60')
+    const body = await list('?sort=price-asc&perPage=60')
     for (let index = 1; index < body.items.length; index += 1) {
       const previous = body.items[index - 1]!
       const current = body.items[index]!
@@ -58,14 +58,14 @@ describe('GET /api/products', () => {
   })
 
   it('sorts by price in both directions', async () => {
-    const cheapest = await list('?sort=menor-preco')
+    const cheapest = await list('?sort=price-asc')
     expect(cheapest.items[0]!.id).toBe('p-0501')
-    const dearest = await list('?sort=maior-preco')
+    const dearest = await list('?sort=price-desc')
     expect(dearest.items[0]!.id).toBe('p-0202')
   })
 
   it('sorts by listing date without reading wall time', async () => {
-    const body = await list('?sort=mais-recentes&perPage=60')
+    const body = await list('?sort=newest&perPage=60')
     const dates = body.items.map((item) => Date.parse(item.listedAt))
     expect([...dates].sort((a, b) => b - a)).toEqual(dates)
   })
@@ -78,9 +78,9 @@ describe('GET /api/products', () => {
   })
 
   it('filters by category, condition, brand, seller, price and free shipping', async () => {
-    expect((await list('?category=guitarras')).total).toBe(14)
-    expect((await list('?condition=novo')).total).toBe(24)
-    expect((await list('?condition=novo&condition=usado')).total).toBe(38)
+    expect((await list('?category=guitars')).total).toBe(14)
+    expect((await list('?condition=new')).total).toBe(24)
+    expect((await list('?condition=new&condition=used')).total).toBe(38)
     expect((await list('?brand=Fender')).total).toBe(2)
     expect((await list('?sellerId=s-08')).total).toBe(2)
     expect((await list('?freeShipping=true')).total).toBe(19)
@@ -112,15 +112,15 @@ describe('GET /api/products', () => {
   })
 
   it('composes sponsored and onSale with other filters and with facets', async () => {
-    const body = await list('?onSale=true&condition=novo&perPage=60')
-    expect(body.items.every((item) => item.condition === 'novo')).toBe(true)
+    const body = await list('?onSale=true&condition=new&perPage=60')
+    expect(body.items.every((item) => item.condition === 'new')).toBe(true)
     expect(body.items.every((item) => item.listPrice !== null && item.listPrice > item.price)).toBe(
       true,
     )
-    const novo = body.facets.condition.find((facet) => facet.value === 'novo')
+    const novo = body.facets.condition.find((facet) => facet.value === 'new')
     expect(novo?.count).toBe(body.total)
 
-    const sponsoredGuitars = await list('?sponsored=true&category=guitarras')
+    const sponsoredGuitars = await list('?sponsored=true&category=guitars')
     expect(sponsoredGuitars.items.map((item) => item.id)).toEqual(['p-0101'])
   })
 
@@ -137,7 +137,7 @@ describe('GET /api/products', () => {
 
 describe('facets', () => {
   it('counts each facet against the other active filters, not its own', async () => {
-    const body = await list('?category=guitarras&brand=Fender&condition=novo')
+    const body = await list('?category=guitars&brand=Fender&condition=new')
 
     expect(body.total).toBe(1)
     expect(body.items[0]!.id).toBe('p-0101')
@@ -149,7 +149,7 @@ describe('facets', () => {
     const conditions = Object.fromEntries(
       body.facets.condition.map((entry) => [entry.value, entry.count]),
     )
-    expect(conditions).toEqual({ novo: 1, seminovo: 1, usado: 0 })
+    expect(conditions).toEqual({ new: 1, 'like-new': 1, used: 0 })
   })
 
   it('keeps price bucket counts consistent with filtering by the same range', async () => {
@@ -191,7 +191,7 @@ describe('GET /api/sellers/:slug', () => {
   it('returns the seller, its stats and its products', async () => {
     const response = await get(h.app, '/api/sellers/casa-do-som')
     const body = response.json() as SellerPageResponse
-    expect(body.seller.tier).toBe('PLATINA')
+    expect(body.seller.tier).toBe('PLATINUM')
     expect(body.seller.productCount).toBe(14)
     expect(body.stats.rating).toBe(48)
     expect(body.products.total).toBe(14)

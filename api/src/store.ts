@@ -152,7 +152,7 @@ export class Store {
         imageUrl: product.imageUrl,
         variantName: option?.name ?? null,
         sellerId: product.sellerId,
-        sellerName: seller?.name ?? 'Vendedor',
+        sellerName: seller?.name ?? 'Seller',
         unitPrice: item.unitPrice,
         quantity: item.quantity,
         lineTotal: item.unitPrice * item.quantity,
@@ -244,7 +244,7 @@ export class Store {
       userId,
       cep: DEFAULT_CEP,
       couponCode: null,
-      selectedShippingId: 'padrao',
+      selectedShippingId: 'standard',
       lines: [],
     }
     this.carts.set(cart.id, cart)

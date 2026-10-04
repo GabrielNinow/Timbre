@@ -32,7 +32,7 @@ export function registerOrderRoutes(app: FastifyInstance, store: Store): void {
   app.get<{ Params: { id: string } }>('/api/orders/:id', async (request, reply) => {
     const user = requireUser(store, request)
     const order = store.orderById(request.params.id)
-    if (!order) throw errors.notFound('Pedido não encontrado.')
+    if (!order) throw errors.notFound('Order not found.')
     if (order.userId !== user.id) throw errors.forbidden()
     return send(reply, orderSchema, order)
   })

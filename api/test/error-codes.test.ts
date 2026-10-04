@@ -176,7 +176,7 @@ describe('every documented error code is reachable', () => {
     await addItem(h.app, { productId: 'p-0602' }, { cartId })
     await put(h.app, '/api/cart/cep', { cep: '69900-000' }, { cartId })
     await expectCode(
-      await put(h.app, '/api/cart/shipping', { shippingId: 'expressa' }, { cartId }),
+      await put(h.app, '/api/cart/shipping', { shippingId: 'express' }, { cartId }),
       'SHIPPING_OPTION_UNAVAILABLE',
       422,
     )

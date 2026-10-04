@@ -57,12 +57,12 @@ export function assertCouponApplies(
   subtotal: number,
 ): void {
   if (coupon.expiresAt && Date.parse(coupon.expiresAt) < store.nowMs()) {
-    throw new ApiError('COUPON_EXPIRED', 'Este cupom expirou.')
+    throw new ApiError('COUPON_EXPIRED', 'This coupon has expired.')
   }
   if (coupon.minSubtotal !== null && subtotal < coupon.minSubtotal) {
     throw new ApiError(
       'COUPON_MIN_NOT_MET',
-      `Este cupom vale a partir de ${formatBRL(coupon.minSubtotal)}.`,
+      `This coupon requires a subtotal of at least ${formatBRL(coupon.minSubtotal)}.`,
     )
   }
   if (coupon.onlyConditions) {
@@ -72,7 +72,7 @@ export function assertCouponApplies(
     if (!everyLineQualifies) {
       throw new ApiError(
         'COUPON_NOT_APPLICABLE',
-        'Este cupom vale somente para produtos novos.',
+        'This coupon applies to new products only.',
       )
     }
   }
