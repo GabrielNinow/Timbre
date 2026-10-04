@@ -45,7 +45,7 @@ describe('auth', () => {
     cy.get(`[data-testid="demo-account-sign-in"][data-email="${ACCOUNTS.slow}"]`).click()
     cy.get(`[data-testid="demo-account-sign-in"][data-email="${ACCOUNTS.slow}"]`).should('have.attr', 'data-loading', 'true')
     cy.location('pathname', { timeout: 6000 }).should('eq', '/')
-    signedInAs('Login')
+    signedInAs('Paulo')
   })
 
   it('flags an email already in use on sign-up', () => {

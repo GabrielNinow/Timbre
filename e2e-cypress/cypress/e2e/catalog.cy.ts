@@ -104,7 +104,9 @@ describe('catalog: the three error-injection layers', () => {
 
   it('cy.intercept: a hung request keeps the skeleton, never a blank page', () => {
     cy.intercept('GET', '/api/products*', (request) => {
-      request.on('response', (response) => response.setDelay(60_000))
+      request.on('response', (response) => {
+        response.setDelay(60_000)
+      })
     })
     cy.open('/search')
     cy.byTestId('results-skeleton').should('have.attr', 'data-state', 'loading')
