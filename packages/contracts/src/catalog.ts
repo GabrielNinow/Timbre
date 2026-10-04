@@ -107,6 +107,11 @@ const repeatable = <T extends z.ZodType>(item: T) =>
     z.array(item).optional(),
   )
 
+const trueFlag = z.preprocess(
+  (value) => (value === undefined ? undefined : value === 'true' || value === true),
+  z.boolean().optional(),
+)
+
 export const productListQuerySchema = z.object({
   q: z.string().trim().min(1).max(120).optional(),
   category: slugString.optional(),
@@ -115,8 +120,11 @@ export const productListQuerySchema = z.object({
   sellerId: idString.optional(),
   minPrice: z.coerce.number().int().nonnegative().optional(),
   maxPrice: z.coerce.number().int().nonnegative().optional(),
-  freeShipping: z
-    .preprocess((value) => (value === undefined ? undefined : value === 'true' || value === true), z.boolean().optional()),
+  freeShipping: trueFlag,
+  /** Only listings flagged `sponsored`. Feeds the home page's labelled row. */
+  sponsored: trueFlag,
+  /** Only listings with `listPrice > price`. Feeds "Ofertas do dia". */
+  onSale: trueFlag,
   sort: sortSchema.default('relevancia'),
   page: z.coerce.number().int().positive().default(1),
   perPage: z.coerce.number().int().positive().max(60).default(24),

@@ -43,6 +43,8 @@ export function registerCatalogRoutes(app: FastifyInstance, store: Store): void 
       minPrice: query.minPrice,
       maxPrice: query.maxPrice,
       freeShipping: query.freeShipping,
+      sponsored: query.sponsored,
+      onSale: query.onSale,
     }
 
     const matched = filterProducts(store, store.products, filters)
@@ -80,6 +82,8 @@ export function registerCatalogRoutes(app: FastifyInstance, store: Store): void 
       minPrice: query.minPrice,
       maxPrice: query.maxPrice,
       freeShipping: query.freeShipping,
+      sponsored: query.sponsored,
+      onSale: query.onSale,
     }
     const matched = filterProducts(store, store.products, filters)
     const ordered = sortProducts(store, matched, query.sort, query.q)
