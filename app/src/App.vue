@@ -1,9 +1,17 @@
 <script setup lang="ts">
+import { watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import BaseToast from '@/components/base/BaseToast.vue'
 import SiteHeader from '@/components/layout/SiteHeader.vue'
+import { usePageLanguage } from '@/composables/usePageLanguage'
+import { currencyFor } from '@/lib/language'
+import { useCartStore } from '@/stores/cart'
 
 const { t } = useI18n()
+const cart = useCartStore()
+const language = usePageLanguage()
+// The cart follows the Page language's Currency: switching language refetches it.
+watch(() => currencyFor(language.value), (currency) => void cart.load(currency), { immediate: true })
 </script>
 
 <template>

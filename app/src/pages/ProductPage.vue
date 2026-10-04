@@ -2,7 +2,6 @@
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
-import { addCartItem } from '@/api/cart'
 import { fetchProduct } from '@/api/catalog'
 import { ApiError } from '@/api/client'
 import ErrorState from '@/components/base/ErrorState.vue'
@@ -23,6 +22,7 @@ import { useToast } from '@/composables/useToast'
 import { currencyFor, localizePath } from '@/lib/language'
 import { buyState, clampQuantity, optionQuery, selectOption } from '@/lib/variant'
 import NotFoundPage from '@/pages/NotFoundPage.vue'
+import { useCartStore } from '@/stores/cart'
 import { useCatalogStore } from '@/stores/catalog'
 
 const { t } = useI18n()
@@ -31,6 +31,7 @@ const router = useRouter()
 const language = usePageLanguage()
 const toast = useToast()
 const catalog = useCatalogStore()
+const cart = useCartStore()
 void catalog.loadCategories()
 
 const id = computed(() => String(route.params.id))
@@ -65,14 +66,11 @@ async function add(mode: 'cart' | 'buy'): Promise<void> {
   adding.value = mode
   addError.value = null
   try {
-    await addCartItem(
-      {
-        productId: product.value.id,
-        quantity: clampQuantity(quantity.value, state.value),
-        ...(state.value.option ? { variantOptionId: state.value.option.id } : {}),
-      },
-      currency.value,
-    )
+    await cart.add({
+      productId: product.value.id,
+      quantity: clampQuantity(quantity.value, state.value),
+      ...(state.value.option ? { variantOptionId: state.value.option.id } : {}),
+    })
     const cartPath = localizePath('/cart', language.value)
     if (mode === 'buy') {
       await router.push(cartPath)
@@ -92,7 +90,7 @@ async function add(mode: 'cart' | 'buy'): Promise<void> {
       code: apiError?.code ?? 'NETWORK_ERROR',
       message:
         apiError?.code === 'INSUFFICIENT_STOCK'
-          ? t('product.insufficientStock', { available: apiError.available ?? 0 })
+          ? t('product.insufficientStock', { available: apiError.available ?? 0 }, apiError.available ?? 0)
           : t('product.addFailed'),
     }
   } finally {

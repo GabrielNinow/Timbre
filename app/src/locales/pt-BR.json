@@ -361,7 +361,7 @@
     "added": "Adicionado ao carrinho",
     "addedAction": "Ver carrinho",
     "addFailed": "Não foi possível adicionar",
-    "insufficientStock": "Restam apenas {available} unidades disponíveis.",
+    "insufficientStock": "Este produto esgotou. | Resta apenas {available} unidade disponível. | Restam apenas {available} unidades disponíveis.",
     "galleryLabel": "Imagens do produto",
     "thumbnail": "Mostrar imagem {index} de {total}",
     "specsHeading": "Especificações",
@@ -407,5 +407,62 @@
     "sales": "Vendas",
     "onTime": "Entregas no prazo",
     "errorTitle": "Não foi possível carregar este vendedor"
+  },
+  "cart": {
+    "title": "Carrinho",
+    "loading": "Carregando carrinho",
+    "errorTitle": "Não foi possível carregar o carrinho",
+    "errorDescription": "A requisição falhou. Tente novamente.",
+    "emptyTitle": "Seu carrinho está vazio",
+    "emptyDescription": "Explore o catálogo e adicione os produtos que quiser.",
+    "emptyAction": "Ir para a página inicial",
+    "soldBy": "Vendido por {seller}",
+    "unitPrice": "{price} cada",
+    "lineTotal": "Total do item",
+    "remove": "Remover",
+    "removeLabel": "Remover {name} do carrinho",
+    "quantityLabel": "Quantidade de {name}",
+    "lineError": "Este item esgotou. | Resta apenas {available} unidade deste item. | Restam apenas {available} unidades deste item.",
+    "lineFailed": "Não foi possível atualizar este item.",
+    "summaryHeading": "Resumo do pedido",
+    "subtotal": "Subtotal",
+    "discount": "Desconto ({code})",
+    "shipping": "Frete",
+    "free": "Grátis",
+    "total": "Total",
+    "shippingMethod": "Forma de entrega",
+    "eta": "{days} dia útil | {days} dia útil | {days} dias úteis",
+    "checkout": "Fechar pedido",
+    "itemCount": "nenhum item | {count} item | {count} itens"
+  },
+  "coupon": {
+    "label": "Cupom de desconto",
+    "apply": "Aplicar",
+    "remove": "Remover cupom",
+    "applied": "Cupom {code} aplicado",
+    "dropped": "O cupom {code} foi removido porque o carrinho deixou de atender às regras dele.",
+    "errors": {
+      "VALIDATION_ERROR": "Informe um cupom.",
+      "COUPON_INVALID": "Este cupom não existe.",
+      "COUPON_EXPIRED": "Este cupom expirou.",
+      "COUPON_MIN_NOT_MET": "Este cupom exige um valor mínimo de compra.",
+      "COUPON_NOT_APPLICABLE": "Este cupom não vale para os itens do seu carrinho.",
+      "COUPON_ALREADY_APPLIED": "Já existe um cupom aplicado. Remova-o para usar outro.",
+      "fallback": "Não foi possível aplicar o cupom. Tente novamente."
+    }
+  },
+  "cepSelector": {
+    "trigger": "Enviar para {cep}",
+    "title": "Informe seu CEP",
+    "description": "Usamos o CEP para calcular frete e prazo.",
+    "label": "CEP",
+    "submit": "Salvar",
+    "invalid": "Informe um CEP com 8 dígitos.",
+    "notFound": "CEP não encontrado. Confira os números.",
+    "failed": "Não foi possível salvar o CEP. Tente novamente."
+  },
+  "headerCart": {
+    "label": "Carrinho",
+    "count": "Carrinho com {count} itens | Carrinho com {count} item | Carrinho com {count} itens"
   }
 }
