@@ -56,6 +56,8 @@ Query parameters, all optional:
 | `sellerId` | string | |
 | `minPrice` `maxPrice` | int centavos | |
 | `freeShipping` | `true` | |
+| `sponsored` | `true` | only `sponsored: true` listings; feeds the home "Patrocinados" row |
+| `onSale` | `true` | only listings with `listPrice > price`; feeds "Ofertas do dia" |
 | `sort` | enum | `relevancia` (default) \| `menor-preco` \| `maior-preco` \| `mais-recentes` |
 | `page` | int, default 1 | |
 | `perPage` | int, default 24, max 60 | |

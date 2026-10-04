@@ -214,3 +214,43 @@ loading with a spinner that preserves width), `BaseInput`, `BaseSelect`,
 
 `PriceDisplay` and `SpecStrip` carry the design's personality. Get them right
 first; everything else assembles around them.
+
+---
+
+## Clarifications resolved before milestone 3
+
+Recorded here so the answers survive the session.
+
+### Home section sources
+
+Each home section is one catalog request, so the home page needs no endpoint of
+its own:
+
+- "Ofertas do dia" — `onSale=true`, `perPage=8`.
+- "Recém-chegados" — `sort=mais-recentes`, `perPage=8`.
+- "Patrocinados" — `sponsored=true`. The only place the `PATROCINADO` badge renders.
+- Seller spotlight — a fixed seller, `s-01` (Casa do Som), set in app config. Fixed
+  rather than rotating, so the home page is deterministic.
+
+### `preco` in the URL
+
+`preco=MIN-MAX` in integer centavos, or `MIN+` when there is no ceiling — the same
+format as the `value` of each entry in `PRICE_BUCKETS`. A preset bucket and a
+typed range that cover the same numbers produce the same URL. A typed range is
+entered in reais and written to the URL in centavos.
+
+### Header scope in milestone 3
+
+`SiteHeader` (with `search-input` and `search-submit`) and `CategoryMenu` ship in
+milestone 3. `CepSelector` and `cart-count` ship in milestone 5, together with the
+cart they depend on.
+
+### Unknown category
+
+`/c/<unknown-slug>` renders the not-found page. `results-error` is reserved for
+failures where retrying makes sense.
+
+### The root route
+
+`/` is the home page. The kitchen sink stays at `/kitchen-sink` only, still
+dev-only.
