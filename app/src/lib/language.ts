@@ -8,6 +8,12 @@ export const PAGE_LANGUAGES = ['pt-BR', 'en'] as const
 export type PageLanguage = (typeof PAGE_LANGUAGES)[number]
 export const DEFAULT_LANGUAGE: PageLanguage = 'pt-BR'
 
+/** The Currency follows the Page language (ADR 0002). */
+export type PageCurrency = 'BRL' | 'USD'
+export function currencyFor(language: PageLanguage): PageCurrency {
+  return language === 'en' ? 'USD' : 'BRL'
+}
+
 /** The router's optional `:locale` param value for each language. */
 const PARAM: Record<PageLanguage, string | undefined> = { 'pt-BR': undefined, en: 'en' }
 const PREFIX = /^\/en(?=\/|$|\?|#)/

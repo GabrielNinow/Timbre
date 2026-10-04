@@ -9,15 +9,16 @@ import { useRequest } from '@/composables/useRequest'
 import { SPOTLIGHT_SELLER_SLUG } from '@/config'
 import { useFormat } from '@/composables/useFormat'
 import { usePageLanguage } from '@/composables/usePageLanguage'
+import { currencyFor } from '@/lib/language'
 import { sellerPath } from '@/router/paths'
 
 const { t } = useI18n()
 const { formatCount, formatPercent, formatRating } = useFormat()
 const language = usePageLanguage()
-const params = new URLSearchParams({ perPage: '4' })
+const params = () => new URLSearchParams({ perPage: '4', currency: currencyFor(language.value) })
 const request = useRequest(
-  () => SPOTLIGHT_SELLER_SLUG,
-  (signal) => fetchSeller(SPOTLIGHT_SELLER_SLUG, params, { signal }),
+  () => params().toString(),
+  (signal) => fetchSeller(SPOTLIGHT_SELLER_SLUG, params(), { signal }),
 )
 </script>
 

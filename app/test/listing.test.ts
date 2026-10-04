@@ -9,6 +9,7 @@ import {
   parsePrice,
   priceFromInputs,
   priceToInput,
+  switchLanguagePath,
   removeFilter,
   serializeListing,
   toApiParams,
@@ -265,6 +266,11 @@ describe('toApiParams', () => {
     expect(productListQuerySchema.safeParse(raw).success).toBe(true)
   })
 
+  it('asks for the Currency only when it is not the BRL default', () => {
+    expect(toApiParams(emptyListing()).has('currency')).toBe(false)
+    expect(toApiParams(emptyListing(), 24, 'USD').get('currency')).toBe('USD')
+  })
+
   it('sends no ceiling for an open-ended range', () => {
     const params = toApiParams(parseListing({ price: '400000+' }))
     expect(params.get('minPrice')).toBe('400000')
@@ -275,5 +281,35 @@ describe('toApiParams', () => {
     const a = parseListing({ brand: ['Gibson', 'Fender'] })
     const b = parseListing({ brand: ['Fender', 'Gibson'] })
     expect(toApiParams(a).toString()).toBe(toApiParams(b).toString())
+  })
+})
+
+describe('switchLanguagePath', () => {
+  it('converts the price filter with the Currency', () => {
+    expect(switchLanguagePath('/search?price=20000-50000&brand=Fender', 'en')).toBe(
+      '/en/search?price=4000-10000&brand=Fender',
+    )
+    expect(switchLanguagePath('/en/search?price=4000-10000', 'pt-BR')).toBe('/search?price=20000-50000')
+    expect(switchLanguagePath('/c/guitars?price=400000%2B', 'en')).toBe('/en/c/guitars?price=80000%2B')
+  })
+
+  it('maps every BRL price bucket onto the matching USD bucket and back', () => {
+    const priceOf = (path: string) => parsePrice(new URLSearchParams(path.split('?')[1]).get('price') ?? undefined)
+    for (const bucket of PRICE_BUCKETS) {
+      const english = switchLanguagePath(`/search?${new URLSearchParams({ price: bucket.value })}`, 'en')
+      expect(priceOf(english)).toEqual({ min: bucket.min / 5, max: bucket.max === null ? null : bucket.max / 5 })
+      expect(priceOf(switchLanguagePath(english, 'pt-BR'))).toEqual({ min: bucket.min, max: bucket.max })
+    }
+  })
+
+  it('rounds typed amounts half-up into dollars', () => {
+    expect(switchLanguagePath('/search?price=12347-99999', 'en')).toBe('/en/search?price=2469-20000')
+  })
+
+  it('leaves everything else alone', () => {
+    expect(switchLanguagePath('/search?q=strat&page=2#grid', 'en')).toBe('/en/search?q=strat&page=2#grid')
+    expect(switchLanguagePath('/search?price=nonsense', 'en')).toBe('/en/search?price=nonsense')
+    expect(switchLanguagePath('/en/cart', 'en')).toBe('/en/cart')
+    expect(switchLanguagePath('/', 'en')).toBe('/en')
   })
 })

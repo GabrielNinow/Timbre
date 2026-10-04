@@ -27,6 +27,7 @@ import {
   type ListingContext,
   type ListingState,
 } from '@/lib/listing'
+import { currencyFor } from '@/lib/language'
 import NotFoundPage from '@/pages/NotFoundPage.vue'
 import { categoryRoute, searchRoute } from '@/router/paths'
 import { useCatalogStore } from '@/stores/catalog'
@@ -45,7 +46,7 @@ const context = computed<ListingContext>(() => {
   return typeof slug === 'string' ? { pinnedCategory: slug } : {}
 })
 const state = computed(() => parseListing(route.query, context.value))
-const params = computed(() => toApiParams(state.value))
+const params = computed(() => toApiParams(state.value, LISTING_PER_PAGE, currencyFor(language.value)))
 const results = useRequest(
   () => params.value.toString(),
   (signal) => fetchProducts(params.value, { signal }),

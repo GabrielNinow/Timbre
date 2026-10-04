@@ -132,10 +132,15 @@ describe('daysSince', () => {
 })
 
 describe('formatting by Page language', () => {
-  it('formats BRL the English way on English pages', () => {
-    expect(formatPrice(129990, 'en')).toBe('R$1,299.90')
-    expect(formatPrice(3990, 'en')).toBe('R$39.90')
-    expect(formatPrice(899000, 'en')).toBe('R$8,990.00')
+  it('formats dollars on English pages, the Currency following the Page language', () => {
+    expect(formatPrice(25998, 'en')).toBe('$259.98')
+    expect(formatPrice(798, 'en')).toBe('$7.98')
+    expect(formatPrice(179800, 'en')).toBe('$1,798.00')
+  })
+
+  it('formats an explicit BRL amount the English way, for orders charged in reais', () => {
+    expect(formatPrice(129990, 'en', 'BRL')).toBe('R$1,299.90')
+    expect(formatPrice(129990, 'pt-BR', 'BRL')).toBe(`R$${NBSP}1.299,90`)
   })
 
   it('keeps the Portuguese default when no language is given', () => {
@@ -151,13 +156,13 @@ describe('formatting by Page language', () => {
   })
 
   it('splits prices with the language decimal separator', () => {
-    expect(splitPrice(129990, 'en')).toMatchObject({ integer: '1,299', decimalSeparator: '.', cents: '90' })
+    expect(splitPrice(129990, 'en')).toMatchObject({ currency: '$', integer: '1,299', decimalSeparator: '.', cents: '90' })
     expect(splitPrice(129990, 'pt-BR')).toMatchObject({ integer: '1.299', decimalSeparator: ',', cents: '90' })
   })
 
   it('drops zero cents in short range labels only', () => {
     expect(formatPriceShort(20000, 'pt-BR')).toBe(`R$${NBSP}200`)
-    expect(formatPriceShort(20000, 'en')).toBe('R$200')
-    expect(formatPriceShort(20050, 'en')).toBe('R$200.50')
+    expect(formatPriceShort(4000, 'en')).toBe('$40')
+    expect(formatPriceShort(4050, 'en')).toBe('$40.50')
   })
 })

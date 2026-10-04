@@ -1,18 +1,22 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import CategoryTiles from '@/components/home/CategoryTiles.vue'
 import HomeProductSection from '@/components/home/HomeProductSection.vue'
 import SellerSpotlight from '@/components/home/SellerSpotlight.vue'
 import { HOME_ROW_SIZE } from '@/config'
 import { usePageLanguage } from '@/composables/usePageLanguage'
+import { currencyFor } from '@/lib/language'
 import { searchRoute } from '@/router/paths'
 
 const { t } = useI18n()
 const language = usePageLanguage()
 const perPage = String(HOME_ROW_SIZE)
-const deals = new URLSearchParams({ onSale: 'true', perPage })
-const recent = new URLSearchParams({ sort: 'newest', perPage })
-const sponsored = new URLSearchParams({ sponsored: 'true', perPage })
+const withCurrency = (params: Record<string, string>) =>
+  computed(() => new URLSearchParams({ ...params, perPage, currency: currencyFor(language.value) }))
+const deals = withCurrency({ onSale: 'true' })
+const recent = withCurrency({ sort: 'newest' })
+const sponsored = withCurrency({ sponsored: 'true' })
 </script>
 
 <template>
