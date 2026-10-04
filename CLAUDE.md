@@ -91,3 +91,17 @@ Conventional commits, scoped by package: `feat(app):`, `fix(api):`,
   file so it survives the session.
 - Do not write E2E tests unless the milestone asks for them. The test suites are
   authored deliberately, not generated wholesale.
+
+## Agent skills
+
+### Issue tracker
+
+Issues and specs live in GitHub Issues on `GabrielNinow/Timbre`, via the `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+The five canonical labels, unchanged: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: one `CONTEXT.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.

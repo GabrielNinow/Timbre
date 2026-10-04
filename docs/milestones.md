@@ -5,7 +5,9 @@ criteria, and wait. Do not start the next milestone in the same session unless
 told to.
 
 Each milestone is a branch and a PR. Nothing merges without its acceptance
-criteria demonstrably met.
+criteria demonstrably met. Milestones 1 and 2 predate this rule and were committed
+straight to `main`; their history stays as is. From milestone 3 on, the rule applies
+without exception.
 
 ---
 
@@ -176,8 +178,35 @@ that makes the case.
 
 ---
 
+## 10 — Public demo (deferred, not yet specified)
+
+Do not start until milestone 9 is merged. Until then nothing is deployed; the
+portfolio's public surface is the repository, the README, and the CI reports on
+GitHub Pages.
+
+Already decided:
+- Everything is fictional: products, sellers, accounts, payments. No real
+  personal data is collected, so there is no real account registration.
+- Login stays, using Demo accounts with publicly shown credentials and one-click
+  sign-in. The login form remains, because the E2E suites drive it.
+- Outside test mode, session tokens must be unguessable; inside test mode they
+  stay deterministic as `testability.md` requires.
+
+Open, to be grilled before this milestone is specified:
+- Visitor isolation, so one Visitor depleting stock or arming state does not
+  affect another (per-visitor sandbox vs. periodic reset).
+- API abuse protection: rate limiting, body size limits, memory caps on the
+  in-memory store, a CORS allowlist instead of `origin: true`.
+- Whether test-control routes ever exist in the public deployment.
+- Hosting: cheapest option that runs a long-lived Node process plus a static SPA.
+
+---
+
 ## Deliberately out of scope
+
+The product is web plus API only.
 
 Do not build these without being asked: seller onboarding, admin panels, real
 payment integration, reviews and ratings submission, wishlists, chat, address
-book CRUD beyond what checkout needs, SSR, PWA, dark mode.
+book CRUD beyond what checkout needs, SSR, PWA, dark mode, native mobile apps
+(and therefore mobile test tooling such as Appium, Maestro or Detox).
