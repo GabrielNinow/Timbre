@@ -288,3 +288,20 @@ dev-only.
   While the cached cart is in the other currency, the page renders its loading
   state instead of stale amounts.
 
+---
+
+## Clarifications resolved while building milestone 6
+
+- **CEP lookup fills city and state only.** The CEP fixtures carry city and UF,
+  not street or district, so the blur lookup (`POST /api/shipping/quote`) fills
+  `city` and `state`, and the Visitor types street, number and district. All
+  four stay editable.
+- **The checkout draft** lives in `sessionStorage['timbre.checkout']` (see
+  `testability.md`). The card number, holder and CVV are never stored: they live
+  in memory on the payment step and are sent once with the order.
+- **Boleto due date.** The confirmation shows the absolute due date from the
+  order and, beside it, how many days remain, computed with `useClock()`, so
+  `cy.clock()` and `page.clock` control the rendered countdown.
+- **Sign-out** has no endpoint: the client drops `timbre.session` and refetches a
+  fresh guest cart.
+

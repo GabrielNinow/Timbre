@@ -37,18 +37,30 @@ export const useCartStore = defineStore('cart', () => {
     return next
   }
 
-  async function load(nextCurrency: Currency): Promise<void> {
+  let inflight: Promise<void> = Promise.resolve()
+
+  function load(nextCurrency: Currency = currency): Promise<void> {
     currency = nextCurrency
     const id = ++loadId
     status.value = 'loading'
-    try {
-      const next = await api.fetchCart(currency)
-      if (id === loadId) accept(next)
-    } catch (caught) {
-      if (id !== loadId) return
-      error.value = caught instanceof ApiError ? caught : new ApiError('NETWORK_ERROR', String(caught), null)
-      status.value = 'error'
-    }
+    inflight = api
+      .fetchCart(currency)
+      .then((next) => {
+        if (id === loadId) accept(next)
+      })
+      .catch((caught: unknown) => {
+        if (id !== loadId) return
+        error.value = caught instanceof ApiError ? caught : new ApiError('NETWORK_ERROR', String(caught), null)
+        status.value = 'error'
+      })
+    return inflight
+  }
+
+  /** Resolves once the current load settles; guards use it to read a fresh cart. */
+  async function ensure(): Promise<Cart | null> {
+    if (status.value === 'idle') await load()
+    else await inflight
+    return cart.value
   }
 
   /** Runs one mutation; the caller handles the ApiError (inline messages live with the control). */
@@ -69,6 +81,7 @@ export const useCartStore = defineStore('cart', () => {
     droppedCoupon,
     count,
     load,
+    ensure,
     add: (item: { productId: string; variantOptionId?: string; quantity: number }) =>
       run({ kind: 'add' }, () => api.addCartItem(item, currency)),
     setQuantity: (lineId: string, quantity: number) =>

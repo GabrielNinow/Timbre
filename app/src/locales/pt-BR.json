@@ -464,5 +464,242 @@
   "headerCart": {
     "label": "Carrinho",
     "count": "Carrinho com {count} itens | Carrinho com {count} item | Carrinho com {count} itens"
+  },
+  "validation": {
+    "signIn": {
+      "email": {
+        "required": "Informe seu e-mail.",
+        "invalid": "Informe um e-mail válido."
+      },
+      "password": {
+        "required": "Informe a senha."
+      }
+    },
+    "signUp": {
+      "name": {
+        "required": "Informe seu nome.",
+        "length": "Use de 2 a 120 caracteres."
+      },
+      "email": {
+        "required": "Informe seu e-mail.",
+        "invalid": "Informe um e-mail válido."
+      },
+      "password": {
+        "required": "Crie uma senha.",
+        "length": "Use de 8 a 72 caracteres.",
+        "lowercase": "Inclua ao menos uma letra minúscula.",
+        "uppercase": "Inclua ao menos uma letra maiúscula.",
+        "number": "Inclua ao menos um número.",
+        "symbol": "Inclua ao menos um símbolo."
+      }
+    },
+    "address": {
+      "recipient": {
+        "required": "Informe quem vai receber.",
+        "length": "Use de 2 a 120 caracteres."
+      },
+      "cep": {
+        "required": "Informe o CEP.",
+        "invalid": "Informe um CEP com 8 dígitos."
+      },
+      "street": {
+        "required": "Informe a rua.",
+        "length": "Use de 2 a 160 caracteres."
+      },
+      "number": {
+        "required": "Informe o número.",
+        "length": "Use até 20 caracteres."
+      },
+      "complement": {
+        "length": "Use até 80 caracteres."
+      },
+      "district": {
+        "required": "Informe o bairro.",
+        "length": "Use de 2 a 80 caracteres."
+      },
+      "city": {
+        "required": "Informe a cidade.",
+        "length": "Use de 2 a 80 caracteres."
+      },
+      "state": {
+        "required": "Escolha o estado.",
+        "invalid": "Escolha um estado válido."
+      }
+    },
+    "card": {
+      "number": {
+        "required": "Informe o número do cartão.",
+        "invalid": "Número de cartão inválido. Confira os dígitos."
+      },
+      "holder": {
+        "required": "Informe o nome impresso no cartão.",
+        "length": "Use de 2 a 120 caracteres."
+      },
+      "expiry": {
+        "required": "Informe a validade.",
+        "invalid": "Use o formato MM/AA.",
+        "past": "Este cartão já venceu."
+      },
+      "cvv": {
+        "required": "Informe o CVV.",
+        "invalid": "CVV inválido.",
+        "brand": "O CVV deste cartão tem {length} dígitos."
+      }
+    }
+  },
+  "errorSummary": {
+    "title": "Corrija {count} campo para continuar | Corrija {count} campo para continuar | Corrija {count} campos para continuar"
+  },
+  "account": {
+    "signIn": "Entrar",
+    "greeting": "Olá, {name}",
+    "menu": "Minha conta",
+    "orders": "Meus pedidos",
+    "signOut": "Sair"
+  },
+  "auth": {
+    "signInTitle": "Entrar",
+    "signInLead": "Use uma conta de demonstração. Nenhum dado real é coletado.",
+    "demoHeading": "Contas de demonstração",
+    "signInAs": "Entrar como {name}",
+    "demo": {
+      "ana": "Compradora sem pedidos",
+      "bruno": "Comprador com 3 pedidos",
+      "locked": "Conta bloqueada",
+      "slow": "Login lento (3 segundos)"
+    },
+    "formHeading": "Ou entre com e-mail e senha",
+    "email": "E-mail",
+    "password": "Senha",
+    "submit": "Entrar",
+    "noAccount": "Não tem conta?",
+    "createAccount": "Criar conta",
+    "errors": {
+      "INVALID_CREDENTIALS": "E-mail ou senha incorretos.",
+      "ACCOUNT_LOCKED": "Esta conta está bloqueada.",
+      "EMAIL_TAKEN": "Já existe uma conta com este e-mail.",
+      "fallback": "Não foi possível entrar agora. Tente novamente."
+    },
+    "signUpTitle": "Criar conta",
+    "signUpLead": "Contas criadas aqui são descartáveis e somem no próximo reset da demonstração.",
+    "name": "Nome",
+    "passwordHint": "8 ou mais caracteres, com maiúscula, minúscula, número e símbolo.",
+    "signUpSubmit": "Criar conta",
+    "haveAccount": "Já tem conta?",
+    "goSignIn": "Entrar"
+  },
+  "checkout": {
+    "title": "Finalizar compra",
+    "stepsLabel": "Etapas do checkout",
+    "steps": {
+      "shipping": "Entrega",
+      "payment": "Pagamento",
+      "review": "Revisão"
+    },
+    "stepState": {
+      "done": "concluída",
+      "current": "etapa atual",
+      "todo": "pendente"
+    },
+    "address": {
+      "recipient": "Destinatário",
+      "cep": "CEP",
+      "street": "Rua",
+      "number": "Número",
+      "complement": "Complemento",
+      "district": "Bairro",
+      "city": "Cidade",
+      "state": "Estado",
+      "statePlaceholder": "Selecione"
+    },
+    "cepLookupFailed": "Não foi possível consultar o CEP agora.",
+    "cepLookupRetry": "Consultar de novo",
+    "continueToPayment": "Continuar para o pagamento",
+    "continueToReview": "Revisar pedido",
+    "methods": {
+      "card": "Cartão de crédito",
+      "pix": "Pix",
+      "boleto": "Boleto"
+    },
+    "methodsLabel": "Forma de pagamento",
+    "pixNote": "O código Pix aparece depois que você finalizar a compra.",
+    "boletoNote": "O boleto vence em 3 dias úteis e o pedido fica aguardando pagamento.",
+    "cardOnlyNotice": "Em dólares, o pagamento é só com cartão. Pix e boleto existem apenas em reais.",
+    "card": {
+      "number": "Número do cartão",
+      "holder": "Nome impresso no cartão",
+      "expiry": "Validade (MM/AA)",
+      "cvv": "CVV",
+      "brand": "Bandeira: {brand}",
+      "expiryPlaceholder": "MM/AA"
+    },
+    "brands": {
+      "visa": "Visa",
+      "mastercard": "Mastercard",
+      "amex": "American Express",
+      "elo": "Elo",
+      "unknown": "não identificada"
+    },
+    "cardReentry": "Por segurança, informe os dados do cartão de novo.",
+    "review": {
+      "shippingHeading": "Entrega",
+      "paymentHeading": "Pagamento",
+      "itemsHeading": "Itens",
+      "change": "Alterar",
+      "changeLabel": "Alterar {section}",
+      "cardEnding": "{brand} terminado em {last4}"
+    },
+    "terms": "Li e aceito os termos da demonstração.",
+    "termsRequired": "Aceite os termos para finalizar.",
+    "placeOrder": "Finalizar compra",
+    "paymentErrors": {
+      "CARD_DECLINED": "O pagamento foi recusado pelo emissor. Use outro cartão.",
+      "INSUFFICIENT_FUNDS": "O cartão não tem limite para esta compra. Use outro cartão.",
+      "CARD_EXPIRED": "Este cartão está vencido. Use outro cartão.",
+      "PAYMENT_PROCESSOR_ERROR": "A operadora de pagamento falhou. Tente novamente.",
+      "STOCK_CHANGED": "O estoque de um item mudou. Revise o carrinho.",
+      "CART_EMPTY": "Seu carrinho está vazio.",
+      "PAYMENT_METHOD_UNAVAILABLE": "Esta forma de pagamento não existe nesta moeda. Escolha cartão.",
+      "SHIPPING_OPTION_UNAVAILABLE": "A forma de entrega escolhida não atende este CEP. Escolha outra no carrinho.",
+      "fallback": "Não foi possível finalizar a compra. Tente novamente."
+    }
+  },
+  "order": {
+    "title": "Pedido confirmado",
+    "number": "Número do pedido",
+    "status": "Situação",
+    "items": "Itens",
+    "quantity": "{count} unidade | {count} unidade | {count} unidades",
+    "shippingAddress": "Endereço de entrega",
+    "payment": "Pagamento",
+    "totals": "Totais",
+    "pixHeading": "Pague com Pix",
+    "pixCopy": "Copiar código Pix",
+    "pixCopied": "Código copiado",
+    "boletoHeading": "Boleto",
+    "boletoDue": "Vence em {date}",
+    "boletoRemaining": "Vence hoje | Falta {days} dia | Faltam {days} dias",
+    "boletoOverdue": "Vencido",
+    "paidCard": "{brand} terminado em {last4}",
+    "loading": "Carregando pedido",
+    "notFoundTitle": "Pedido não encontrado",
+    "notFoundDescription": "Confira o número do pedido.",
+    "forbiddenTitle": "Este pedido não é seu",
+    "forbiddenDescription": "Você só pode ver pedidos da sua conta.",
+    "errorTitle": "Não foi possível carregar o pedido",
+    "viewAll": "Ver meus pedidos",
+    "continueShopping": "Continuar comprando"
+  },
+  "orders": {
+    "title": "Meus pedidos",
+    "loading": "Carregando pedidos",
+    "empty": "Você ainda não fez nenhum pedido.",
+    "emptyAction": "Explorar o catálogo",
+    "number": "Pedido",
+    "date": "Data",
+    "status": "Situação",
+    "total": "Total",
+    "view": "Ver pedido {number}",
+    "errorTitle": "Não foi possível carregar seus pedidos"
   }
 }

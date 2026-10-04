@@ -7,6 +7,8 @@ import {
   formatCep,
   formatCount,
   formatPercent,
+  daysUntil,
+  formatDate,
   formatMonthYear,
   formatPrice,
   formatPriceShort,
@@ -173,6 +175,21 @@ describe('formatMonthYear', () => {
     expect(formatMonthYear('2019-03-12T00:00:00Z', 'en')).toBe('March 2019')
     expect(formatMonthYear('2019-03-12T00:00:00Z', 'pt-BR')).toBe('março de 2019')
     expect(formatMonthYear('2019-03-01T00:00:00Z', 'en')).toBe('March 2019')
+  })
+})
+
+describe('formatDate and daysUntil', () => {
+  it('formats calendar dates in UTC by Page language', () => {
+    expect(formatDate('2026-08-13', 'pt-BR')).toBe('13/08/2026')
+    expect(formatDate('2026-08-13', 'en')).toBe('Aug 13, 2026')
+    expect(formatDate('2026-08-10T23:30:00Z', 'pt-BR')).toBe('10/08/2026')
+  })
+
+  it('counts days to a due date from the injected clock', () => {
+    const now = Date.parse('2026-08-10T12:00:00Z')
+    expect(daysUntil('2026-08-13', now)).toBe(3)
+    expect(daysUntil('2026-08-10', now)).toBe(0)
+    expect(daysUntil('2026-08-09', now)).toBe(-1)
   })
 })
 

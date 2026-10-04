@@ -38,12 +38,14 @@ export interface SendOptions extends RequestOptions {
 
 const BASE = '/api'
 
-/** Attaches the guest cart id and, from milestone 6, the session token. */
+/** Attaches the guest cart id and the session token, both from storage. */
 function headers(hasBody: boolean): Record<string, string> {
   const out: Record<string, string> = { accept: 'application/json' }
   if (hasBody) out['content-type'] = 'application/json'
   const cartId = readStored('cart')
   if (cartId) out['x-cart-id'] = cartId
+  const token = readStored('session')
+  if (token) out.authorization = `Bearer ${token}`
   return out
 }
 

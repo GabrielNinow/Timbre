@@ -464,5 +464,242 @@
   "headerCart": {
     "label": "Cart",
     "count": "Cart with {count} items | Cart with {count} item | Cart with {count} items"
+  },
+  "validation": {
+    "signIn": {
+      "email": {
+        "required": "Enter your email.",
+        "invalid": "Enter a valid email."
+      },
+      "password": {
+        "required": "Enter your password."
+      }
+    },
+    "signUp": {
+      "name": {
+        "required": "Enter your name.",
+        "length": "Use 2 to 120 characters."
+      },
+      "email": {
+        "required": "Enter your email.",
+        "invalid": "Enter a valid email."
+      },
+      "password": {
+        "required": "Create a password.",
+        "length": "Use 8 to 72 characters.",
+        "lowercase": "Include at least one lowercase letter.",
+        "uppercase": "Include at least one uppercase letter.",
+        "number": "Include at least one number.",
+        "symbol": "Include at least one symbol."
+      }
+    },
+    "address": {
+      "recipient": {
+        "required": "Enter who will receive it.",
+        "length": "Use 2 to 120 characters."
+      },
+      "cep": {
+        "required": "Enter the CEP.",
+        "invalid": "Enter an 8-digit CEP."
+      },
+      "street": {
+        "required": "Enter the street.",
+        "length": "Use 2 to 160 characters."
+      },
+      "number": {
+        "required": "Enter the number.",
+        "length": "Use up to 20 characters."
+      },
+      "complement": {
+        "length": "Use up to 80 characters."
+      },
+      "district": {
+        "required": "Enter the district.",
+        "length": "Use 2 to 80 characters."
+      },
+      "city": {
+        "required": "Enter the city.",
+        "length": "Use 2 to 80 characters."
+      },
+      "state": {
+        "required": "Choose the state.",
+        "invalid": "Choose a valid state."
+      }
+    },
+    "card": {
+      "number": {
+        "required": "Enter the card number.",
+        "invalid": "Invalid card number. Check the digits."
+      },
+      "holder": {
+        "required": "Enter the name printed on the card.",
+        "length": "Use 2 to 120 characters."
+      },
+      "expiry": {
+        "required": "Enter the expiry date.",
+        "invalid": "Use the MM/YY format.",
+        "past": "This card has expired."
+      },
+      "cvv": {
+        "required": "Enter the CVV.",
+        "invalid": "Invalid CVV.",
+        "brand": "This card's CVV has {length} digits."
+      }
+    }
+  },
+  "errorSummary": {
+    "title": "Fix {count} field to continue | Fix {count} field to continue | Fix {count} fields to continue"
+  },
+  "account": {
+    "signIn": "Sign in",
+    "greeting": "Hi, {name}",
+    "menu": "My account",
+    "orders": "My orders",
+    "signOut": "Sign out"
+  },
+  "auth": {
+    "signInTitle": "Sign in",
+    "signInLead": "Use a demo account. No real data is collected.",
+    "demoHeading": "Demo accounts",
+    "signInAs": "Sign in as {name}",
+    "demo": {
+      "ana": "Buyer with no orders",
+      "bruno": "Buyer with 3 orders",
+      "locked": "Locked account",
+      "slow": "Slow sign-in (3 seconds)"
+    },
+    "formHeading": "Or sign in with email and password",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign in",
+    "noAccount": "No account yet?",
+    "createAccount": "Create one",
+    "errors": {
+      "INVALID_CREDENTIALS": "Incorrect email or password.",
+      "ACCOUNT_LOCKED": "This account is locked.",
+      "EMAIL_TAKEN": "An account with this email already exists.",
+      "fallback": "Could not sign in right now. Try again."
+    },
+    "signUpTitle": "Create account",
+    "signUpLead": "Accounts created here are disposable and vanish on the next demo reset.",
+    "name": "Name",
+    "passwordHint": "8 or more characters, with uppercase, lowercase, a number and a symbol.",
+    "signUpSubmit": "Create account",
+    "haveAccount": "Already have an account?",
+    "goSignIn": "Sign in"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "stepsLabel": "Checkout steps",
+    "steps": {
+      "shipping": "Shipping",
+      "payment": "Payment",
+      "review": "Review"
+    },
+    "stepState": {
+      "done": "done",
+      "current": "current step",
+      "todo": "to do"
+    },
+    "address": {
+      "recipient": "Recipient",
+      "cep": "CEP (Brazilian postcode)",
+      "street": "Street",
+      "number": "Number",
+      "complement": "Complement",
+      "district": "District",
+      "city": "City",
+      "state": "State",
+      "statePlaceholder": "Select"
+    },
+    "cepLookupFailed": "Could not look up the CEP right now.",
+    "cepLookupRetry": "Look up again",
+    "continueToPayment": "Continue to payment",
+    "continueToReview": "Review order",
+    "methods": {
+      "card": "Credit card",
+      "pix": "Pix",
+      "boleto": "Boleto"
+    },
+    "methodsLabel": "Payment method",
+    "pixNote": "The Pix code appears after you place the order.",
+    "boletoNote": "The boleto is due in 3 business days and the order awaits payment.",
+    "cardOnlyNotice": "In dollars, payment is by card only. Pix and boleto exist in reais only.",
+    "card": {
+      "number": "Card number",
+      "holder": "Name printed on the card",
+      "expiry": "Expiry (MM/YY)",
+      "cvv": "CVV",
+      "brand": "Brand: {brand}",
+      "expiryPlaceholder": "MM/YY"
+    },
+    "brands": {
+      "visa": "Visa",
+      "mastercard": "Mastercard",
+      "amex": "American Express",
+      "elo": "Elo",
+      "unknown": "unrecognized"
+    },
+    "cardReentry": "For your security, enter the card details again.",
+    "review": {
+      "shippingHeading": "Shipping",
+      "paymentHeading": "Payment",
+      "itemsHeading": "Items",
+      "change": "Change",
+      "changeLabel": "Change {section}",
+      "cardEnding": "{brand} ending in {last4}"
+    },
+    "terms": "I have read and accept the demo terms.",
+    "termsRequired": "Accept the terms to place the order.",
+    "placeOrder": "Place order",
+    "paymentErrors": {
+      "CARD_DECLINED": "The issuer declined the payment. Use another card.",
+      "INSUFFICIENT_FUNDS": "The card has no limit for this purchase. Use another card.",
+      "CARD_EXPIRED": "This card has expired. Use another card.",
+      "PAYMENT_PROCESSOR_ERROR": "The payment processor failed. Try again.",
+      "STOCK_CHANGED": "An item's stock changed. Review your cart.",
+      "CART_EMPTY": "Your cart is empty.",
+      "PAYMENT_METHOD_UNAVAILABLE": "This payment method does not exist in this currency. Choose card.",
+      "SHIPPING_OPTION_UNAVAILABLE": "The chosen shipping method does not serve this CEP. Pick another in the cart.",
+      "fallback": "Could not place the order. Try again."
+    }
+  },
+  "order": {
+    "title": "Order confirmed",
+    "number": "Order number",
+    "status": "Status",
+    "items": "Items",
+    "quantity": "{count} unit | {count} unit | {count} units",
+    "shippingAddress": "Shipping address",
+    "payment": "Payment",
+    "totals": "Totals",
+    "pixHeading": "Pay with Pix",
+    "pixCopy": "Copy Pix code",
+    "pixCopied": "Code copied",
+    "boletoHeading": "Boleto",
+    "boletoDue": "Due on {date}",
+    "boletoRemaining": "Due today | {days} day left | {days} days left",
+    "boletoOverdue": "Overdue",
+    "paidCard": "{brand} ending in {last4}",
+    "loading": "Loading order",
+    "notFoundTitle": "Order not found",
+    "notFoundDescription": "Check the order number.",
+    "forbiddenTitle": "This order is not yours",
+    "forbiddenDescription": "You can only see orders from your own account.",
+    "errorTitle": "Could not load the order",
+    "viewAll": "See my orders",
+    "continueShopping": "Keep shopping"
+  },
+  "orders": {
+    "title": "My orders",
+    "loading": "Loading orders",
+    "empty": "You have not placed any orders yet.",
+    "emptyAction": "Browse the catalog",
+    "number": "Order",
+    "date": "Date",
+    "status": "Status",
+    "total": "Total",
+    "view": "View order {number}",
+    "errorTitle": "Could not load your orders"
   }
 }

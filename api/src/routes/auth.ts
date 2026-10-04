@@ -33,8 +33,8 @@ export function registerAuthRoutes(app: FastifyInstance, store: Store): void {
   app.post('/api/auth/register', async (request, reply) => {
     const body = parseBody(registerBodySchema, request.body)
     if (store.userByEmail(body.email)) {
-      throw new ApiError('EMAIL_TAKEN', 'Já existe uma conta com este e-mail.', {
-        fields: { email: 'Já existe uma conta com este e-mail.' },
+      throw new ApiError('EMAIL_TAKEN', 'An account with this email already exists.', {
+        fields: { email: 'Email already in use.' },
       })
     }
     const user = store.createUser(body)

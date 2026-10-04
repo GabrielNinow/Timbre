@@ -109,6 +109,7 @@ describe('english on the wire', () => {
       await post(h.app, '/api/shipping/quote', { cep: '99999-999' }),
       await post(h.app, '/api/orders?currency=USD', orderPayload({ method: 'pix' }), { token }),
       await get(h.app, '/api/products?currency=EUR'),
+      await post(h.app, '/api/auth/register', { name: 'Ana', email: 'ana.souza@timbre.test', password: 'Teste@1234' }),
     ]
     await addItem(h.app, { productId: 'p-0104' }, { token })
     errorsSeen.push(

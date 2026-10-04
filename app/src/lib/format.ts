@@ -120,3 +120,22 @@ export function formatMonthYear(iso: string, language: PageLanguage = DEFAULT_LA
   return found.format(Date.parse(iso))
 }
 
+const dayCache = new Map<string, Intl.DateTimeFormat>()
+/** "10/08/2026" / "Aug 10, 2026", in UTC: a calendar date never shifts by timezone. */
+export function formatDate(isoOrDate: string, language: PageLanguage = DEFAULT_LANGUAGE): string {
+  let found = dayCache.get(language)
+  if (!found) {
+    found = new Intl.DateTimeFormat(language, { dateStyle: language === 'en' ? 'medium' : 'short', timeZone: 'UTC' })
+    dayCache.set(language, found)
+  }
+  const iso = /^\d{4}-\d{2}-\d{2}$/.test(isoOrDate) ? `${isoOrDate}T00:00:00Z` : isoOrDate
+  return found.format(Date.parse(iso))
+}
+
+/** Whole days from `nowMs` until a calendar date (UTC). Negative once it has passed. */
+export function daysUntil(isoDate: string, nowMs: number): number {
+  const target = Date.parse(`${isoDate.slice(0, 10)}T00:00:00Z`)
+  const today = Date.parse(new Date(nowMs).toISOString().slice(0, 10) + 'T00:00:00Z')
+  return Math.round((target - today) / 86_400_000)
+}
+
