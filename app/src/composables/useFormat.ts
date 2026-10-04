@@ -14,5 +14,8 @@ export function useFormat() {
     formatPercent: (value: number) => format.formatPercent(value, language()),
     formatCount: (value: number) => format.formatCount(value, language()),
     formatMonthYear: (iso: string) => format.formatMonthYear(iso, language()),
+    formatDate: (iso: string) => format.formatDate(iso, language()),
+    /** Money in an explicit Currency, for orders charged in their own (ADR 0002). */
+    formatMoney: (cents: number, currency: 'BRL' | 'USD') => format.formatPrice(cents, language(), currency),
   }
 }

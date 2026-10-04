@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import CategoryMenu from '@/components/layout/CategoryMenu.vue'
 import CepSelector from '@/components/layout/CepSelector.vue'
+import HeaderAccount from '@/components/layout/HeaderAccount.vue'
 import HeaderCart from '@/components/layout/HeaderCart.vue'
 import LanguageSwitcher from '@/components/layout/LanguageSwitcher.vue'
 import { usePageLanguage } from '@/composables/usePageLanguage'
@@ -67,7 +68,10 @@ function submit(): void {
           {{ t('header.searchSubmit') }}
         </button>
       </form>
-      <HeaderCart class="ml-auto md:ml-0" />
+      <div class="ml-auto flex items-center gap-1 md:ml-0">
+        <HeaderAccount />
+        <HeaderCart />
+      </div>
     </div>
     <nav :aria-label="t('header.primaryNav')" class="bg-band-sub">
       <div class="mx-auto flex max-w-[1400px] items-center gap-4 px-4 py-1 md:px-6">

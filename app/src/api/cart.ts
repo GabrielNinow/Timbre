@@ -1,10 +1,13 @@
 import { cartSchema, type Cart, type Currency, type ShippingMethodId } from '@timbre/contracts'
 import { apiGet, apiSend } from '@/api/client'
-import { writeStored } from '@/lib/storage'
+import { readStored, writeStored } from '@/lib/storage'
 
-/** The server owns the cart (rule 4); the client only remembers a guest cart's id. */
+/**
+ * The server owns the cart (rule 4); the client only remembers a guest cart's id.
+ * A signed-in cart is found by the token, so its id is never stored.
+ */
 function remember(cart: Cart): Cart {
-  writeStored('cart', cart.id)
+  if (!readStored('session')) writeStored('cart', cart.id)
   return cart
 }
 

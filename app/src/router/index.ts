@@ -28,6 +28,38 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/pages/SellerPage.vue'),
   },
   { path: `${LANG}/cart`, name: 'cart', component: () => import('@/pages/CartPage.vue') },
+  { path: `${LANG}/sign-in`, name: 'login', component: () => import('@/pages/SignInPage.vue') },
+  { path: `${LANG}/sign-up`, name: 'register', component: () => import('@/pages/SignUpPage.vue') },
+  {
+    path: `${LANG}/checkout/shipping`,
+    name: 'checkout-shipping',
+    meta: { auth: true, cart: true, step: 'shipping' },
+    component: () => import('@/pages/checkout/ShippingStep.vue'),
+  },
+  {
+    path: `${LANG}/checkout/payment`,
+    name: 'checkout-payment',
+    meta: { auth: true, cart: true, step: 'payment' },
+    component: () => import('@/pages/checkout/PaymentStep.vue'),
+  },
+  {
+    path: `${LANG}/checkout/review`,
+    name: 'checkout-review',
+    meta: { auth: true, cart: true, step: 'review' },
+    component: () => import('@/pages/checkout/ReviewStep.vue'),
+  },
+  {
+    path: `${LANG}/orders/:id(TMB-[0-9]+)`,
+    name: 'order-confirmation',
+    meta: { auth: true },
+    component: () => import('@/pages/OrderPage.vue'),
+  },
+  {
+    path: `${LANG}/account/orders`,
+    name: 'orders',
+    meta: { auth: true },
+    component: () => import('@/pages/OrdersPage.vue'),
+  },
   ...(kitchenSinkEnabled
     ? ([
         {

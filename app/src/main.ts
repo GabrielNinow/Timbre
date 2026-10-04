@@ -9,12 +9,14 @@ import App from '@/App.vue'
 import { clockKey, systemClock } from '@/composables/clock'
 import { i18n } from '@/i18n'
 import { router } from '@/router'
+import { installGuards } from '@/router/guards'
 
 const app = createApp(App)
 
 app.provide(clockKey, systemClock)
 app.use(createPinia())
 app.use(i18n)
+installGuards(router)
 app.use(router)
 
 app.mount('#app')
