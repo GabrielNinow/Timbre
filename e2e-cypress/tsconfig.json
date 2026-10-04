@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["cypress", "node"],
+    "noEmit": true,
+    "declaration": false,
+    "verbatimModuleSyntax": false,
+    "baseUrl": ".",
+    "paths": { "@/*": ["../app/src/*"] }
+  },
+  "include": ["cypress/**/*.ts", "cypress.config.ts", "scripts/**/*.mjs"]
+}

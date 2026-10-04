@@ -5,7 +5,8 @@
   "workspaces": [
     "packages/*",
     "api",
-    "app"
+    "app",
+    "e2e-cypress"
   ],
   "engines": {
     "node": ">=20"
@@ -18,7 +19,11 @@
     "app:preview": "npm run preview --workspace @timbre/app",
     "test": "npm run test --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
-    "typecheck": "npm run typecheck --workspaces --if-present"
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "e2e:serve": "node e2e-cypress/scripts/serve.mjs",
+    "e2e:build": "npm run app:build",
+    "cypress": "npm run e2e:build && start-server-and-test e2e:serve http-get://localhost:4173/api/categories \"npm run cy:run -w @timbre/e2e-cypress\"",
+    "cypress:component": "npm run cy:component -w @timbre/e2e-cypress"
   },
   "devDependencies": {
     "typescript": "^5.9.3"
