@@ -277,3 +277,12 @@ Related, for milestone 3: the "out-of-stock cards render at 60% opacity"
 treatment will drag every colour on that card below its measured ratio. Dim the
 image and the title rather than the whole card, or the catalog page cannot pass
 the same bar this one just did.
+
+### Resolved in milestone 3
+
+- **Sold-out cards dim only the image**, at 60%. The `ESGOTADO` badge and the
+  lowered image carry the state; every text on the card keeps its measured ratio.
+- **`--color-muted` text only on `--color-surface`.** On `--color-field` it
+  measures 4.48:1 and fails. Text that sits directly on the page background uses
+  `--color-ink`; the filter rail sits on a surface card so its muted legends and
+  counts stay quiet.
