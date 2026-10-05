@@ -1,8 +1,16 @@
-import type { FastifyReply } from 'fastify'
 import { z } from 'zod'
 import { ApiError, errors } from './errors.js'
 
-const TEST_MODE = process.env.TIMBRE_TEST_MODE === '1'
+/** In test mode every response is checked against the contract before it leaves. */
+let validateResponses = false
+export function setResponseValidation(enabled: boolean): void {
+  validateResponses = enabled
+}
+
+interface Reply {
+  status(code: number): Reply
+  send(payload: unknown): Reply
+}
 
 function fieldsFrom(error: z.ZodError): Record<string, string> {
   const fields: Record<string, string> = {}
@@ -32,13 +40,8 @@ export function parseQuery<T extends z.ZodType>(schema: T, data: unknown): z.out
   throw errors.validation(fieldsFrom(result.error), 'Invalid query parameters.')
 }
 
-export function send<T extends z.ZodType>(
-  reply: FastifyReply,
-  schema: T,
-  payload: z.input<T>,
-  status = 200,
-): FastifyReply {
-  if (TEST_MODE) {
+export function send<T extends z.ZodType>(reply: Reply, schema: T, payload: z.input<T>, status = 200): Reply {
+  if (validateResponses) {
     const result = schema.safeParse(payload)
     if (!result.success) {
       const detail = result.error.issues

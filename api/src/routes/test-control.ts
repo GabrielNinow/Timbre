@@ -7,13 +7,13 @@ import {
   testSessionBodySchema,
   testSessionResponseSchema,
 } from '@timbre/contracts'
-import type { FastifyInstance } from 'fastify'
+import type { Router } from '../core.js'
 import { errors } from '../errors.js'
 import { toUser } from '../mappers.js'
 import type { Store } from '../store.js'
 import { parseBody, send } from '../validate.js'
 
-export function registerTestRoutes(app: FastifyInstance, store: Store): void {
+export function registerTestRoutes(app: Router, store: Store): void {
   app.post('/api/test/reset', async (_request, reply) => {
     const startedAt = performance.now()
     store.reset()

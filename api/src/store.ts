@@ -100,6 +100,19 @@ export interface ArmedFailure {
   code: ErrorCode
 }
 
+/** Bump when the snapshot shape changes: an old snapshot is then ignored, not misread. */
+export const SNAPSHOT_VERSION = 1
+
+export interface StoreSnapshot {
+  version: number
+  products: StoreProduct[]
+  users: StoreUser[]
+  orders: Order[]
+  carts: Array<[string, StoreCart]>
+  notifyRequests: Array<[string, string[]]>
+  sequences: { cart: number; order: number; user: number; line: number }
+}
+
 export class Store {
   products: StoreProduct[] = []
   users: StoreUser[] = []
@@ -137,6 +150,39 @@ export class Store {
     this.userSeq = NEXT_USER_SEQUENCE
     this.lineSeq = 1
     this.orders = orderFixtures.map((fixture) => this.buildSeededOrder(fixture))
+  }
+
+  /**
+   * Everything a Visitor can change, as plain data. The public demo saves it in the
+   * browser after every mutation and restores it on load (ADR 0004).
+   */
+  snapshot(): StoreSnapshot {
+    return structuredClone({
+      version: SNAPSHOT_VERSION,
+      products: this.products,
+      users: this.users,
+      orders: this.orders,
+      carts: [...this.carts.entries()],
+      notifyRequests: [...this.notifyRequests.entries()].map(([id, emails]) => [id, [...emails]] as [string, string[]]),
+      sequences: { cart: this.cartSeq, order: this.orderSeq, user: this.userSeq, line: this.lineSeq },
+    })
+  }
+
+  /** Restores a snapshot; returns false (and keeps the fixtures) when it is unusable. */
+  restore(snapshot: unknown): boolean {
+    const data = snapshot as Partial<StoreSnapshot> | null
+    if (!data || data.version !== SNAPSHOT_VERSION || !Array.isArray(data.products) || !data.sequences) return false
+    const copy = structuredClone(data as StoreSnapshot)
+    this.products = copy.products
+    this.users = copy.users
+    this.orders = copy.orders
+    this.carts = new Map(copy.carts)
+    this.notifyRequests = new Map(copy.notifyRequests.map(([id, emails]) => [id, new Set(emails)]))
+    this.cartSeq = copy.sequences.cart
+    this.orderSeq = copy.sequences.order
+    this.userSeq = copy.sequences.user
+    this.lineSeq = copy.sequences.line
+    return true
   }
 
   requestNotify(productId: string, email: string): void {

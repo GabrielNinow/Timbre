@@ -9,7 +9,7 @@ import {
   productListResponseSchema,
   sellerPageResponseSchema,
 } from '@timbre/contracts'
-import type { FastifyInstance } from 'fastify'
+import type { Router } from '../core.js'
 import {
   computeFacets,
   filterProducts,
@@ -23,7 +23,7 @@ import { toProductDetail, toProductSummary } from '../mappers.js'
 import type { Store } from '../store.js'
 import { parseBody, parseQuery, send } from '../validate.js'
 
-export function registerCatalogRoutes(app: FastifyInstance, store: Store): void {
+export function registerCatalogRoutes(app: Router, store: Store): void {
   app.get('/api/categories', async (_request, reply) => {
     const items = store.categories.map((category) => ({
       id: category.id,
