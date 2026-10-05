@@ -2,6 +2,7 @@
 import { watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import BaseToast from '@/components/base/BaseToast.vue'
+import SiteFooter from '@/components/layout/SiteFooter.vue'
 import SiteHeader from '@/components/layout/SiteHeader.vue'
 import { usePageLanguage } from '@/composables/usePageLanguage'
 import { currencyFor } from '@/lib/language'
@@ -26,6 +27,8 @@ watch(() => currencyFor(language.value), (currency) => void cart.load(currency),
   <SiteHeader />
 
   <RouterView />
+
+  <SiteFooter />
 
   <BaseToast />
 </template>

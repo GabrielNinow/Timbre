@@ -662,7 +662,8 @@
       "PAYMENT_METHOD_UNAVAILABLE": "Esta forma de pagamento não existe nesta moeda. Escolha cartão.",
       "SHIPPING_OPTION_UNAVAILABLE": "A forma de entrega escolhida não atende este CEP. Escolha outra no carrinho.",
       "fallback": "Não foi possível finalizar a compra. Tente novamente."
-    }
+    },
+    "demoNotice": "Demonstração: use dados fictícios. Nada do que você digitar é salvo de forma permanente, e nenhum pagamento é real."
   },
   "order": {
     "title": "Pedido confirmado",
@@ -701,5 +702,9 @@
     "total": "Total",
     "view": "Ver pedido {number}",
     "errorTitle": "Não foi possível carregar seus pedidos"
+  },
+  "footer": {
+    "notice": "Timbre é um projeto de portfólio. Produtos, lojas, contas e pagamentos são fictícios. Nenhum dado pessoal é salvo: o que você digita fica só na memória da demonstração e é apagado no próximo reset. Use dados fictícios.",
+    "copyright": "© 2026 Gabriel Ninow"
   }
 }

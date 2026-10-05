@@ -662,7 +662,8 @@
       "PAYMENT_METHOD_UNAVAILABLE": "This payment method does not exist in this currency. Choose card.",
       "SHIPPING_OPTION_UNAVAILABLE": "The chosen shipping method does not serve this CEP. Pick another in the cart.",
       "fallback": "Could not place the order. Try again."
-    }
+    },
+    "demoNotice": "Demo: use made-up details. Nothing you type is saved permanently, and no payment is real."
   },
   "order": {
     "title": "Order confirmed",
@@ -701,5 +702,9 @@
     "total": "Total",
     "view": "View order {number}",
     "errorTitle": "Could not load your orders"
+  },
+  "footer": {
+    "notice": "Timbre is a portfolio project. Products, shops, accounts and payments are fictional. No personal data is saved: what you type stays in the demo's memory only and is wiped on the next reset. Use made-up details.",
+    "copyright": "© 2026 Gabriel Ninow"
   }
 }
