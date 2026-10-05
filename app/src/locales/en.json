@@ -708,6 +708,9 @@
     "notice": "Timbre is a portfolio project. Products, shops, accounts and payments are fictional. Nothing is written to disk or a database: what you type stays in the demo's memory until the next reset, and your browser keeps only the session and cart ids and the checkout draft. Signing out erases the session and the draft. Use made-up details.",
     "copyright": "© 2026 Gabriel Ninow",
     "browserNotice": "Timbre is a portfolio project. Products, shops, accounts and payments are fictional. This demo runs entirely in your browser: nothing you type is sent to a server. Your shop is kept in this browser only; use “Reset demo” to erase it. Use made-up details.",
-    "reset": "Reset demo"
+    "reset": "Reset demo",
+    "reports": "Test reports",
+    "source": "Source code",
+    "linksLabel": "Project links"
   }
 }

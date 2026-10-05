@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { REPORTS_URL, SOURCE_URL } from '@/config'
 
 const { t } = useI18n()
 /** The public demo runs the API in this browser (ADR 0004), so it says so and offers a reset. */
@@ -18,6 +19,10 @@ async function reset(): Promise<void> {
       <p data-testid="footer-notice" class="max-w-prose text-body-sm">{{ isDemo ? t('footer.browserNotice') : t('footer.notice') }}</p>
       <div class="flex flex-wrap items-center gap-4">
         <p data-testid="footer-copyright" class="text-body-sm">{{ t('footer.copyright') }}</p>
+        <nav :aria-label="t('footer.linksLabel')" class="flex flex-wrap gap-4">
+          <a data-testid="footer-reports" :href="REPORTS_URL" class="text-body-sm text-on-band underline">{{ t('footer.reports') }}</a>
+          <a data-testid="footer-source" :href="SOURCE_URL" class="text-body-sm text-on-band underline">{{ t('footer.source') }}</a>
+        </nav>
         <button
           v-if="isDemo"
           type="button"
