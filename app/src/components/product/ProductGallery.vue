@@ -1,17 +1,23 @@
 <script setup lang="ts">
+import { photoCredits } from '@timbre/fixtures/photo-credits'
 import { assetUrl } from '@/lib/assets'
+import { usePageLanguage } from '@/composables/usePageLanguage'
+import { localizePath } from '@/lib/language'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 interface Props {
   images: readonly string[]
   name: string
+  productId: string
 }
 const props = defineProps<Props>()
 const { t } = useI18n()
 const active = ref(0)
 watch(() => props.images, () => (active.value = 0))
 const current = computed(() => props.images[active.value] ?? props.images[0] ?? '')
+const credit = computed(() => photoCredits[props.productId] ?? null)
+const language = usePageLanguage()
 </script>
 
 <template>
@@ -27,6 +33,11 @@ const current = computed(() => props.images[active.value] ?? props.images[0] ?? 
         class="size-full object-contain"
       >
     </div>
+    <p v-if="credit" data-testid="product-photo-credit" class="text-body-sm text-ink">
+      <RouterLink :to="localizePath('/credits', language)" class="underline">
+        {{ t('product.photoCaption', { author: credit.author, license: credit.license }) }}
+      </RouterLink>
+    </p>
     <ul v-if="images.length > 1" class="flex gap-2">
       <li v-for="(image, index) in images" :key="image">
         <button

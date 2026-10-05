@@ -60,6 +60,7 @@ const routes: RouteRecordRaw[] = [
     meta: { auth: true },
     component: () => import('@/pages/OrdersPage.vue'),
   },
+  { path: `${LANG}/credits`, name: 'credits', component: () => import('@/pages/CreditsPage.vue') },
   ...(kitchenSinkEnabled
     ? ([
         {

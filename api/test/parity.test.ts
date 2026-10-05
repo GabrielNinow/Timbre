@@ -92,6 +92,21 @@ describe('store snapshots', () => {
     expect((order.body as { id: string }).id).toBe('TMB-100242')
   })
 
+  it('takes listing content from the current fixtures, keeping saved stock', () => {
+    const store = new Store()
+    const saved = JSON.parse(JSON.stringify(store.snapshot()))
+    const old = saved.products.find((product: { id: string }) => product.id === 'p-0404')
+    old.imageUrl = '/img/products/p-0404.svg'
+    old.images = [old.imageUrl]
+    old.stock = 0
+
+    const restored = new Store()
+    expect(restored.restore(saved)).toBe(true)
+    const product = restored.productById('p-0404')!
+    expect(product.imageUrl).toBe(store.productById('p-0404')!.imageUrl)
+    expect(product.stock).toBe(0)
+  })
+
   it('ignores a snapshot of another version or shape', () => {
     const store = new Store()
     expect(store.restore({ version: 999 })).toBe(false)

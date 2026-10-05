@@ -182,3 +182,24 @@ describe('listing content stays as sellers wrote it', () => {
   })
 })
 
+
+describe('product photos', () => {
+  it('credits every photo, under a free licence, and ships the file', async () => {
+    const { photoCredits } = await import('@timbre/fixtures/photo-credits')
+    const { existsSync } = await import('node:fs')
+    const { fileURLToPath } = await import('node:url')
+    for (const product of products) {
+      const credit = photoCredits[product.id]
+      if (!credit) {
+        expect(product.imageUrl, product.id).toBe(`/img/products/${product.id}.svg`)
+        continue
+      }
+      expect(product.imageUrl, product.id).toBe(`/img/photos/${product.id}.webp`)
+      expect(credit.license, product.id).toMatch(/^(cc0|public domain|cc by(-sa)? \d)/i)
+      expect(credit.author.length, product.id).toBeGreaterThan(0)
+      expect(credit.source, product.id).toMatch(/^https:\/\/commons\.wikimedia\.org\//)
+      const file = fileURLToPath(new URL(`../../app/public${product.imageUrl}`, import.meta.url))
+      expect(existsSync(file), file).toBe(true)
+    }
+  })
+})

@@ -158,6 +158,22 @@ like-new, R$ 3.799,00) share the name `Strymon BigSky` and the slug
 
 ### Images
 
-Each product carries exactly one image: `/img/products/<id>.svg`, so `images[]`
-has a single entry. The 60 placeholder SVGs are generated and committed in the
+Each product carries exactly one image, so `images[]` has a single entry.
+
+**Photos, where a free one exists.** 50 products show a photo from Wikimedia
+Commons, under a free licence (public domain, CC0, CC BY or CC BY-SA). It is
+committed as `/img/photos/<id>.webp` (800×800, fitted on white) and never
+hotlinked, so screenshots stay stable. Each photo shows the listed model, or one of
+the same family or kind. Photos with an identifiable person, a logo instead of a
+product, another brand's name or logo, or a misleading subject were rejected. The other 10 products keep their
+generated `/img/products/<id>.svg`. `app/scripts/find-product-photos.mjs` searches
+Commons (with hand-written queries per product) and records the choices and
+rejection reasons in `product-photos.json`. `download-product-photos.mjs` fetches
+the approved ones and writes `packages/fixtures/src/photo-credits.json`. Every
+photo is credited under its gallery and on `/credits`, and a fixtures test checks
+that each credited photo has a free licence, an author and a committed file. A
+public-demo snapshot restores only stock, so new photos reach Visitors who already
+have a saved shop.
+
+The 60 placeholder SVGs are generated and committed in the
 app milestone, when the design tokens they reference exist.

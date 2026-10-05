@@ -1,4 +1,5 @@
 import type { Condition, ProductSpec, VariantGroup } from '@timbre/contracts'
+import { photoCredits } from './photo-credits.js'
 
 export interface ProductFixture {
   readonly id: string
@@ -110,7 +111,8 @@ interface ProductInput {
 }
 
 function defineProduct(input: ProductInput): ProductFixture {
-  const imageUrl = `/img/products/${input.id}.svg`
+  // A credited photo when Commons has a good free one; the generated placeholder otherwise.
+  const imageUrl = photoCredits[input.id] ? `/img/photos/${input.id}.webp` : `/img/products/${input.id}.svg`
   const baseSpecs: ProductSpec[] = [
     { label: 'Marca', value: input.brand },
     ...(input.year ? [{ label: 'Ano', value: String(input.year) }] : []),
