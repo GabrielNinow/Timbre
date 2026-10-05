@@ -61,8 +61,11 @@ and draft being erased on sign-out (see `testability.md` for the three keys). Th
 copyright line follows. The checkout steps repeat a
 short version above the form, where addresses and cards are typed.
 
+The footer also links to the test reports (`/Timbre/reports/`) and the source
+repository, since the public demo now holds the site root.
+
 `data-testid`: `site-footer`, `footer-notice`, `footer-copyright`,
-`checkout-demo-notice`.
+`footer-reports`, `footer-source`, `checkout-demo-notice`, `demo-reset`.
 
 ## Home
 

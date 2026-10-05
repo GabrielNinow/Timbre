@@ -14,3 +14,8 @@ export const DEMO_ACCOUNTS = [
   { key: 'locked', name: 'Marina Rocha', email: 'bloqueado@timbre.test' },
   { key: 'slow', name: 'Paulo Tavares', email: 'lento@timbre.test' },
 ] as const
+
+/** Where the test reports and the source live (README: published by CI). */
+export const REPORTS_URL = 'https://gabrielninow.github.io/Timbre/reports/'
+export const SOURCE_URL = 'https://github.com/GabrielNinow/Timbre'
+

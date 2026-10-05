@@ -708,6 +708,9 @@
     "notice": "Timbre é um projeto de portfólio. Produtos, lojas, contas e pagamentos são fictícios. Nada é gravado em disco ou banco de dados: o que você digita fica na memória da demonstração até o próximo reset, e seu navegador guarda apenas os identificadores da sessão e do carrinho e o rascunho do checkout. Ao sair da conta, a sessão e o rascunho são apagados. Use dados fictícios.",
     "copyright": "© 2026 Gabriel Ninow",
     "browserNotice": "Timbre é um projeto de portfólio. Produtos, lojas, contas e pagamentos são fictícios. Esta demonstração roda inteira no seu navegador: nada do que você digita é enviado a um servidor. A sua loja fica guardada só neste navegador; use “Reiniciar demonstração” para apagá-la. Use dados fictícios.",
-    "reset": "Reiniciar demonstração"
+    "reset": "Reiniciar demonstração",
+    "reports": "Relatórios de testes",
+    "source": "Código-fonte",
+    "linksLabel": "Links do projeto"
   }
 }
