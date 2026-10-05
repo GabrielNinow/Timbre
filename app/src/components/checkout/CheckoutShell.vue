@@ -16,6 +16,9 @@ const cart = useCartStore()
 <template>
   <main id="main" :data-testid="`checkout-${step}`" class="mx-auto flex w-full max-w-[1200px] flex-col gap-6 px-4 py-6 md:px-6">
     <h1 class="font-wide text-display-lg text-ink">{{ t('checkout.title') }}</h1>
+    <p data-testid="checkout-demo-notice" role="note" class="rounded-card border border-line-heavy bg-surface p-3 text-body-sm text-ink">
+      {{ t('checkout.demoNotice') }}
+    </p>
     <CheckoutStepper :current="step" />
     <div class="grid items-start gap-6 lg:grid-cols-[1fr_360px]">
       <div class="card flex flex-col gap-5 p-5"><slot /></div>

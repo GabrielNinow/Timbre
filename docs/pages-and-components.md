@@ -52,6 +52,15 @@ persists to the cart. Cart count is `aria-live="polite"`.
 `data-testid`: `site-header`, `search-input`, `search-submit`, `header-account`,
 `header-cart`, `cart-count`, `category-menu`, `cep-selector`.
 
+**Footer**, `--color-band`, on every page, pinned to the bottom of short pages.
+It states that Timbre is a portfolio project, that everything in it is fictional,
+and that no personal data is saved (what a Visitor types lives only in the demo's
+memory until the next reset), plus the copyright line. The checkout steps repeat a
+short version above the form, where addresses and cards are typed.
+
+`data-testid`: `site-footer`, `footer-notice`, `footer-copyright`,
+`checkout-demo-notice`.
+
 ## Home
 
 Stacked sections, each with a heading and a uniform card row. No hero carousel.
