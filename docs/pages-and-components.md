@@ -53,9 +53,12 @@ persists to the cart. Cart count is `aria-live="polite"`.
 `header-cart`, `cart-count`, `category-menu`, `cep-selector`.
 
 **Footer**, `--color-band`, on every page, pinned to the bottom of short pages.
-It states that Timbre is a portfolio project, that everything in it is fictional,
-and that no personal data is saved (what a Visitor types lives only in the demo's
-memory until the next reset), plus the copyright line. The checkout steps repeat a
+It states that Timbre is a portfolio project and that everything in it is
+fictional. It then says exactly where data lives: nothing is written to disk or a
+database; what a Visitor types stays in the API's memory until the next reset; and
+the browser keeps only the session and cart ids and the checkout draft, the session
+and draft being erased on sign-out (see `testability.md` for the three keys). The
+copyright line follows. The checkout steps repeat a
 short version above the form, where addresses and cards are typed.
 
 `data-testid`: `site-footer`, `footer-notice`, `footer-copyright`,

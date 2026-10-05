@@ -704,7 +704,7 @@
     "errorTitle": "Could not load your orders"
   },
   "footer": {
-    "notice": "Timbre is a portfolio project. Products, shops, accounts and payments are fictional. No personal data is saved: what you type stays in the demo's memory only and is wiped on the next reset. Use made-up details.",
+    "notice": "Timbre is a portfolio project. Products, shops, accounts and payments are fictional. Nothing is written to disk or a database: what you type stays in the demo's memory until the next reset, and your browser keeps only the session and cart ids and the checkout draft. Signing out erases the session and the draft. Use made-up details.",
     "copyright": "© 2026 Gabriel Ninow"
   }
 }

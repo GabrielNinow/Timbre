@@ -704,7 +704,7 @@
     "errorTitle": "Não foi possível carregar seus pedidos"
   },
   "footer": {
-    "notice": "Timbre é um projeto de portfólio. Produtos, lojas, contas e pagamentos são fictícios. Nenhum dado pessoal é salvo: o que você digita fica só na memória da demonstração e é apagado no próximo reset. Use dados fictícios.",
+    "notice": "Timbre é um projeto de portfólio. Produtos, lojas, contas e pagamentos são fictícios. Nada é gravado em disco ou banco de dados: o que você digita fica na memória da demonstração até o próximo reset, e seu navegador guarda apenas os identificadores da sessão e do carrinho e o rascunho do checkout. Ao sair da conta, a sessão e o rascunho são apagados. Use dados fictícios.",
     "copyright": "© 2026 Gabriel Ninow"
   }
 }
