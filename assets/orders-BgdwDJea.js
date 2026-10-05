@@ -1,0 +1,2 @@
+import{n as e,r as t}from"./client-CWsqa-Jw.js";import{_ as n,v as r}from"./storage-Bdrdpnha.js";function i(e,n){return t(`/orders`,r,{method:`POST`,body:e,params:new URLSearchParams(n===`BRL`?{}:{currency:n})})}function a(t,n){return e(`/orders/${encodeURIComponent(t)}`,r,{signal:n})}async function o(t){return(await e(`/orders`,n,{signal:t})).items}export{a as n,o as r,i as t};
+//# sourceMappingURL=orders-BgdwDJea.js.map
