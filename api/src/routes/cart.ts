@@ -6,7 +6,7 @@ import {
   setShippingMethodBodySchema,
   updateCartItemBodySchema,
 } from '@timbre/contracts'
-import type { FastifyInstance } from 'fastify'
+import type { Router } from '../core.js'
 import { optionalUser, resolveCart } from '../auth.js'
 import { ApiError, errors } from '../errors.js'
 import { availableStock, findVariantOption } from '../mappers.js'
@@ -16,7 +16,7 @@ import { lookupCep } from '../shipping.js'
 import type { Store } from '../store.js'
 import { parseBody, send } from '../validate.js'
 
-export function registerCartRoutes(app: FastifyInstance, store: Store): void {
+export function registerCartRoutes(app: Router, store: Store): void {
   app.get('/api/cart', async (request, reply) => {
     const cart = resolveCart(store, request, optionalUser(store, request))
     return send(reply, cartSchema, buildCart(store, cart, requestCurrency(request)))

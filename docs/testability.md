@@ -56,6 +56,9 @@ Both suites do this in `beforeEach`:
    method and which steps are complete — never a card number. The API has no
    draft endpoint, so a test that starts mid-checkout seeds this key too, then
    navigates straight to `/checkout/payment` or `/checkout/review`.
+   The public demo build adds one more, `localStorage['timbre.demo']`: the Visitor's
+   whole store, since the API runs in their browser there (ADR 0004). It never
+   exists in the build the suites test.
 3. Optionally `POST /api/test/clock` to freeze time
 4. Navigate directly to the deepest relevant URL
 

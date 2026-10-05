@@ -366,3 +366,25 @@ still equal filtered totals.
 - Orders store `currency` and the amounts charged and are never reconverted.
   Fixture orders are `BRL`.
 
+---
+
+## Clarifications resolved while building milestone 10
+
+### Handlers, not routes
+
+`api/src/core.ts` holds the API without a web framework: `createApi(store, { testMode })`
+returns `handle(request) → { status, body }`. It owns the currency check, failure
+injection, routing, not-found handling and error mapping. Route modules register
+on a small `Router` with the same `app.get(path, handler)` shape they had under
+Fastify. `api/src/app.ts` is the Fastify adapter: CORS, JSON parsing, and one
+catch-all route that delegates to `handle`. The public demo is a second adapter,
+in the browser (ADR 0004). `api/test/parity.test.ts` sends one journey through
+both and requires identical status codes and bodies.
+
+### Snapshots
+
+`Store.snapshot()` and `Store.restore()` serialize everything a Visitor can change:
+products (stock), users, orders, carts, notify requests and the id sequences. A
+snapshot carries a version, and a mismatched or malformed one is ignored rather
+than misread.
+

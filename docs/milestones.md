@@ -279,27 +279,41 @@ that makes the case.
 
 ---
 
-## 10 — Public demo (deferred, not yet specified)
+## 10 — Public demo
 
-Do not start until milestone 9 is merged. Until then nothing is deployed; the
-portfolio's public surface is the repository, the README, and the CI reports on
-GitHub Pages.
+A public, clickable Timbre on GitHub Pages at `gabrielninow.github.io/Timbre/`,
+with no server (ADR 0004). The test reports stay at `/cypress/` and
+`/playwright/`, and their index moves to `/reports/`.
 
-Already decided:
-- Everything is fictional: products, sellers, accounts, payments. No real
-  personal data is collected, so there is no real account registration.
-- Login stays, using Demo accounts with publicly shown credentials and one-click
-  sign-in. The login form remains, because the E2E suites drive it.
-- Outside test mode, session tokens must be unguessable; inside test mode they
-  stay deterministic as `testability.md` requires.
+- **Handlers, not routes.** Every API route becomes a framework-agnostic handler
+  over the existing store, pricing and catalog modules. Fastify is a thin adapter;
+  the demo build's in-browser transport is another. Every existing API test keeps
+  passing unchanged through Fastify.
+- **The demo build** (`VITE_DEMO=1`) calls the handlers in-process instead of
+  fetching `/api`. It has no test-control routes and no failure injection. Its
+  store clock is the browser's real time, read through `useClock()`.
+- **Persistence.** After every mutating request, the Visitor's store is saved as a
+  snapshot in `localStorage['timbre.demo']` (demo build only) and restored on load.
+  A "Reset demo" control in the footer clears it and every `timbre.*` key.
+- **Footer.** The demo build says the shop runs entirely in the Visitor's browser,
+  that nothing is sent to a server, and how to wipe it.
+- **Hosting.** Built with base `/Timbre/`, with a `404.html` fallback for deep
+  links. Product images and every internal link resolve under the base.
+- **CI.** A `demo` workflow publishes the build to the root of `gh-pages` on every
+  push to `main`, keeping the report folders.
 
-Open, to be grilled before this milestone is specified:
-- Visitor isolation, so one Visitor depleting stock or arming state does not
-  affect another (per-visitor sandbox vs. periodic reset).
-- API abuse protection: rate limiting, body size limits, memory caps on the
-  in-memory store, a CORS allowlist instead of `origin: true`.
-- Whether test-control routes ever exist in the public deployment.
-- Hosting: cheapest option that runs a long-lived Node process plus a static SPA.
+**Acceptance**
+- Every existing API test passes, unchanged, through the Fastify adapter.
+- A parity test sends the same requests through both adapters and gets identical
+  status codes and bodies.
+- On the published URL: browsing, filtering, the product page, the cart, coupons,
+  sign-in with a Demo account, all three checkout methods and order history work,
+  in both languages and both currencies, with no request to any API host.
+- Deep links (`/Timbre/en/c/guitars?condition=new`) load directly and survive a
+  reload; the cart and orders survive a reload; "Reset demo" restores the fixtures.
+- Two browsers (or two profiles) have independent stores.
+- The boleto due date is three days from the real today.
+- axe passes on the published home, search, product, cart and checkout pages.
 
 ---
 

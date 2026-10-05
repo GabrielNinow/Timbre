@@ -1,5 +1,5 @@
 import { orderListResponseSchema, orderSchema } from '@timbre/contracts'
-import type { FastifyInstance } from 'fastify'
+import type { Router } from '../core.js'
 import { z } from 'zod'
 import { requireUser } from '../auth.js'
 import { errors } from '../errors.js'
@@ -12,7 +12,7 @@ const orderListQuerySchema = z.object({
   perPage: z.coerce.number().int().positive().max(60).default(10),
 })
 
-export function registerOrderRoutes(app: FastifyInstance, store: Store): void {
+export function registerOrderRoutes(app: Router, store: Store): void {
   app.get('/api/orders', async (request, reply) => {
     const user = requireUser(store, request)
     const query = parseQuery(orderListQuerySchema, request.query)

@@ -4,7 +4,7 @@ import {
   meResponseSchema,
   registerBodySchema,
 } from '@timbre/contracts'
-import type { FastifyInstance } from 'fastify'
+import type { Router } from '../core.js'
 import { mergeGuestCart, requireUser } from '../auth.js'
 import { ApiError } from '../errors.js'
 import { toUser } from '../mappers.js'
@@ -13,7 +13,7 @@ import { parseBody, send } from '../validate.js'
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
-export function registerAuthRoutes(app: FastifyInstance, store: Store): void {
+export function registerAuthRoutes(app: Router, store: Store): void {
   app.post('/api/auth/login', async (request, reply) => {
     const body = parseBody(loginBodySchema, request.body)
     const user = store.userByEmail(body.email)

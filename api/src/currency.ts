@@ -1,5 +1,5 @@
 import { BRL_PER_USD, currencyQuerySchema, type Currency } from '@timbre/contracts'
-import type { FastifyRequest } from 'fastify'
+import type { ApiRequest } from './core.js'
 import { parseQuery } from './validate.js'
 
 /**
@@ -12,7 +12,7 @@ export function convert(centavos: number, currency: Currency): number {
 }
 
 /** The `?currency=` of a request, BRL when omitted. Other query keys are ignored here. */
-export function requestCurrency(request: FastifyRequest): Currency {
+export function requestCurrency(request: Pick<ApiRequest, 'headers' | 'query'>): Currency {
   const query = (request.query ?? {}) as Record<string, unknown>
   return parseQuery(currencyQuerySchema, { currency: query.currency }).currency
 }

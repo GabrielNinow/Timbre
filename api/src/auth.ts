@@ -1,8 +1,8 @@
-import type { FastifyRequest } from 'fastify'
+import type { ApiRequest } from './core.js'
 import { errors } from './errors.js'
 import type { Store, StoreCart, StoreUser } from './store.js'
 
-export function optionalUser(store: Store, request: FastifyRequest): StoreUser | undefined {
+export function optionalUser(store: Store, request: Pick<ApiRequest, 'headers' | 'query'>): StoreUser | undefined {
   const header = request.headers.authorization
   if (!header) return undefined
   const [scheme, token] = header.split(' ')
@@ -10,7 +10,7 @@ export function optionalUser(store: Store, request: FastifyRequest): StoreUser |
   return store.userByToken(token)
 }
 
-export function requireUser(store: Store, request: FastifyRequest): StoreUser {
+export function requireUser(store: Store, request: Pick<ApiRequest, 'headers' | 'query'>): StoreUser {
   const header = request.headers.authorization
   if (!header) throw errors.unauthorized()
   const user = optionalUser(store, request)
@@ -20,7 +20,7 @@ export function requireUser(store: Store, request: FastifyRequest): StoreUser {
 
 export function resolveCart(
   store: Store,
-  request: FastifyRequest,
+  request: Pick<ApiRequest, 'headers' | 'query'>,
   user: StoreUser | undefined,
 ): StoreCart {
   if (user) return store.cartForUser(user.id)
@@ -33,7 +33,7 @@ export function resolveCart(
   return store.createCart(null)
 }
 
-export function mergeGuestCart(store: Store, request: FastifyRequest, user: StoreUser): void {
+export function mergeGuestCart(store: Store, request: Pick<ApiRequest, 'headers' | 'query'>, user: StoreUser): void {
   const headerValue = request.headers['x-cart-id']
   const cartId = Array.isArray(headerValue) ? headerValue[0] : headerValue
   if (!cartId) return

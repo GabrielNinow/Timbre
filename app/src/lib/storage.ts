@@ -3,7 +3,13 @@
  * state. Storage can be missing or throw (private windows, blocked site data), so
  * every access is guarded and the app works without it.
  */
-export const STORAGE_KEYS = { session: 'timbre.session', cart: 'timbre.cart', checkout: 'timbre.checkout' } as const
+export const STORAGE_KEYS = {
+  session: 'timbre.session',
+  cart: 'timbre.cart',
+  checkout: 'timbre.checkout',
+  /** Public demo only: the Visitor's whole store (ADR 0004). */
+  demo: 'timbre.demo',
+} as const
 type Key = keyof typeof STORAGE_KEYS
 
 /** The checkout draft is per tab (sessionStorage); the two ids persist (localStorage). */

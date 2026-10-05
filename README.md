@@ -8,9 +8,13 @@ A Brazilian marketplace for musical instruments and audio gear, built to be an
 excellent target for end-to-end tests, and tested twice: once with Cypress, once
 with Playwright, so the two can be compared on the same app.
 
+**[Try the live demo](https://gabrielninow.github.io/Timbre/)**, in
+[English](https://gabrielninow.github.io/Timbre/en/) too. It runs entirely in your
+browser (see below).
+
 **Test reports:** [Cypress](https://gabrielninow.github.io/Timbre/cypress/) ·
 [Playwright](https://gabrielninow.github.io/Timbre/playwright/), published by CI
-from the latest run on `main`.
+from the latest run on `main` ([index](https://gabrielninow.github.io/Timbre/reports/)).
 
 Everything is fictional: products, sellers, accounts and payments. The Pix code
 is a static string, and no data a Visitor types leaves the process memory
@@ -38,6 +42,22 @@ It still has no database. A `POST /api/test/reset` restores the fixture state in
 milliseconds, and test-control endpoints seed sessions, freeze the clock and arm
 failures. `packages/contracts` is the single source of truth: the API validates
 every response against it in test mode, and the app validates what it receives.
+
+## The live demo runs the API in your browser
+
+The public demo is a static site on GitHub Pages, with no server behind it. The
+API's routes are framework-agnostic handlers (`api/src/core.ts`). Fastify is one
+thin adapter over them, used in development, by both suites and in CI. The demo
+build is the other: it calls the same handlers inside the page instead of over the
+network (ADR 0004). A parity test sends one journey through both adapters and
+requires identical answers.
+
+So each Visitor gets their own shop. Nothing they type reaches a server, one
+Visitor can never sell out a product for another, and there is nothing to attack
+or pay for. The shop is saved in that browser's `localStorage`, and "Reset demo"
+in the footer wipes it. The demo uses the real date, so a boleto falls due three
+days from today. It has no test-control routes. The test suites keep running
+against the real Fastify service.
 
 ## Run it
 
@@ -160,5 +180,5 @@ workers in about **1:30**. Both suites passed ten consecutive runs with
 - `CONTEXT.md`: the domain glossary (Visitor, Demo account, Listing content, Platform copy, Currency).
 - `docs/milestones.md`: how the project was built, milestone by milestone, with acceptance criteria.
 - `docs/api-contract.md`, `docs/pages-and-components.md`, `docs/testability.md`, `docs/design-system.md`, `docs/seed-data.md`: the specs.
-- `docs/adr/`: English technical surface and bilingual pages (0001), multi-currency (0002), one API per Playwright worker (0003).
+- `docs/adr/`: English technical surface and bilingual pages (0001), multi-currency (0002), one API per Playwright worker (0003), the public demo running the API in the browser (0004).
 - `e2e-cypress/README.md`, `e2e-playwright/README.md`: how each suite is built.

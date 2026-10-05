@@ -9,7 +9,7 @@ import {
   type Order,
   type OrderItem,
 } from '@timbre/contracts'
-import type { FastifyInstance } from 'fastify'
+import type { Router } from '../core.js'
 import { requireUser } from '../auth.js'
 import { requestCurrency } from '../currency.js'
 import { ApiError } from '../errors.js'
@@ -40,7 +40,7 @@ function decrementStock(product: StoreProduct, variantOptionId: string | null, q
   product.stock = Math.max(0, (product.stock ?? 0) - quantity)
 }
 
-export function registerCheckoutRoutes(app: FastifyInstance, store: Store): void {
+export function registerCheckoutRoutes(app: Router, store: Store): void {
   app.post('/api/shipping/quote', async (request, reply) => {
     const body = parseBody(shippingQuoteBodySchema, request.body)
     const info = lookupCep(store, body.cep)

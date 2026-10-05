@@ -55,17 +55,24 @@ async function request<T extends z.ZodType>(
   options: RequestOptions & { method?: string; body?: unknown },
 ): Promise<z.infer<T>> {
   const search = options.params && [...options.params.keys()].length > 0 ? `?${options.params}` : ''
-  let response: Response
-  try {
-    response = await fetch(`${BASE}${path}${search}`, {
-      method: options.method ?? 'GET',
-      headers: headers(options.body !== undefined),
-      body: options.body === undefined ? undefined : JSON.stringify(options.body),
-      signal: options.signal,
-    })
-  } catch (error) {
-    if (error instanceof DOMException && error.name === 'AbortError') throw error
-    throw new ApiError('NETWORK_ERROR', 'Network failure.', null)
+  const init = {
+    method: options.method ?? 'GET',
+    headers: headers(options.body !== undefined),
+    body: options.body === undefined ? undefined : JSON.stringify(options.body),
+  }
+  let response: { ok: boolean; status: number; json: () => Promise<unknown> }
+  if (import.meta.env.VITE_DEMO === '1') {
+    // The public demo: the API runs in this page (ADR 0004). Loaded only in that build.
+    const { demoRequest } = await import('@/api/demo')
+    const result = await demoRequest({ method: init.method, path: `${BASE}${path}`, search: search.slice(1), headers: init.headers, body: init.body })
+    response = { ok: result.status < 400, status: result.status, json: async () => result.body }
+  } else {
+    try {
+      response = await fetch(`${BASE}${path}${search}`, { ...init, signal: options.signal })
+    } catch (error) {
+      if (error instanceof DOMException && error.name === 'AbortError') throw error
+      throw new ApiError('NETWORK_ERROR', 'Network failure.', null)
+    }
   }
 
   let body: unknown
