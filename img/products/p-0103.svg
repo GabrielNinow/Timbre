@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800" role="img" aria-labelledby="t-p-0103">
+  <title id="t-p-0103">Squier Classic Vibe Telecaster</title>
+  <rect width="800" height="800" fill="#E6E4DF"/>
+  <g fill="none" stroke="#C3C0B9" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <g transform="translate(0,-30)">
+    <rect x="336" y="112" width="60" height="44" rx="10"/>
+    <rect x="350" y="150" width="32" height="150" rx="6"/>
+    <path d="M366 286c-48 0-92 28-92 70 0 32 32 40 32 62 0 30-50 38-50 76 0 32 46 54 110 54s110-22 110-54c0-38-50-46-50-76 0-22 32-30 32-62 0-42-44-70-92-70Z"/>
+    <circle cx="366" cy="404" r="32"/>
+    </g>
+  </g>
+  <text x="400" y="596" text-anchor="middle" fill="#63706E" font-family="Archivo Variable, Archivo, Helvetica Neue, Arial, sans-serif" font-size="46" font-weight="600">Squier</text>
+  <text x="400" y="648" text-anchor="middle" fill="#8D9895" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="24" letter-spacing="2">P-0103</text>
+</svg>

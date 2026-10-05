@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800" role="img" aria-labelledby="t-p-0608">
+  <title id="t-p-0608">Banco para Bateria Mapex T575A</title>
+  <rect width="800" height="800" fill="#E6E4DF"/>
+  <g fill="none" stroke="#C3C0B9" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="212" y="382" width="66" height="42" rx="10"/>
+    <rect x="522" y="382" width="66" height="42" rx="10"/>
+    <path d="M278 403c48 0 40-140 122-140s74 140 122 140"/>
+  </g>
+  <text x="400" y="596" text-anchor="middle" fill="#63706E" font-family="Archivo Variable, Archivo, Helvetica Neue, Arial, sans-serif" font-size="46" font-weight="600">Mapex</text>
+  <text x="400" y="648" text-anchor="middle" fill="#8D9895" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="24" letter-spacing="2">P-0608</text>
+</svg>

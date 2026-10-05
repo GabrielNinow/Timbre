@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800" role="img" aria-labelledby="t-p-0209">
+  <title id="t-p-0209">Nord Electro 6D</title>
+  <rect width="800" height="800" fill="#E6E4DF"/>
+  <g fill="none" stroke="#C3C0B9" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="228" y="268" width="344" height="164" rx="12"/>
+    <path d="M285 268v164M342 268v164M400 268v164M457 268v164M514 268v164"/>
+    <rect x="266" y="268" width="30" height="92" rx="4"/>
+    <rect x="380" y="268" width="30" height="92" rx="4"/>
+    <rect x="438" y="268" width="30" height="92" rx="4"/>
+  </g>
+  <text x="400" y="596" text-anchor="middle" fill="#63706E" font-family="Archivo Variable, Archivo, Helvetica Neue, Arial, sans-serif" font-size="46" font-weight="600">Nord</text>
+  <text x="400" y="648" text-anchor="middle" fill="#8D9895" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="24" letter-spacing="2">P-0209</text>
+</svg>

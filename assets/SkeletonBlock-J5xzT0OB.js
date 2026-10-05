@@ -1,0 +1,2 @@
+import{Zn as e,b as t,k as n,mt as r}from"./runtime-core.esm-bundler-B4b-2GOK.js";var i=[`data-testid`],a=n({__name:`SkeletonBlock`,props:{testid:{default:`skeleton-block`},width:{default:`w-full`},height:{default:`h-4`},rounded:{default:`control`}},setup(n){let a={control:`rounded-control`,card:`rounded-card`,full:`rounded-full`};return(o,s)=>(r(),t(`div`,{"data-testid":n.testid,"aria-hidden":`true`,class:e([`animate-pulse bg-sunken`,[n.width,n.height,a[n.rounded]]])},null,10,i))}});export{a as t};
+//# sourceMappingURL=SkeletonBlock-J5xzT0OB.js.map

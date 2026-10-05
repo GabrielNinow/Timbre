@@ -1,0 +1,2 @@
+var e=`casa-do-som`,t=`Teste@1234`,n=[{key:`ana`,name:`Ana Souza`,email:`ana.souza@timbre.test`},{key:`bruno`,name:`Bruno Lima`,email:`bruno.lima@timbre.test`},{key:`locked`,name:`Marina Rocha`,email:`bloqueado@timbre.test`},{key:`slow`,name:`Paulo Tavares`,email:`lento@timbre.test`}];export{t as n,e as r,n as t};
+//# sourceMappingURL=config-DDs1KiUy.js.map
