@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { assetUrl } from '@/lib/assets'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -17,7 +18,7 @@ const current = computed(() => props.images[active.value] ?? props.images[0] ?? 
   <section data-testid="product-gallery" :aria-label="t('product.galleryLabel')" class="flex flex-col gap-3">
     <div class="card aspect-square p-6">
       <img
-        :src="current"
+        :src="assetUrl(current)"
         :alt="name"
         data-testid="product-gallery-main"
         :data-index="active"
@@ -37,7 +38,7 @@ const current = computed(() => props.images[active.value] ?? props.images[0] ?? 
           class="card size-16 p-1 aria-pressed:border-band"
           @click="active = index"
         >
-          <img :src="image" alt="" width="64" height="64" class="size-full object-contain">
+          <img :src="assetUrl(image)" alt="" width="64" height="64" class="size-full object-contain">
         </button>
       </li>
     </ul>

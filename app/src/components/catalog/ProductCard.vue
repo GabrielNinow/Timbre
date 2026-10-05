@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { assetUrl } from '@/lib/assets'
 import type { ProductSummary } from '@timbre/contracts'
 import { computed } from 'vue'
 import BadgeChip from '@/components/base/BadgeChip.vue'
@@ -44,7 +45,7 @@ const stockState = computed(() => {
       :class="stockState === 'sold-out' ? 'opacity-60' : ''"
     >
       <img
-        :src="product.imageUrl"
+        :src="assetUrl(product.imageUrl)"
         alt=""
         width="320"
         height="320"

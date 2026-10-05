@@ -8,6 +8,8 @@ const proxy = {
   '/api': { target: apiTarget, changeOrigin: true },
 }
 export default defineConfig({
+  // `/Timbre/` for the public demo on GitHub Pages (npm run build:demo).
+  base: process.env.TIMBRE_BASE ?? '/',
   plugins: [vue(), tailwindcss()],
   resolve: {
     alias: {

@@ -11,13 +11,14 @@ defineProps<Props>()
 defineSlots<{ default: () => unknown }>()
 const { t } = useI18n()
 const cart = useCartStore()
+const isDemo = import.meta.env.VITE_DEMO === '1'
 </script>
 
 <template>
   <main id="main" :data-testid="`checkout-${step}`" class="mx-auto flex w-full max-w-[1200px] flex-col gap-6 px-4 py-6 md:px-6">
     <h1 class="font-wide text-display-lg text-ink">{{ t('checkout.title') }}</h1>
     <p data-testid="checkout-demo-notice" role="note" class="rounded-card border border-line-heavy bg-surface p-3 text-body-sm text-ink">
-      {{ t('checkout.demoNotice') }}
+      {{ isDemo ? t('checkout.demoNoticeBrowser') : t('checkout.demoNotice') }}
     </p>
     <CheckoutStepper :current="step" />
     <div class="grid items-start gap-6 lg:grid-cols-[1fr_360px]">

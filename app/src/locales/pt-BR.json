@@ -663,7 +663,8 @@
       "SHIPPING_OPTION_UNAVAILABLE": "A forma de entrega escolhida não atende este CEP. Escolha outra no carrinho.",
       "fallback": "Não foi possível finalizar a compra. Tente novamente."
     },
-    "demoNotice": "Demonstração: use dados fictícios. Nada do que você digitar é salvo de forma permanente, e nenhum pagamento é real."
+    "demoNotice": "Demonstração: use dados fictícios. Nada do que você digitar é salvo de forma permanente, e nenhum pagamento é real.",
+    "demoNoticeBrowser": "Demonstração: tudo roda no seu navegador, nada é enviado a um servidor e nenhum pagamento é real. Use dados fictícios."
   },
   "order": {
     "title": "Pedido confirmado",
@@ -705,6 +706,8 @@
   },
   "footer": {
     "notice": "Timbre é um projeto de portfólio. Produtos, lojas, contas e pagamentos são fictícios. Nada é gravado em disco ou banco de dados: o que você digita fica na memória da demonstração até o próximo reset, e seu navegador guarda apenas os identificadores da sessão e do carrinho e o rascunho do checkout. Ao sair da conta, a sessão e o rascunho são apagados. Use dados fictícios.",
-    "copyright": "© 2026 Gabriel Ninow"
+    "copyright": "© 2026 Gabriel Ninow",
+    "browserNotice": "Timbre é um projeto de portfólio. Produtos, lojas, contas e pagamentos são fictícios. Esta demonstração roda inteira no seu navegador: nada do que você digita é enviado a um servidor. A sua loja fica guardada só neste navegador; use “Reiniciar demonstração” para apagá-la. Use dados fictícios.",
+    "reset": "Reiniciar demonstração"
   }
 }

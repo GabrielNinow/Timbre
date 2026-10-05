@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { assetUrl } from '@/lib/assets'
 import type { CartLine } from '@timbre/contracts'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -50,7 +51,7 @@ async function guard(call: () => Promise<unknown>): Promise<void> {
     :data-option-id="line.variant?.optionId"
     class="flex gap-4 border-b border-line py-4 last:border-b-0"
   >
-    <img :src="line.product.imageUrl" alt="" width="96" height="96" class="size-24 shrink-0 rounded-control border border-line bg-surface object-contain p-1">
+    <img :src="assetUrl(line.product.imageUrl)" alt="" width="96" height="96" class="size-24 shrink-0 rounded-control border border-line bg-surface object-contain p-1">
     <div class="flex min-w-0 flex-1 flex-col gap-2">
       <div class="flex flex-wrap items-start justify-between gap-2">
         <div class="flex min-w-0 flex-col gap-1">
