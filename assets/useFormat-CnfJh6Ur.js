@@ -1,0 +1,2 @@
+import{h as e}from"./usePageLanguage-DlQv4XJ6.js";import{A as t,D as n,E as r,M as i,N as a,O as o,j as s,k as c}from"./index-DTZt8QoA.js";function l(){let{locale:l}=e(),u=()=>l.value;return{formatPrice:e=>t(e,u()),formatPriceShort:e=>s(e,u()),splitPrice:e=>a(e,u()),formatRating:e=>i(e,u()),formatPercent:e=>c(e,u()),formatCount:e=>r(e,u()),formatMonthYear:e=>o(e,u()),formatDate:e=>n(e,u()),formatMoney:(e,n)=>t(e,u(),n)}}export{l as t};
+//# sourceMappingURL=useFormat-CnfJh6Ur.js.map
