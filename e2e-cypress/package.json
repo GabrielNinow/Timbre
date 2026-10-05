@@ -7,12 +7,16 @@
     "cy:run": "cypress run --e2e",
     "cy:component": "cypress run --component",
     "cy:open": "cypress open",
-    "typecheck": "tsc --noEmit -p tsconfig.json"
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "cy:report": "mochawesome-merge \"reports/mochawesome/*.json\" -o reports/merged.json && marge reports/merged.json -o reports/html -f index --charts"
   },
   "devDependencies": {
     "axe-core": "^4.13.0",
     "cypress": "^15.21.1",
     "cypress-axe": "^1.7.0",
+    "mochawesome": "^8.1.1",
+    "mochawesome-merge": "^5.1.1",
+    "mochawesome-report-generator": "^6.3.2",
     "start-server-and-test": "^3.0.12",
     "typescript": "^5.9.3"
   }

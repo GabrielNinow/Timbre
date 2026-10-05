@@ -1,0 +1,115 @@
+name: cypress
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: cypress-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    name: e2e (${{ matrix.group }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Two containers, balanced by measured spec duration.
+        include:
+          - group: a
+            specs: cypress/e2e/checkout.cy.ts,cypress/e2e/coupons.cy.ts,cypress/e2e/product.cy.ts,cypress/e2e/languages.cy.ts
+          - group: b
+            specs: cypress/e2e/a11y.cy.ts,cypress/e2e/auth.cy.ts,cypress/e2e/cart.cy.ts,cypress/e2e/catalog.cy.ts
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+      - run: npm ci
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+      # Against the production build, with the API in test mode.
+      - run: npm run app:build
+      - name: Run Cypress
+        run: npx start-server-and-test e2e:serve http-get://localhost:4173/api/categories "npm exec -w @timbre/e2e-cypress -- cypress run --e2e --spec ${{ matrix.specs }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-results-${{ matrix.group }}
+          path: e2e-cypress/reports/mochawesome
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots-${{ matrix.group }}
+          path: e2e-cypress/cypress/screenshots
+
+  component:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+      - run: npm ci
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+      - run: npm run cypress:component
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-results-component
+          path: e2e-cypress/reports/mochawesome
+
+  report:
+    needs: [e2e, component]
+    if: always()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+        env:
+          CYPRESS_INSTALL_BINARY: '0'
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: cypress-results-*
+          path: e2e-cypress/reports/mochawesome
+          merge-multiple: true
+      - run: npm run cy:report -w @timbre/e2e-cypress
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cypress-html-report
+          path: e2e-cypress/reports/html
+      - name: Publish to GitHub Pages
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: e2e-cypress/reports/html
+          destination_dir: cypress
+          keep_files: true
+      - name: Publish the reports index
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .github/pages
+          keep_files: true
