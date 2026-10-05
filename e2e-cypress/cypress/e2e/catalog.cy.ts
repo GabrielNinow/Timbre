@@ -27,7 +27,7 @@ describe('catalog: search, filters and listing states', () => {
       cy.get('[data-testid="filter-option"][data-facet="condition"][data-value="new"]').should('have.attr', 'data-selected', 'true')
       // Facets count against the other filters: a condition's own counts stay put.
       cy.get('[data-testid="filter-option"][data-facet="condition"][data-value="used"]').should('have.attr', 'data-count', usedBefore)
-      cy.byTestId('results-count').should('have.attr', 'data-count', '24')
+      cy.byTestId('results-count').should('have.attr', 'data-count', '19')
     })
     cy.go('back')
     cy.location('search').should('eq', '')
@@ -68,7 +68,7 @@ describe('catalog: search, filters and listing states', () => {
     resultsReady()
     cy.open('/c/guitars')
     resultsReady()
-    resultCards().should('have.length', 14)
+    resultCards().should('have.length', 12)
     cy.get('[data-testid="filter-group"][data-facet="category"]').should('not.exist')
   })
 

@@ -68,7 +68,7 @@ repository, since the public demo now holds the site root.
 `footer-credits`, `footer-reports`, `footer-source`, `checkout-demo-notice`, `demo-reset`.
 
 **Image credits** at `/credits` (and `/en/credits`): every product with its photo,
-source, author and licence, or "generated illustration". The product gallery shows
+source, author and licence. The product gallery shows
 `product-photo-credit` under a photo, linking there.
 
 ## Home

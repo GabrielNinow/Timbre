@@ -188,6 +188,9 @@ export class Store {
     })
     this.users = copy.users
     this.orders = copy.orders
+    // A cart line for a product that is no longer listed is dropped, not left dangling.
+    const listed = new Set(this.products.map((product) => product.id))
+    for (const [, cart] of copy.carts) cart.lines = cart.lines.filter((line) => listed.has(line.productId))
     this.carts = new Map(copy.carts)
     this.notifyRequests = new Map(copy.notifyRequests.map(([id, emails]) => [id, new Set(emails)]))
     this.cartSeq = copy.sequences.cart

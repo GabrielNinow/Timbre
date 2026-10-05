@@ -138,7 +138,7 @@ export const orders: readonly OrderFixture[] = Object.freeze([
     currency: 'BRL',
     createdAt: '2026-06-02T10:41:00Z',
     items: [
-      { productId: 'p-0504', variantOptionId: null, quantity: 1, unitPrice: 149900 },
+      { productId: 'p-0607', variantOptionId: null, quantity: 1, unitPrice: 149900 },
       { productId: 'p-0605', variantOptionId: null, quantity: 1, unitPrice: 12900 },
     ],
     couponCode: 'TIMBRE10',
@@ -164,7 +164,7 @@ export const orders: readonly OrderFixture[] = Object.freeze([
     status: 'awaiting_payment',
     currency: 'BRL',
     createdAt: '2026-08-05T09:15:00Z',
-    items: [{ productId: 'p-0308', variantOptionId: null, quantity: 2, unitPrice: 8990 }],
+    items: [{ productId: 'p-0601', variantOptionId: null, quantity: 2, unitPrice: 8990 }],
     couponCode: null,
     couponDiscount: 0,
     shipping: {

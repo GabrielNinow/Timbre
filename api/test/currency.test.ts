@@ -106,11 +106,11 @@ describe('currency on the wire', () => {
 })
 
 describe('conversion', () => {
-  it('prices all 60 products at their BRL price divided by the rate, rounded half-up', async () => {
+  it('prices all 50 products at their BRL price divided by the rate, rounded half-up', async () => {
     const brl = await list('?perPage=60')
     const usd = await list('?perPage=60&currency=USD')
     expect(usd.items.map((item) => item.id)).toEqual(brl.items.map((item) => item.id))
-    expect(usd.items).toHaveLength(60)
+    expect(usd.items).toHaveLength(50)
     usd.items.forEach((item, index) => {
       const source = brl.items[index]!
       expect(item.price, item.id).toBe(toUsd(source.price))
@@ -285,7 +285,7 @@ describe('price filtering in USD', () => {
       expect((await list(query)).total, bucket.value).toBe(bucket.count)
       total += bucket.count
     }
-    expect(total).toBe(60)
+    expect(total).toBe(50)
   })
 
   it('reads minPrice and maxPrice in the request currency', async () => {

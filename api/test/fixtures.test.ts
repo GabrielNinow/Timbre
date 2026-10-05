@@ -3,8 +3,8 @@ import { categories, products, sellers, users, orders, FIRST_ORDER_NUMBER } from
 import { describe, expect, it } from 'vitest'
 
 describe('seed integrity', () => {
-  it('has 60 products distributed across the six categories', () => {
-    expect(products).toHaveLength(60)
+  it('has 50 products distributed across the six categories', () => {
+    expect(products).toHaveLength(50)
     const perCategory = Object.fromEntries(
       categories.map((category) => [
         category.slug,
@@ -12,26 +12,26 @@ describe('seed integrity', () => {
       ]),
     )
     expect(perCategory).toEqual({
-      guitars: 14,
+      guitars: 12,
       keyboards: 10,
-      drums: 8,
-      studio: 10,
-      pedals: 9,
-      accessories: 9,
+      drums: 5,
+      studio: 7,
+      pedals: 8,
+      accessories: 8,
     })
   })
 
   it('matches the documented condition split', () => {
     const count = (condition: string) =>
       products.filter((product) => product.condition === condition).length
-    expect(count('new')).toBe(24)
-    expect(count('like-new')).toBe(22)
-    expect(count('used')).toBe(14)
+    expect(count('new')).toBe(19)
+    expect(count('like-new')).toBe(20)
+    expect(count('used')).toBe(11)
   })
 
-  it('flags 19 products as free shipping and 21 with a list price', () => {
-    expect(products.filter((product) => product.freeShipping)).toHaveLength(19)
-    expect(products.filter((product) => product.listPrice !== null)).toHaveLength(21)
+  it('flags 17 products as free shipping and 19 with a list price', () => {
+    expect(products.filter((product) => product.freeShipping)).toHaveLength(17)
+    expect(products.filter((product) => product.listPrice !== null)).toHaveLength(19)
     for (const product of products) {
       if (product.listPrice !== null) expect(product.listPrice).toBeGreaterThan(product.price)
     }
@@ -45,13 +45,13 @@ describe('seed integrity', () => {
       ]),
     )
     expect(perSeller).toEqual({
-      's-01': 14,
+      's-01': 13,
       's-02': 11,
-      's-03': 10,
-      's-04': 8,
-      's-05': 7,
+      's-03': 7,
+      's-04': 6,
+      's-05': 4,
       's-06': 5,
-      's-07': 3,
+      's-07': 2,
       's-08': 2,
     })
   })
@@ -105,7 +105,7 @@ describe('seed integrity', () => {
 
     expect(byId('p-0201').stock).toBe(3)
     expect(byId('p-0202').price).toBe(899000)
-    expect(byId('p-0301').freeShipping).toBe(false)
+    expect(byId('p-0302').freeShipping).toBe(false)
     expect(byId('p-0401').condition).toBe('new')
     expect(byId('p-0501').price).toBe(3990)
     expect(byId('p-0601').freeShipping).toBe(true)
@@ -127,8 +127,8 @@ describe('seed integrity', () => {
   })
 
   it('gives every product a unique id and a unique listing date', () => {
-    expect(new Set(products.map((product) => product.id)).size).toBe(60)
-    expect(new Set(products.map((product) => product.listedAt)).size).toBe(60)
+    expect(new Set(products.map((product) => product.id)).size).toBe(50)
+    expect(new Set(products.map((product) => product.listedAt)).size).toBe(50)
   })
 
   it('serialises every product through the wire contract', () => {
@@ -184,16 +184,14 @@ describe('listing content stays as sellers wrote it', () => {
 
 
 describe('product photos', () => {
-  it('credits every photo, under a free licence, and ships the file', async () => {
+  it('gives every product a credited photo, under a free licence, and ships the file', async () => {
     const { photoCredits } = await import('@timbre/fixtures/photo-credits')
     const { existsSync } = await import('node:fs')
     const { fileURLToPath } = await import('node:url')
     for (const product of products) {
       const credit = photoCredits[product.id]
-      if (!credit) {
-        expect(product.imageUrl, product.id).toBe(`/img/products/${product.id}.svg`)
-        continue
-      }
+      expect(credit, product.id).toBeDefined()
+      if (!credit) continue
       expect(product.imageUrl, product.id).toBe(`/img/photos/${product.id}.webp`)
       expect(credit.license, product.id).toMatch(/^(cc0|public domain|cc by(-sa)? \d)/i)
       expect(credit.author.length, product.id).toBeGreaterThan(0)

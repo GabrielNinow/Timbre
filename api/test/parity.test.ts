@@ -107,6 +107,19 @@ describe('store snapshots', () => {
     expect(product.stock).toBe(0)
   })
 
+  it('drops saved cart lines for products that are no longer listed', () => {
+    const store = new Store()
+    const saved = JSON.parse(JSON.stringify(store.snapshot()))
+    saved.carts = [['c-old', { id: 'c-old', userId: null, cep: '89010-000', couponCode: null, selectedShippingId: 'standard', lines: [
+      { id: 'l-1', productId: 'p-0301', variantOptionId: null, quantity: 1 },
+      { id: 'l-2', productId: 'p-0101', variantOptionId: null, quantity: 1 },
+    ] }]]
+
+    const restored = new Store()
+    expect(restored.restore(saved)).toBe(true)
+    expect(restored.carts.get('c-old')!.lines.map((line) => line.productId)).toEqual(['p-0101'])
+  })
+
   it('ignores a snapshot of another version or shape', () => {
     const store = new Store()
     expect(store.restore({ version: 999 })).toBe(false)
