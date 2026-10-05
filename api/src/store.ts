@@ -173,9 +173,24 @@ export class Store {
     const data = snapshot as Partial<StoreSnapshot> | null
     if (!data || data.version !== SNAPSHOT_VERSION || !Array.isArray(data.products) || !data.sequences) return false
     const copy = structuredClone(data as StoreSnapshot)
-    this.products = copy.products
+    // Listing content (photos, copy, prices) comes from the current fixtures, so a deploy
+    // reaches Visitors with a saved shop; only stock, the one thing they change, is kept.
+    const saved = new Map(copy.products.map((product) => [product.id, product]))
+    this.products = (structuredClone(productFixtures) as unknown as StoreProduct[]).map((product) => {
+      const old = saved.get(product.id)
+      if (!old) return product
+      product.stock = old.stock
+      for (const option of product.variants?.flatMap((group) => group.options) ?? []) {
+        const before = old.variants?.flatMap((group) => group.options).find((o) => o.id === option.id)
+        if (before) option.stock = before.stock
+      }
+      return product
+    })
     this.users = copy.users
     this.orders = copy.orders
+    // A cart line for a product that is no longer listed is dropped, not left dangling.
+    const listed = new Set(this.products.map((product) => product.id))
+    for (const [, cart] of copy.carts) cart.lines = cart.lines.filter((line) => listed.has(line.productId))
     this.carts = new Map(copy.carts)
     this.notifyRequests = new Map(copy.notifyRequests.map(([id, emails]) => [id, new Set(emails)]))
     this.cartSeq = copy.sequences.cart

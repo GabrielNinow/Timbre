@@ -26,7 +26,7 @@ describe('GET /api/categories', () => {
       'pedals',
       'accessories',
     ])
-    expect(body.items.reduce((sum, item) => sum + item.productCount, 0)).toBe(60)
+    expect(body.items.reduce((sum, item) => sum + item.productCount, 0)).toBe(50)
   })
 })
 
@@ -48,7 +48,7 @@ describe('Platform copy stays on the client', () => {
 describe('GET /api/products', () => {
   it('paginates with a default page size of 24', async () => {
     const body = await list('')
-    expect(body.total).toBe(60)
+    expect(body.total).toBe(50)
     expect(body.page).toBe(1)
     expect(body.perPage).toBe(24)
     expect(body.items).toHaveLength(24)
@@ -93,14 +93,14 @@ describe('GET /api/products', () => {
   })
 
   it('filters by category, condition, brand, seller, price and free shipping', async () => {
-    expect((await list('?category=guitars')).total).toBe(14)
-    expect((await list('?condition=new')).total).toBe(24)
-    expect((await list('?condition=new&condition=used')).total).toBe(38)
+    expect((await list('?category=guitars')).total).toBe(12)
+    expect((await list('?condition=new')).total).toBe(19)
+    expect((await list('?condition=new&condition=used')).total).toBe(30)
     expect((await list('?brand=Fender')).total).toBe(2)
     expect((await list('?sellerId=s-08')).total).toBe(2)
-    expect((await list('?freeShipping=true')).total).toBe(19)
-    expect((await list('?minPrice=400000')).total).toBe(16)
-    expect((await list('?minPrice=0&maxPrice=20000')).total).toBe(5)
+    expect((await list('?freeShipping=true')).total).toBe(17)
+    expect((await list('?minPrice=400000')).total).toBe(15)
+    expect((await list('?minPrice=0&maxPrice=20000')).total).toBe(4)
   })
 
   it('filters to exactly the six sponsored listings', async () => {
@@ -110,7 +110,7 @@ describe('GET /api/products', () => {
       'p-0203',
       'p-0303',
       'p-0401',
-      'p-0504',
+      'p-0505',
       'p-0601',
     ])
     expect(body.items.every((item) => item.sponsored)).toBe(true)
@@ -207,9 +207,9 @@ describe('GET /api/sellers/:slug', () => {
     const response = await get(h.app, '/api/sellers/casa-do-som')
     const body = response.json() as SellerPageResponse
     expect(body.seller.tier).toBe('PLATINUM')
-    expect(body.seller.productCount).toBe(14)
+    expect(body.seller.productCount).toBe(13)
     expect(body.stats.rating).toBe(48)
-    expect(body.products.total).toBe(14)
+    expect(body.products.total).toBe(13)
   })
 
   it('gives Vintage Room a single page of two products', async () => {

@@ -40,7 +40,9 @@ export default defineConfigWithVueTs(
   },
   {
     files: ['vite.config.ts', 'vitest.config.ts', 'test/**/*.ts', 'scripts/**/*.mjs'],
-    languageOptions: { globals: { console: 'readonly', process: 'readonly' } },
+    languageOptions: {
+      globals: { console: 'readonly', process: 'readonly', URL: 'readonly', URLSearchParams: 'readonly', fetch: 'readonly', setTimeout: 'readonly', Buffer: 'readonly' },
+    },
     rules: { 'no-restricted-syntax': 'off' },
   },
 )

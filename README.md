@@ -26,7 +26,7 @@ is a static string, and no data a Visitor types leaves the process memory
 app/                 Vue 3 + Vite SPA (Pinia, Vue Router, vue-i18n, Reka UI, Tailwind v4)
 api/                 Fastify + TypeScript, in-memory store seeded from fixtures
 packages/contracts/  Zod schemas + types, imported by the app, the API and both suites
-packages/fixtures/   Deterministic seed data: 60 products, 8 sellers, 5 users, coupons, CEPs
+packages/fixtures/   Deterministic seed data: 50 products, 8 sellers, 5 users, coupons, CEPs
 e2e-cypress/         Cypress suite (E2E + component)
 e2e-playwright/      Playwright suite
 docs/                Specs, ADRs

@@ -370,7 +370,8 @@
     "reviewsNone": "Este anúncio ainda não tem avaliações.",
     "reviewsSummary": "{rating} de 5, com base em {count} avaliação | {rating} de 5, com base em {count} avaliação | {rating} de 5, com base em {count} avaliações",
     "relatedHeading": "Produtos relacionados",
-    "relatedEmpty": "Nenhum produto relacionado agora."
+    "relatedEmpty": "Nenhum produto relacionado agora.",
+    "photoCaption": "Foto: {author} · {license}"
   },
   "notifyMe": {
     "title": "Avise-me quando chegar",
@@ -711,6 +712,17 @@
     "reset": "Reiniciar demonstração",
     "reports": "Relatórios de testes",
     "source": "Código-fonte",
-    "linksLabel": "Links do projeto"
+    "linksLabel": "Links do projeto",
+    "photoCredits": "Créditos das imagens"
+  },
+  "credits": {
+    "title": "Créditos das imagens",
+    "lead": "As fotos dos produtos vêm do Wikimedia Commons, sob licenças livres, e são creditadas abaixo. Cada foto mostra o modelo anunciado ou um da mesma família ou tipo, não necessariamente o item exato.",
+    "product": "Produto",
+    "photo": "Foto",
+    "author": "Autor",
+    "license": "Licença",
+    "source": "Ver original no Wikimedia Commons",
+    "none": "Ilustração gerada"
   }
 }

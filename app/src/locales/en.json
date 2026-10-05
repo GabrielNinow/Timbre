@@ -370,7 +370,8 @@
     "reviewsNone": "This listing has no reviews yet.",
     "reviewsSummary": "{rating} out of 5, based on {count} reviews | {rating} out of 5, based on {count} review | {rating} out of 5, based on {count} reviews",
     "relatedHeading": "Related products",
-    "relatedEmpty": "No related products right now."
+    "relatedEmpty": "No related products right now.",
+    "photoCaption": "Photo: {author} · {license}"
   },
   "notifyMe": {
     "title": "Notify me when it's back",
@@ -711,6 +712,17 @@
     "reset": "Reset demo",
     "reports": "Test reports",
     "source": "Source code",
-    "linksLabel": "Project links"
+    "linksLabel": "Project links",
+    "photoCredits": "Image credits"
+  },
+  "credits": {
+    "title": "Image credits",
+    "lead": "Product photos come from Wikimedia Commons under free licences and are credited below. Each photo shows the listed model or one of the same family or kind, not necessarily the exact item.",
+    "product": "Product",
+    "photo": "Photo",
+    "author": "Author",
+    "license": "Licence",
+    "source": "View the original on Wikimedia Commons",
+    "none": "Generated illustration"
   }
 }

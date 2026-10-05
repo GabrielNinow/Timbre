@@ -25,23 +25,26 @@ Fixed distribution so seller filters and tier marks are all reachable:
 
 | id | name | tier | state | rating | products |
 |---|---|---|---|---|---|
-| `s-01` | Casa do Som | PLATINUM | SP | 4.8 | 14 |
+| `s-01` | Casa do Som | PLATINUM | SP | 4.8 | 13 |
 | `s-02` | Áudio Prime | PLATINUM | SP | 4.9 | 11 |
-| `s-03` | Loja do Músico | GOLD | RJ | 4.5 | 10 |
-| `s-04` | Studio Norte | GOLD | PR | 4.4 | 8 |
-| `s-05` | Instrumentos SC | SILVER | SC | 4.1 | 7 |
+| `s-03` | Loja do Músico | GOLD | RJ | 4.5 | 7 |
+| `s-04` | Studio Norte | GOLD | PR | 4.4 | 6 |
+| `s-05` | Instrumentos SC | SILVER | SC | 4.1 | 4 |
 | `s-06` | Marcos Andrade | — | MG | 4.7 | 5 |
-| `s-07` | Julia Ferraz | — | BA | 3.9 | 3 |
+| `s-07` | Julia Ferraz | — | BA | 3.9 | 2 |
 | `s-08` | Vintage Room | SILVER | RS | 4.6 | 2 |
 
 `s-08` having only two products is deliberate: it exercises a seller page that
 does not paginate. `s-07` is the only sub-4.0 rating, for rating-sort assertions.
 
-## Products — 60 total
+## Products — 50 total
 
-Distribution: 14 guitars, 10 keyboards, 8 drums, 10 studio, 9 pedals,
-9 accessories. Conditions: 24 new, 22 like-new, 14 used. 19 flagged
-`freeShipping`. 21 carry a `listPrice` above `price`.
+Distribution: 12 guitars, 10 keyboards, 5 drums, 7 studio, 8 pedals,
+8 accessories. Conditions: 19 new, 20 like-new, 11 used. 17 flagged
+`freeShipping`. 19 carry a `listPrice` above `price`.
+
+The catalog started at 60. The 10 products with no suitable free photo were
+removed, so every listing shows a real photo (see Images).
 
 Price spread must cover R$ 39,90 to R$ 8.990,00 with at least four products in
 each of these buckets, since they are the filter presets:
@@ -59,7 +62,7 @@ These carry the edge cases. Everything else is filler.
 | `p-0104` | Tagima TW-61 Woodstock | cheapest guitar, `price: 129900`, `listPrice: 169900` → -24% |
 | `p-0201` | Roland Juno-DS61 | `stock: 3` → "Últimas 3 unidades" notice |
 | `p-0202` | Moog Subsequent 37 | `price: 899000`, most expensive item, top of `price-desc` sort |
-| `p-0301` | Pearl Export EXX 5 peças | heaviest item, never `freeShipping`, forces paid shipping |
+| `p-0302` | Tama Imperialstar 5 peças | bulky item, never `freeShipping`, forces paid shipping (took over from the removed `p-0301`) |
 | `p-0401` | Focusrite Scarlett 2i2 4ª ger | condition `new`, used by the `SOMENTENOVOS` coupon happy path |
 | `p-0501` | Boss DS-1 Distortion | `price: 3990`, cheapest item, bottom of `price-asc` sort |
 | `p-0502` | Strymon BigSky | shared across two sellers as separate listings, different prices and conditions — the classic marketplace duplicate-title case |
@@ -105,11 +108,11 @@ shipping method list changing shape rather than just price.
 
 ## Images
 
-Do not hotlink. Generate 60 placeholder SVGs at build time into
-`app/public/img/products/<id>.svg` — a flat `--color-sunken` field with the brand
-name in Archivo and a category glyph. They must be committed, so screenshots and
-visual comparisons stay stable across machines and CI. Consistent placeholders
-look more deliberate than mismatched stock photos anyway.
+Do not hotlink. Every product shows a committed photo (see the Images
+clarification below), so screenshots and visual comparisons stay stable across
+machines and CI. The generated placeholder SVGs in `app/public/img/products/`
+remain only as the fallback for a product without a photo, which the fixtures
+test forbids.
 
 ---
 
@@ -142,13 +145,14 @@ documented account table.
 
 `FIXTURE_NOW` is `2026-08-10T12:00:00Z`; every fresh store starts there and
 `POST /api/test/clock` moves it. Listing dates derive from `LISTING_EPOCH` (the
-same instant) via a fixed function of the product id, giving 60 unique dates
+same instant) via a fixed function of the product id, giving unique dates (one per product)
 spread over ~180 days with no randomness and no wall-clock read.
 
 ### Sponsored listings
 
 Six products carry `sponsored: true` and are the only ones eligible for the
-labelled row: `p-0101`, `p-0203`, `p-0303`, `p-0401`, `p-0504`, `p-0601`.
+labelled row, one per category: `p-0101`, `p-0203`, `p-0303`, `p-0401`, `p-0505`,
+`p-0601`. (`p-0505` took over from the removed `p-0504`.)
 
 ### The second Strymon BigSky
 
@@ -158,6 +162,26 @@ like-new, R$ 3.799,00) share the name `Strymon BigSky` and the slug
 
 ### Images
 
-Each product carries exactly one image: `/img/products/<id>.svg`, so `images[]`
-has a single entry. The 60 placeholder SVGs are generated and committed in the
-app milestone, when the design tokens they reference exist.
+Each product carries exactly one image, so `images[]` has a single entry.
+
+**Every product has a photo.** All 50 products show a photo from Wikimedia
+Commons, under a free licence (public domain, CC0, CC BY or CC BY-SA). It is
+committed as `/img/photos/<id>.webp` (800×800, fitted on white) and never
+hotlinked, so screenshots stay stable. Each photo shows the listed model, or one of
+the same family or kind. Photos with an identifiable person, a logo instead of a
+product, another brand's name or logo, or a misleading subject were rejected. A
+product with no acceptable photo is removed from the catalog, not shown with a
+placeholder: 10 were removed this way. `app/scripts/find-product-photos.mjs` searches
+Commons (with hand-written queries per product) and records the choices and
+rejection reasons in `product-photos.json`. `download-product-photos.mjs` fetches
+the approved ones and writes `packages/fixtures/src/photo-credits.json`. Every
+photo is credited under its gallery and on `/credits`, and a fixtures test checks
+that every product has a credited photo with a free licence, an author and a
+committed file. A
+public-demo snapshot restores only stock, so new photos reach Visitors who already
+have a saved shop.
+
+To keep the seeded orders and the filter presets intact after the removal:
+`TMB-100239` now holds `p-0607` and `TMB-100240` holds `p-0601`, at the same unit
+prices, so their totals are unchanged. `p-0506` (R$ 399,00) and `p-0507`
+(R$ 449,00) were repriced so the `20000–50000` bucket keeps four products.

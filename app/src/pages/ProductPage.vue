@@ -128,7 +128,7 @@ async function add(mode: 'cart' | 'buy'): Promise<void> {
     </div>
     <template v-else>
       <div class="grid gap-8 lg:grid-cols-2">
-        <ProductGallery :images="product.images" :name="product.name" />
+        <ProductGallery :images="product.images" :name="product.name" :product-id="product.id" />
         <div class="card flex flex-col gap-5 self-start p-6">
           <div class="flex flex-col gap-2">
             <h1 data-testid="product-title" class="font-wide text-display text-ink">{{ product.name }}</h1>

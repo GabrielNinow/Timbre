@@ -65,7 +65,11 @@ The footer also links to the test reports (`/Timbre/reports/`) and the source
 repository, since the public demo now holds the site root.
 
 `data-testid`: `site-footer`, `footer-notice`, `footer-copyright`,
-`footer-reports`, `footer-source`, `checkout-demo-notice`, `demo-reset`.
+`footer-credits`, `footer-reports`, `footer-source`, `checkout-demo-notice`, `demo-reset`.
+
+**Image credits** at `/credits` (and `/en/credits`): every product with its photo,
+source, author and licence. The product gallery shows
+`product-photo-credit` under a photo, linking there.
 
 ## Home
 

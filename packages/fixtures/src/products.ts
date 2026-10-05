@@ -1,4 +1,5 @@
 import type { Condition, ProductSpec, VariantGroup } from '@timbre/contracts'
+import { photoCredits } from './photo-credits.js'
 
 export interface ProductFixture {
   readonly id: string
@@ -110,7 +111,8 @@ interface ProductInput {
 }
 
 function defineProduct(input: ProductInput): ProductFixture {
-  const imageUrl = `/img/products/${input.id}.svg`
+  // A credited photo when Commons has a good free one; the generated placeholder otherwise.
+  const imageUrl = photoCredits[input.id] ? `/img/photos/${input.id}.webp` : `/img/products/${input.id}.svg`
   const baseSpecs: ProductSpec[] = [
     { label: 'Marca', value: input.brand },
     ...(input.year ? [{ label: 'Ano', value: String(input.year) }] : []),
@@ -323,19 +325,6 @@ export const products: readonly ProductFixture[] = Object.freeze([
     reviewCount: 22,
   }),
   defineProduct({
-    id: 'p-0111',
-    name: 'Strinberg SGS 250',
-    brand: 'Strinberg',
-    categoryId: 'c-01',
-    sellerId: 's-05',
-    price: 149900,
-    condition: 'used',
-    year: 2015,
-    stock: 3,
-    rating: 39,
-    reviewCount: 12,
-  }),
-  defineProduct({
     id: 'p-0112',
     name: 'Cort Action Bass Plus',
     brand: 'Cort',
@@ -348,19 +337,6 @@ export const products: readonly ProductFixture[] = Object.freeze([
     stock: 1,
     rating: 43,
     reviewCount: 20,
-  }),
-  defineProduct({
-    id: 'p-0113',
-    name: 'Seizi Katana Shogun',
-    brand: 'Seizi',
-    categoryId: 'c-01',
-    sellerId: 's-04',
-    price: 259900,
-    condition: 'like-new',
-    year: 2022,
-    stock: 5,
-    rating: 45,
-    reviewCount: 31,
   }),
   defineProduct({
     id: 'p-0114',
@@ -532,23 +508,6 @@ export const products: readonly ProductFixture[] = Object.freeze([
   }),
 
   defineProduct({
-    id: 'p-0301',
-    name: 'Pearl Export EXX 5 peças',
-    brand: 'Pearl',
-    categoryId: 'c-03',
-    sellerId: 's-01',
-    price: 749900,
-    listPrice: 829900,
-    condition: 'new',
-    year: 2023,
-    stock: 2,
-    freeShipping: false,
-    rating: 47,
-    reviewCount: 42,
-    description:
-      'Bateria Pearl Export EXX, 5 peças, com ferragens. Item volumoso: o frete é sempre cobrado, sem exceção de promoção.',
-  }),
-  defineProduct({
     id: 'p-0302',
     name: 'Tama Imperialstar 5 peças',
     brand: 'Tama',
@@ -558,8 +517,11 @@ export const products: readonly ProductFixture[] = Object.freeze([
     condition: 'like-new',
     year: 2020,
     stock: 1,
+    freeShipping: false,
     rating: 45,
     reviewCount: 19,
+    description:
+      'Bateria Tama Imperialstar, 5 peças, com ferragens. Item volumoso: o frete é sempre cobrado, sem exceção de promoção.',
   }),
   defineProduct({
     id: 'p-0303',
@@ -596,20 +558,6 @@ export const products: readonly ProductFixture[] = Object.freeze([
     reviewCount: 23,
   }),
   defineProduct({
-    id: 'p-0305',
-    name: 'Nagano Garage Fusion',
-    brand: 'Nagano',
-    categoryId: 'c-03',
-    sellerId: 's-05',
-    price: 349900,
-    listPrice: 399900,
-    condition: 'new',
-    year: 2023,
-    stock: 4,
-    rating: 42,
-    reviewCount: 27,
-  }),
-  defineProduct({
     id: 'p-0306',
     name: 'Meinl HCS Cymbal Set',
     brand: 'Meinl',
@@ -634,24 +582,6 @@ export const products: readonly ProductFixture[] = Object.freeze([
     stock: 1,
     rating: 46,
     reviewCount: 8,
-  }),
-  defineProduct({
-    id: 'p-0308',
-    name: 'Vic Firth 5A Baquetas (par)',
-    brand: 'Vic Firth',
-    categoryId: 'c-03',
-    sellerId: 's-03',
-    price: 8990,
-    condition: 'new',
-    year: 2025,
-    stock: 40,
-    rating: 48,
-    reviewCount: 210,
-    specs: [
-      { label: 'Material', value: 'Hickory americano' },
-      { label: 'Ponta', value: 'Madeira' },
-      { label: 'Modelo', value: '5A' },
-    ],
   }),
 
   defineProduct({
@@ -723,46 +653,6 @@ export const products: readonly ProductFixture[] = Object.freeze([
       { label: 'Resposta', value: '50 Hz – 20 kHz' },
       { label: 'Conexão', value: 'XLR' },
     ],
-  }),
-  defineProduct({
-    id: 'p-0405',
-    name: 'Behringer UMC22',
-    brand: 'Behringer',
-    categoryId: 'c-04',
-    sellerId: 's-05',
-    price: 49900,
-    condition: 'used',
-    year: 2018,
-    stock: 15,
-    rating: 40,
-    reviewCount: 63,
-  }),
-  defineProduct({
-    id: 'p-0406',
-    name: 'Rode NT1 5ª ger',
-    brand: 'Rode',
-    categoryId: 'c-04',
-    sellerId: 's-04',
-    price: 279900,
-    condition: 'new',
-    year: 2025,
-    stock: 4,
-    freeShipping: true,
-    rating: 48,
-    reviewCount: 45,
-  }),
-  defineProduct({
-    id: 'p-0407',
-    name: 'Yamaha HS5 (unidade)',
-    brand: 'Yamaha',
-    categoryId: 'c-04',
-    sellerId: 's-03',
-    price: 319900,
-    condition: 'like-new',
-    year: 2020,
-    stock: 2,
-    rating: 47,
-    reviewCount: 29,
   }),
   defineProduct({
     id: 'p-0408',
@@ -854,21 +744,6 @@ export const products: readonly ProductFixture[] = Object.freeze([
       'Strymon BigSky usado por dois anos em estúdio caseiro, sem riscos no painel. Acompanha caixa original — anúncio de vendedor individual, mesmo produto que a listagem da loja.',
   }),
   defineProduct({
-    id: 'p-0504',
-    name: 'TC Electronic Hall of Fame 2',
-    brand: 'TC Electronic',
-    categoryId: 'c-05',
-    sellerId: 's-03',
-    price: 149900,
-    condition: 'new',
-    year: 2024,
-    stock: 6,
-    freeShipping: true,
-    rating: 46,
-    reviewCount: 61,
-    sponsored: true,
-  }),
-  defineProduct({
     id: 'p-0505',
     name: 'Ibanez Tube Screamer TS9',
     brand: 'Ibanez',
@@ -881,6 +756,7 @@ export const products: readonly ProductFixture[] = Object.freeze([
     stock: 3,
     rating: 47,
     reviewCount: 55,
+    sponsored: true,
   }),
   defineProduct({
     id: 'p-0506',
@@ -888,7 +764,7 @@ export const products: readonly ProductFixture[] = Object.freeze([
     brand: 'Electro-Harmonix',
     categoryId: 'c-05',
     sellerId: 's-05',
-    price: 89900,
+    price: 39900,
     condition: 'used',
     year: 2016,
     stock: 2,
@@ -901,7 +777,7 @@ export const products: readonly ProductFixture[] = Object.freeze([
     brand: 'Zoom',
     categoryId: 'c-05',
     sellerId: 's-01',
-    price: 79900,
+    price: 44900,
     condition: 'new',
     year: 2024,
     stock: 9,
@@ -1045,19 +921,6 @@ export const products: readonly ProductFixture[] = Object.freeze([
     stock: 1,
     rating: 46,
     reviewCount: 16,
-  }),
-  defineProduct({
-    id: 'p-0608',
-    name: 'Banco para Bateria Mapex T575A',
-    brand: 'Mapex',
-    categoryId: 'c-06',
-    sellerId: 's-07',
-    price: 44900,
-    condition: 'used',
-    year: 2018,
-    stock: 1,
-    rating: 41,
-    reviewCount: 7,
   }),
   defineProduct({
     id: 'p-0609',

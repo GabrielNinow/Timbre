@@ -92,6 +92,34 @@ describe('store snapshots', () => {
     expect((order.body as { id: string }).id).toBe('TMB-100242')
   })
 
+  it('takes listing content from the current fixtures, keeping saved stock', () => {
+    const store = new Store()
+    const saved = JSON.parse(JSON.stringify(store.snapshot()))
+    const old = saved.products.find((product: { id: string }) => product.id === 'p-0404')
+    old.imageUrl = '/img/products/p-0404.svg'
+    old.images = [old.imageUrl]
+    old.stock = 0
+
+    const restored = new Store()
+    expect(restored.restore(saved)).toBe(true)
+    const product = restored.productById('p-0404')!
+    expect(product.imageUrl).toBe(store.productById('p-0404')!.imageUrl)
+    expect(product.stock).toBe(0)
+  })
+
+  it('drops saved cart lines for products that are no longer listed', () => {
+    const store = new Store()
+    const saved = JSON.parse(JSON.stringify(store.snapshot()))
+    saved.carts = [['c-old', { id: 'c-old', userId: null, cep: '89010-000', couponCode: null, selectedShippingId: 'standard', lines: [
+      { id: 'l-1', productId: 'p-0301', variantOptionId: null, quantity: 1 },
+      { id: 'l-2', productId: 'p-0101', variantOptionId: null, quantity: 1 },
+    ] }]]
+
+    const restored = new Store()
+    expect(restored.restore(saved)).toBe(true)
+    expect(restored.carts.get('c-old')!.lines.map((line) => line.productId)).toEqual(['p-0101'])
+  })
+
   it('ignores a snapshot of another version or shape', () => {
     const store = new Store()
     expect(store.restore({ version: 999 })).toBe(false)
